@@ -100,7 +100,7 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
               )
             }
           >
-            Fetch Conversation
+            Refresh
           </CustomButton>
 
           {/* <Box

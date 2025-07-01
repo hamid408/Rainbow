@@ -55,7 +55,7 @@ const Sidebar = () => {
       await logOut({ token }).unwrap();
 
       Cookies.remove("id_token");
-      sessionStorage.clear(); // just in case
+      // sessionStorage.clear(); // just in case
       setLoggedOut(true);
       router.replace("/auth/sign-in");
     } catch (error: any) {
@@ -168,19 +168,27 @@ const Sidebar = () => {
           height={"65%"}
         >
           <Box className={styles.itemsList}>
-            {sidebarItems.map(({ label, icon: Icon }: any) => (
+            {sidebarItems.map(({ label, icon: Icon, disabled }: any) => (
               <Box
                 key={label}
                 className={`${styles.sidebarItem} ${
                   activeSidebarItem === label ? styles.active : ""
                 }`}
                 onClick={() => {
-                  setActiveSidebarItem(label);
-                  if (pathMap[label]) {
+                  // setActiveSidebarItem(label);
+                  // if (pathMap[label]) {
+                  //   router.push(pathMap[label]);
+                  // }
+                  if (!disabled && pathMap[label]) {
+                    setActiveSidebarItem(label);
                     router.push(pathMap[label]);
                   }
                 }}
-                sx={{ cursor: "pointer" }}
+                // sx={{ cursor: "pointer" }}
+                sx={{
+                  cursor: disabled ? "not-allowed" : "pointer",
+                  opacity: disabled ? 0.5 : 1,
+                }}
               >
                 <Icon />
                 <Typography

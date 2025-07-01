@@ -18,7 +18,6 @@ import CustomButton from "@/src/components/common/CustomButton";
 import { useSignInMutation } from "@/src/redux/services/auth/authApi";
 import { setCredentials } from "@/src/redux/services/auth/authSlice";
 import Link from "next/link";
-
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,14 +38,18 @@ export default function SignIn() {
       const response = await signIn({ email, password }).unwrap();
 
       if (response.challenge === "NEW_PASSWORD_REQUIRED") {
-        sessionStorage.setItem("auth_session", response.session);
-        sessionStorage.setItem("auth_email", email);
+        // sessionStorage.setItem("auth_session", response.session);
+        // sessionStorage.setItem("auth_email", email);
+        Cookies.set("auth_session", response.session);
+        Cookies.set("auth_email", email);
         setRedirecting(true);
         router.push("/auth/login-password");
       } else if (response.id_token) {
-        sessionStorage.setItem("id_token", response.id_token);
-        sessionStorage.setItem("auth_email", email);
-        Cookies.set("id_token", response.id_token);
+        // sessionStorage.setItem("id_token", response.id_token);
+        // sessionStorage.setItem("auth_email", email);
+         Cookies.set("id_token", response.id_token);
+        Cookies.set("auth_email", email);
+        // Cookies.set("id_token", response.id_token);
         dispatch(setCredentials({ token: response.id_token, email }));
         setRedirecting(true);
         router.push("/dashboard");

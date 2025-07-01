@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import CustomTextField from "@/src/components/common/CustomTextfield";
 import CustomButton from "@/src/components/common/CustomButton";
 import { useForgotPasswordMutation } from "@/src/redux/services/auth/authApi";
-
+import Cookies from "js-cookie";
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
 
@@ -45,7 +45,8 @@ export default function ForgotPassword() {
       // const data = await response.json();
       const response = await forgotPassword({ email }).unwrap();
 
-      sessionStorage.setItem("email", email);
+      // sessionStorage.setItem("email", email);
+      Cookies.set("email", email);
       setSeverity("success");
       setMessage("Code Sent to your email");
       router.push("/auth/reset-password");

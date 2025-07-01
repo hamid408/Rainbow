@@ -1,5 +1,11 @@
 // SidebarItems.tsx
-import { Aireach, Analytics, LeadsIcon, Tasks, UserIcon } from "@/src/assests/icons";
+import {
+  Aireach,
+  Analytics,
+  LeadsIcon,
+  Tasks,
+  UserIcon,
+} from "@/src/assests/icons";
 export const sidebarButtons = [
   { label: "Admin User", id: "admin" },
   { label: "Solo User", id: "solo" },
@@ -7,8 +13,10 @@ export const sidebarButtons = [
 
 export const sidebarItems = [
   { label: "Hot Leads", icon: LeadsIcon },
-  { label: "AI Outreach", icon: Aireach },
-  { label: "Tasks & Reminder", icon: Tasks },
+  // { label: "AI Outreach", icon: Aireach },
+  // { label: "Tasks & Reminder", icon: Tasks },
+  { label: "AI Outreach", icon: Aireach, disabled: true }, 
+  { label: "Tasks & Reminder", icon: Tasks, disabled: true },
   { label: "Analytics", icon: Analytics },
   { label: "Admin Oversight", icon: UserIcon },
 ];

@@ -7,7 +7,7 @@ import CustomButton from "@/src/components/common/CustomButton";
 import { useResetPasswordMutation } from "@/src/redux/services/auth/authApi";
 import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
+import Cookies from "js-cookie";
 const Page = () => {
   const router = useRouter();
   const [session, setSession] = useState("");
@@ -22,7 +22,8 @@ const Page = () => {
   const [resetPassword] = useResetPasswordMutation();
 
   useEffect(() => {
-    const storedEmail = sessionStorage.getItem("email");
+    // const storedEmail = sessionStorage.getItem("email");
+    const storedEmail = Cookies.get("email");
 
     if (storedEmail) {
       setMail(storedEmail);
@@ -42,7 +43,8 @@ const Page = () => {
         email,
       }).unwrap();
 
-      sessionStorage.removeItem("email");
+      // sessionStorage.removeItem("email");
+      Cookies.remove("email");
       router.push("/auth/sign-in");
     } catch (err: any) {
       setError(err?.data?.message || "Something went wrong. Please try again.");
@@ -134,7 +136,7 @@ const Page = () => {
             type={showPassword ? "text" : "password"}
             fullWidth
             value={newPassword}
-            onChange={(e:any) => setNewPassword(e.target.value)}
+            onChange={(e: any) => setNewPassword(e.target.value)}
             placeholder="Write new password"
             InputProps={{
               endAdornment: (

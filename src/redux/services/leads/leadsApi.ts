@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import Cookies from "js-cookie";
 type LeadType = {
   first_name: string;
   last_name?: string;
@@ -18,7 +18,9 @@ export const leadsapi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/",
     prepareHeaders: (headers) => {
-      const token = sessionStorage.getItem("id_token");
+      // const token = sessionStorage.getItem("id_token");
+      const token = Cookies.get("id_token");
+
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -76,5 +78,5 @@ export const {
   useCreateLeadMutation,
   useGetLeadByIdQuery,
   useUpdateLeadMutation,
-  useGetLeadsEnumsQuery
+  useGetLeadsEnumsQuery,
 } = leadsapi;

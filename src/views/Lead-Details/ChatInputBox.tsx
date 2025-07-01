@@ -9,10 +9,30 @@ import CustomButton from "@/src/components/common/CustomButton";
 import { AssignTask, Mark, SmallPhone } from "@/src/assests/icons";
 import CallModal from "./CallModal";
 import { Email } from "@mui/icons-material";
+import { useSendSmsMutation } from "@/src/redux/services/conversation/conversationApi";
+import { toast } from "react-toastify";
 
-const ChatInputBox = ({ leadId }: any) => {
+const ChatInputBox = ({ data }: any) => {
   const [message, setMessage] = useState("");
   const [isCallOpen, setIsCallOpen] = useState(false);
+  const lead = data?.data?.[0];
+  const [sendSms, { isLoading: isSending }] = useSendSmsMutation();
+
+  const leadId = lead?.lead_id;
+  const phone = lead?.phone;
+  const handleSendMessage = async () => {
+    try {
+      await sendSms({
+        lead_id: leadId,
+        sms_content: message,
+      }).unwrap();
+      toast.success("Sugestion Sent Successfully!!");
+      setMessage("");
+    } catch (err) {
+      console.error("SMS Failed:", err);
+      toast.error("Failed to send Message. Try Again");
+    }
+  };
   return (
     <Box
       sx={{
@@ -38,7 +58,7 @@ const ChatInputBox = ({ leadId }: any) => {
             borderRadius: "12px",
             fontSize: "16px",
             fontWeight: 400,
-            color: "#818898",
+            color: "#0D0D12",
             padding: "16px",
             border: "none",
           },
@@ -89,20 +109,18 @@ const ChatInputBox = ({ leadId }: any) => {
         <CustomButton
           variant="contained"
           startIcon={<SendIcon />}
-          disabled={message.trim() === ""}
-          fontWeight="600"
-          onClick={() => {
-            setMessage("");
-          }}
+          fontWeight="600px"
+          onClick={handleSendMessage}
+          disabled={isSending}
         >
-          Send
+          {isSending ? "Sending..." : "Send"}
         </CustomButton>
       </Box>
       <CallModal
         open={isCallOpen}
         onClose={() => setIsCallOpen(false)}
         leadId={leadId}
-        // phone={phone}
+        phone={phone}
       />
     </Box>
   );

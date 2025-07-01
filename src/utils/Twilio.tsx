@@ -1,11 +1,12 @@
 import { Device } from "@twilio/voice-sdk";
-
+import Cookies from "js-cookie";
 let device: Device | null = null;
 
 export async function initTwilioDevice(leadId: string): Promise<Device> {
   if (device) return device;
 
-  const idToken = sessionStorage.getItem("id_token");
+  // const idToken = sessionStorage.getItem("id_token");
+  const idToken = Cookies.get("id_token");
 
   if (!idToken) {
     throw new Error("No ID token found in sessionStorage.");

@@ -34,9 +34,11 @@ const LeadCard = ({
 }: LeadCardProps) => {
   const router = useRouter();
   return (
-    <Link href={`/dashboard/${lead_id}?page=${page}`} passHref>
+    <Link
+      href={`/dashboard/${lead_id}?page=${page}`}
+      style={{ textDecoration: "none" }}
+    >
       <Box
-        component="a"
         sx={{
           height: "112px",
           borderRadius: "12px",

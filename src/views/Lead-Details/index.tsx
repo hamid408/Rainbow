@@ -34,10 +34,10 @@ const LeadDetails = ({ leadId }: { leadId: string }) => {
   if (error || !data?.data?.length) return <div>Error loading lead data</div>;
 
   const lead = data.data[0];
-
   const name = lead.first_name + " " + (lead.last_name || "");
   const status =
-    lead.inquiry_status + (lead.inquiry_type ? ` (${lead.inquiry_type})` : "");
+  lead.inquiry_status + (lead.inquiry_type ? ` (${lead.inquiry_type})` : "");
+  console.log("datttttaaaaa", name);
 
   return (
     <Box sx={{ padding: "20px 32px 32px 32px" }}>
@@ -54,7 +54,8 @@ const LeadDetails = ({ leadId }: { leadId: string }) => {
             userName={name}
           />
           <CallLogsSection lead_id={leadId} />
-          <ChatInputBox leadId={leadId} />
+          {/* <ChatInputBox leadId={leadId} /> */}
+          <ChatInputBox data={data} />
         </Box>
         <LeadDetailsSidebar data={data} />
       </Box>

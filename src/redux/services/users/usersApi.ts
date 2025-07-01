@@ -1,11 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+import Cookies from "js-cookie";
 export const usersApi = createApi({
   reducerPath: "usersApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/",
     prepareHeaders: (headers) => {
-      const token = sessionStorage.getItem("id_token");
+      // const token = sessionStorage.getItem("id_token");
+      const token = Cookies.get("id_token");
+
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -48,5 +50,5 @@ export const {
   useGetUsersQuery,
   useCreateUserMutation,
   useDeactivateUserMutation,
-  useGetCurrentUserQuery
+  useGetCurrentUserQuery,
 } = usersApi;

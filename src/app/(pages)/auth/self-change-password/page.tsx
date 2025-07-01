@@ -7,7 +7,7 @@ import CustomButton from "@/src/components/common/CustomButton";
 import { useSelfChangePasswordMutation } from "@/src/redux/services/auth/authApi";
 import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
+import Cookies from "js-cookie";
 const SelfChangePassword = () => {
   const router = useRouter();
   const [prevPassword, setPrevPassword] = useState("");
@@ -46,7 +46,8 @@ const SelfChangePassword = () => {
       setMessage("Password changed successfully!");
 
       setTimeout(() => {
-        sessionStorage.removeItem("auth_session");
+        // sessionStorage.removeItem("auth_session");
+        Cookies.remove("auth_session");
         router.push("/dashboard");
       }, 1500);
     } catch (err: any) {
@@ -101,7 +102,7 @@ const SelfChangePassword = () => {
             type={showPrevPassword ? "text" : "password"}
             fullWidth
             value={prevPassword}
-            onChange={(e:any) => setPrevPassword(e.target.value)}
+            onChange={(e: any) => setPrevPassword(e.target.value)}
             placeholder="Write Previous password"
             InputProps={{
               endAdornment: (
@@ -127,7 +128,7 @@ const SelfChangePassword = () => {
             type={showNewPassword ? "text" : "password"}
             fullWidth
             value={password}
-            onChange={(e:any) => setPassword(e.target.value)}
+            onChange={(e: any) => setPassword(e.target.value)}
             placeholder="Enter new password"
             InputProps={{
               endAdornment: (

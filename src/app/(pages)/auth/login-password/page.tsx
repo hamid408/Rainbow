@@ -24,10 +24,14 @@ const FirstLoginPassword = () => {
   const toggleShowConfirmPassword = () =>
     setShowConfirmPassword((prev) => !prev);
   useEffect(() => {
-    const storedSession = sessionStorage.getItem("auth_session");
-    const storedEmail = sessionStorage.getItem("auth_email");
+    // const storedSession = sessionStorage.getItem("auth_session");
+    // const storedEmail = sessionStorage.getItem("auth_email");
+    const storedSession = Cookies.get("auth_session");
+    const storedEmail = Cookies.get("auth_email");
 
     if (storedEmail) {
+      // const storedEmail = sessionStorage.getItem("auth_email");
+
       setMail(storedEmail);
     }
 
@@ -65,9 +69,11 @@ const FirstLoginPassword = () => {
 
       // Success logic
       // sessionStorage.removeItem("auth_session");
-      sessionStorage.setItem("id_token", response.id_token);
-      sessionStorage.setItem("auth_email", email);
+      // sessionStorage.setItem("id_token", response.id_token);
+      // sessionStorage.setItem("auth_email", email);
+      Cookies.remove("auth_session");
       Cookies.set("id_token", response.id_token);
+      Cookies.set("auth_email", email);
       router.push("/dashboard");
     } catch (err: any) {
       setError(err?.data?.message || "Failed to reset password.");

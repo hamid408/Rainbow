@@ -3,8 +3,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography, Stack, CircularProgress } from "@mui/material";
 import { Ai } from "@/src/assests/icons";
 import CustomButton from "@/src/components/common/CustomButton";
-import { useGetSuggestionsQuery } from "@/src/redux/services/conversation/conversationApi";
-import { useSendSmsMutation } from "@/src/redux/services/twilio/twilioApi";
+import {
+  useChangeSuggestionMutation,
+  useGetSuggestionsQuery,
+  useSendSmsMutation,
+} from "@/src/redux/services/conversation/conversationApi";
 import { toast } from "react-toastify";
 
 const CallLogsSection = ({ lead_id }: any) => {
@@ -14,8 +17,9 @@ const CallLogsSection = ({ lead_id }: any) => {
   const [isEditing, setIsEditing] = useState(false);
   const [message, setMessage] = useState("");
   const originalMessage = useRef(message);
-  const [sendSms] = useSendSmsMutation();
-
+  const [sendSms, { isLoading: isSending }] = useSendSmsMutation();
+  const [changeSuggestion, { isLoading: isSaving }] =
+    useChangeSuggestionMutation();
   useEffect(() => {
     if (SuggestionData?.suggestion?.content) {
       setMessage(SuggestionData.suggestion.content);
@@ -35,14 +39,27 @@ const CallLogsSection = ({ lead_id }: any) => {
     setMessage(originalMessage.current);
     setIsEditing(false);
   };
-
-  const SendMessage = async () => {
+  const ChangeSuggestionMessage = async () => {
+    try {
+      await changeSuggestion({
+        suggestion_id: SuggestionData.suggestion?.id,
+        content: message,
+      }).unwrap();
+      toast.success("Suggestion updated Successfully!!");
+      setIsEditing(false);
+    } catch (err) {
+      console.error("SMS Failed:", err);
+      toast.error("Failed to update suggestion. Try Again");
+    }
+  };
+  const SendNowMessage = async () => {
     try {
       await sendSms({
         lead_id: lead_id,
         sms_content: message,
+        suggestion_id: SuggestionData.suggestion?.id,
       }).unwrap();
-      toast.success("Sugestion Sent Successfully!!");
+      toast.success("Suggestion Sent Successfully!!");
     } catch (err) {
       console.error("SMS Failed:", err);
       toast.error("Failed to send Message. Try Again");
@@ -130,8 +147,12 @@ const CallLogsSection = ({ lead_id }: any) => {
             <CustomButton variant="outlined" onClick={handleCancelClick}>
               Cancel
             </CustomButton>
-            <CustomButton variant="contained" onClick={handleSaveClick}>
-              Save
+            <CustomButton
+              variant="contained"
+              onClick={ChangeSuggestionMessage}
+              disabled={isSaving}
+            >
+              {isSaving ? "Saving..." : "Save"}
             </CustomButton>
           </>
         )}
@@ -140,9 +161,10 @@ const CallLogsSection = ({ lead_id }: any) => {
             variant="contained"
             background="#6B39F4"
             fontWeight="600px"
-            onClick={SendMessage}
+            onClick={SendNowMessage}
+            disabled={isSending}
           >
-            Send Now
+            {isSending ? "Sending..." : "Send Now"}
           </CustomButton>
         )}
       </Box>

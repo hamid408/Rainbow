@@ -47,7 +47,7 @@
 //   );
 // }
 import "./globals.css";
-import { ThemeProvider } from "@mui/material";
+import { Box, ThemeProvider } from "@mui/material";
 import theme from "@/src/theme";
 import AppLayout from "./AppLayout";
 
@@ -69,19 +69,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>
+      <body style={{ overflowX: "hidden" }}>
         <ThemeProvider theme={theme}>
           <AppLayout>
-            <div
-              style={{
-                transform: "scale(0.875)",
-                transformOrigin: "top left",
-                width: "114.2857%",
-                height: "114.2857%",
-              }}
-            >
-              {children}
-            </div>
+            <Box sx={{ overflowX: "hidden", height: "100vh" }}>
+              <div className="zoomed-layout">{children}</div>
+            </Box>
           </AppLayout>
         </ThemeProvider>
       </body>

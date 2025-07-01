@@ -19,7 +19,14 @@ html,
 html {
   font-size: 75%;
 }
-
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important; /* prevent inner scrollbars */
+  height: 100%;
+  width: 100%;
+}
 * {
   box-sizing: border-box;
   padding: 0;
@@ -28,4 +35,13 @@ html {
 }
 body {
   font-family: "Switzer", sans-serif !important;
+}
+.zoomed-layout {
+  transform: scale(0.9);
+  transform-origin: top left;
+  width: 111.1111%;
+  height: 111.1111%;
+  /* overflow-x: hidden; to avoid scroll bar */
+  /* overflow-x: hidden; */
+  overflow: "auto";
 }

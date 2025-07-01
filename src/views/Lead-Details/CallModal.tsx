@@ -38,12 +38,13 @@ export default function CallModal({
   open,
   onClose,
   leadId,
+  phone,
 }: {
   open: boolean;
   onClose: () => void;
   leadId?: any;
+  phone?: string;
 }) {
-  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [isCalling, setIsCalling] = useState(false);
   const [conn, setConn] = useState<any>(null);
