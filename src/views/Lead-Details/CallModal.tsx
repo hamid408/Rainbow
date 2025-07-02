@@ -53,9 +53,16 @@ export default function CallModal({
 
   const [createBotCall, { isLoading, isError, data }] =
     useCreateBotCallMutation();
-  // const { data: userData } = useGetCurrentUserQuery();
-  // const user = userData?.data?.[0];
-  // console.log("user information", user.id);
+  const {
+    data: userData,
+    isLoading: userLoading,
+    error: userError,
+    refetch,
+  } = useGetCurrentUserQuery();
+
+  if (userLoading) return <div>loading...</div>;
+  const user = userData?.data?.[0];
+  console.log("user information", user.id);
   const handleBotCall = async () => {
     try {
       const res = await createBotCall({ lead_id: leadId }).unwrap();
@@ -80,7 +87,7 @@ export default function CallModal({
         params: {
           // To: phone,
           lead_id: leadId,
-          // user_id: user.id,
+          user_id: user.id,
         },
       });
 
