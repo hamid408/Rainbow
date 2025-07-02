@@ -29,6 +29,11 @@ export default function SignIn() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [signIn, { isLoading }] = useSignInMutation();
+  React.useEffect(() => {
+    window.addEventListener("unhandledrejection", (e) => {
+      console.error("Unhandled promise rejection:", e.reason);
+    });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,20 +41,14 @@ export default function SignIn() {
 
     try {
       const response = await signIn({ email, password }).unwrap();
-
       if (response.challenge === "NEW_PASSWORD_REQUIRED") {
-        // sessionStorage.setItem("auth_session", response.session);
-        // sessionStorage.setItem("auth_email", email);
         Cookies.set("auth_session", response.session);
         Cookies.set("auth_email", email);
         setRedirecting(true);
         router.push("/auth/login-password");
       } else if (response.id_token) {
-        // sessionStorage.setItem("id_token", response.id_token);
-        // sessionStorage.setItem("auth_email", email);
-         Cookies.set("id_token", response.id_token);
+        Cookies.set("id_token", response.id_token);
         Cookies.set("auth_email", email);
-        // Cookies.set("id_token", response.id_token);
         dispatch(setCredentials({ token: response.id_token, email }));
         setRedirecting(true);
         router.push("/dashboard");
@@ -113,14 +112,7 @@ export default function SignIn() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
           />
-          {/* <CustomTextField
-            label="Password"
-            type="password"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-          /> */}
+
           <CustomTextField
             label="Password"
             type={showPassword ? "text" : "password"}

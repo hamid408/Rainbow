@@ -21,6 +21,7 @@ import {
 } from "@mui/icons-material";
 import { useCreateBotCallMutation } from "@/src/redux/services/twilio/twilioApi";
 import { toast } from "react-toastify";
+import { useGetCurrentUserQuery } from "@/src/redux/services/users/usersApi";
 
 const style = {
   position: "absolute" as const,
@@ -52,7 +53,9 @@ export default function CallModal({
 
   const [createBotCall, { isLoading, isError, data }] =
     useCreateBotCallMutation();
-
+  const { data: userData } = useGetCurrentUserQuery();
+  const user = userData?.data?.[0];
+  console.log("user information", user.id);
   const handleBotCall = async () => {
     try {
       const res = await createBotCall({ lead_id: leadId }).unwrap();
@@ -77,6 +80,7 @@ export default function CallModal({
         params: {
           // To: phone,
           lead_id: leadId,
+          user_id: user.id,
         },
       });
 

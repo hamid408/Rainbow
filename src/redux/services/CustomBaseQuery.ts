@@ -5,9 +5,7 @@ import Cookies from "js-cookie";
 
 const rawBaseQuery = fetchBaseQuery({
   baseUrl: "https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/",
-  // credentials: "include",
   prepareHeaders: (headers) => {
-    // const token = Cookies.get("id_token") || sessionStorage.getItem("id_token");
     const token = Cookies.get("id_token");
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
@@ -25,12 +23,11 @@ const customBaseQuery: BaseQueryFn<
   const result = await rawBaseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
-    // Token is invalid or expired — perform logout actions
     Cookies.remove("id_token");
-    // sessionStorage.clear();
-
     if (typeof window !== "undefined") {
-      window.location.href = "/auth/sign-in"; // redirect to login
+      if (window.location.pathname !== "/auth/sign-in") {
+        window.location.replace("/auth/sign-in");
+      }
     }
   }
 

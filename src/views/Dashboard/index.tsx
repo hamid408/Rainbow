@@ -1,11 +1,5 @@
 "use client";
-import {
-  Box,
-  CircularProgress,
-  Pagination,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import LeadCard from "./LeadCard";
 import CustomTabs from "@/src/components/common/CustomTabs";
@@ -21,7 +15,6 @@ const Dashboard = () => {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("All");
   const [openModal, setOpenModal] = useState(false);
-  // const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
 
@@ -40,7 +33,6 @@ const Dashboard = () => {
   });
   const pathname = usePathname();
 
-  // ⛔ Stop rendering Dashboard on /dashboard/[id]
   useEffect(() => {
     refetch();
   }, []);
@@ -151,14 +143,6 @@ const Dashboard = () => {
         </Stack>
       </Box>
 
-      {/* <Box display="flex" justifyContent="end" mt={2}>
-        <Pagination
-          count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
-          page={page}
-          onChange={(_, value) => setPage(value)}
-          color="primary"
-        />
-      </Box> */}
       <CustomPagination
         page={page}
         count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
