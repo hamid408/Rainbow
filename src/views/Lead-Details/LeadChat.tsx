@@ -50,7 +50,6 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
         No Conversation Found!
       </Typography>
     );
-  // const channel=data.
   const renderUserAvatar = (name: string) => {
     const initials = getInitials(name);
     return (
@@ -82,7 +81,8 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
           const time = msg.created_at;
           const isAI = msg.sender_type === "user";
           // const senderName = isAI ? "AI Assistant" : userName;
-          const senderName = msg.sender_name;
+          // const senderName = msg.sender_name;
+          const senderName = isAI ? "AI Assistant" : msg.sender_name;
 
           return (
             <Box

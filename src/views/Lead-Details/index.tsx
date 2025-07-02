@@ -37,7 +37,6 @@ const LeadDetails = ({ leadId }: { leadId: string }) => {
   const name = lead.first_name + " " + (lead.last_name || "");
   const status =
   lead.inquiry_status + (lead.inquiry_type ? ` (${lead.inquiry_type})` : "");
-  console.log("datttttaaaaa", name);
 
   return (
     <Box sx={{ padding: "20px 32px 32px 32px" }}>

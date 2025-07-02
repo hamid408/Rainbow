@@ -22,7 +22,20 @@ const customBaseQuery: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   const result = await rawBaseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
+  // if (result.error && result.error.status === 401) {
+  //   Cookies.remove("id_token");
+  //   if (typeof window !== "undefined") {
+  //     if (window.location.pathname !== "/auth/sign-in") {
+  //       window.location.replace("/auth/sign-in");
+  //     }
+  //   }
+  // }
+  if (
+    result.error &&
+    result.error.status === 401 &&
+    typeof (result.error.data as any)?.message === "string" &&
+    !(result.error.data as any).message.startsWith("Password")
+  ) {
     Cookies.remove("id_token");
     if (typeof window !== "undefined") {
       if (window.location.pathname !== "/auth/sign-in") {

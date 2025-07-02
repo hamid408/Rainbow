@@ -76,11 +76,6 @@ export default function CallModal({
 
   const handleCall = async () => {
     try {
-      // if (!phone.startsWith("+")) {
-      //   setError("Phone number must include country code (e.g., +1...)");
-      //   return;
-      // }
-
       setIsCalling(true);
       const device = await initTwilioDevice(leadId);
       const connection = await device.connect({
@@ -90,18 +85,9 @@ export default function CallModal({
           user_id: user.id,
         },
       });
-
-      // device.connect({
-      //   To: leadId,
-      //   // lead_id: leadId,
-      //   // To: phone,
-      // } as any);
-
       console.log("to number-----", phone);
-
       setConn(connection);
       setCallStarted(true);
-
       connection.on("accept", () => {
         console.log("✅ Call accepted");
       });

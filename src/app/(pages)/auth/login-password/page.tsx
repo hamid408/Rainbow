@@ -229,7 +229,7 @@ const FirstLoginPassword = () => {
           sx={{ padding: "12px", marginTop: 3 }}
           disabled={loading}
         >
-          {loading ? "Changing..." : "change Password"}
+          {loading ? "Changing..." : "Change Password"}
         </CustomButton>
 
         {/* <Typography variant="body2" align="center" mt={4}>

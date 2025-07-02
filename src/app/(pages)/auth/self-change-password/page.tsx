@@ -25,6 +25,11 @@ const SelfChangePassword = () => {
   const toggleShowPrevPassword = () => setShowPrevPassword((prev) => !prev);
   const toggleShowNewPassword = () => setShowNewPassword((prev) => !prev);
 
+  const passwordMeetsRequirements = (password: string): boolean => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+    return regex.test(password);
+  };
+
   const [selfChangePassword] = useSelfChangePasswordMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,6 +38,12 @@ const SelfChangePassword = () => {
     setMessage("");
     if (!prevPassword || !password) {
       setError("Both fields are required.");
+      return;
+    }
+    if (!passwordMeetsRequirements(password)) {
+      setError(
+        "Password must include uppercase, lowercase, number, and special character."
+      );
       return;
     }
 
