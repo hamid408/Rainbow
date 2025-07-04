@@ -1,5 +1,5 @@
 "use client";
-import { Back, Call, Urgent } from "@/src/assests/icons";
+import { Back, Call, Cold, Urgent } from "@/src/assests/icons";
 import {
   Box,
   Typography,
@@ -28,9 +28,9 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
   const handleRouteBack = () => {
     const page = searchParams.get("page") || "1";
     router.push(`/dashboard?page=${page}`);
-
-    // router.push("/dashboard");
   };
+  const keyword = status?.split(" ")[0]?.toLowerCase();
+  console.log("stats", keyword);
   const initials = getInitials(name);
   const handleRefreshClick = () => {
     setLoading(true);
@@ -84,7 +84,7 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
                 fontSize: "14",
                 fontWeight: "500",
               }}
-              icon={<Urgent />}
+              icon={keyword === "hot" ? <Urgent /> : <Cold />}
             />
           </Stack>
         </Box>

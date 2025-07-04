@@ -68,7 +68,6 @@ const Dashboard = () => {
   return (
     <Box padding="48px">
       <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-
       <Box
         borderRadius="12px"
         padding={1}
@@ -136,6 +135,7 @@ const Dashboard = () => {
                   avatarUrl={undefined}
                   tag={lead.tag || "Urgent"}
                   page={page}
+                  phone={lead.phone || ""}
                 />
               );
             })

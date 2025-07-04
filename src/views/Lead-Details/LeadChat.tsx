@@ -12,6 +12,7 @@ import { useGetConversationQuery } from "@/src/redux/services/conversation/conve
 import { useEffect, useRef, useState } from "react";
 import { getInitials } from "@/src/utils/GetInitials";
 import { Message, Typing } from "@/src/assests/icons";
+import { CallEnd } from "@mui/icons-material";
 
 const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
@@ -21,6 +22,11 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
     lead_ID: leadId,
     offset: latestOffset.current,
   });
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   useEffect(() => {
     if (data?.data?.length) {
@@ -40,6 +46,7 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
     }, 30000);
     return () => clearInterval(interval);
   }, [refetch]);
+  if (!hasMounted) return null;
 
   if (isLoading && allMessages.length === 0)
     return <CircularProgress sx={{ m: 5 }} />;
@@ -50,7 +57,7 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
         No Conversation Found!
       </Typography>
     );
-  const renderUserAvatar = (name: string) => {
+  const renderUserAvatar = (name: string | undefined | null) => {
     const initials = getInitials(name);
     return (
       <Avatar
@@ -81,8 +88,8 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
           const time = msg.created_at;
           const isAI = msg.sender_type === "user";
           // const senderName = isAI ? "AI Assistant" : userName;
-          // const senderName = msg.sender_name;
-          const senderName = isAI ? "AI Assistant" : msg.sender_name;
+          // const senderName = isAI ? "AI Assistant" : msg.sender_name;
+          const senderName = msg.sender_name || "Unknown";
 
           return (
             <Box
@@ -92,11 +99,12 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
               gap={2.5}
               flexDirection="row"
             >
-              {isAI ? (
+              {/* {isAI ? (
                 <Image src={AvatarPic} alt="AI Avatar" width={60} height={60} />
               ) : (
                 renderUserAvatar(userName)
-              )}
+              )} */}
+              {renderUserAvatar(senderName)}
               <Stack spacing={1.5}>
                 <Box>
                   <Box display={"flex"} alignItems={"center"} gap={1}>
@@ -104,7 +112,14 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                       {senderName}
                     </Typography>
 
-                    {msg.channel === "sms" ? <Typing /> : <Message />}
+                    {/* {msg.channel === "sms" ? <Typing /> : <Message />} */}
+                    {msg.channel === "sms" ? (
+                      <Typing />
+                    ) : msg.channel === "call" ? (
+                      <CallEnd />
+                    ) : (
+                      <Message />
+                    )}
 
                     <Typography
                       mb={0.5}
