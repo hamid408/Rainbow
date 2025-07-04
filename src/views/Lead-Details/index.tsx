@@ -8,6 +8,7 @@ import LeadDetailsSidebar from "./LeadDetailSidebar";
 import ChatInputBox from "./ChatInputBox";
 import { useGetLeadByIdQuery } from "@/src/redux/services/leads/leadsApi";
 // import { useGetLeadByIdQuery } from "@/redux/services/leads/leadsApi";
+import styles from "./style.module.scss";
 
 const LeadDetails = ({ leadId }: { leadId: string }) => {
   const [refreshChat, setRefreshChat] = useState(0);
@@ -39,14 +40,14 @@ const LeadDetails = ({ leadId }: { leadId: string }) => {
   lead.inquiry_status + (lead.inquiry_type ? ` (${lead.inquiry_type})` : "");
 
   return (
-    <Box sx={{ padding: "20px 32px 32px 32px" }}>
+    <Box className = {styles.indexMainBox}>
       <LeadHeader
         name={name}
         status={status}
         onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
       />
-      <Box display="flex" flexGrow={1}>
-        <Box width="75%" bgcolor="#fff" paddingRight={"32px"}>
+      <Box className = {styles.indexSecondaryBox}>
+        <Box className = {styles.indexLastBox}>
           <LeadChatSection
             refreshTrigger={refreshChat}
             leadId={leadId}

@@ -1,0 +1,525 @@
+.root {
+  border-radius: 0px;
+  margin-block: 0px;
+  border: 1px solid #dfe1e7;
+  padding: 16px;
+  background-color: #f6f8fa;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  box-sizing: border-box;
+  // width: 700px;
+  // width: 115% !important;
+
+  @media (min-width: 600px) {
+    border-radius: 6px;
+    padding: 20px 24px;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+  }
+
+  @media (min-width: 900px) {
+    border-radius: 12px;
+    padding: 20px 32px;
+  }
+
+  @media (min-width: 600px) and (max-width: 1000px) {
+    flex-direction: column;
+    max-width: 450px;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 100%;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1080px) {
+    width: 700px;
+  }
+
+  @media (max-width: 600px) {
+    margin-left: -56px;
+    margin-right: -56px;
+    margin-bottom: -8px;
+    padding-left: 26px;
+    // width: 190% !important;
+  }
+
+  @media (min-width: 630px) and (max-width: 700px) {
+    width: 115%;
+  }
+
+  @media (min-width: 600px) and (max-width: 630px) {
+    width: 120%;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1080px) {
+    margin-left: -30px !important;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1035px) {
+    margin-left: -45px !important;
+  }
+}
+
+.secondaryRoot {
+  display: flex;
+  width: 30%;
+  gap: 16px;
+
+  @media (min-width: 600px) and (max-width: 1000px) {
+    width: 100% !important;
+    margin-left: 70px;
+  }
+
+  @media (min-width: 630px) and (max-width: 700px) {
+    margin-left: 0px;
+  }
+
+  @media (min-width: 600px) and (max-width: 630px) {
+    margin-left: -20px;
+  }
+}
+
+.avator {
+  color: #0062ff !important;
+  background-color: #d9efff !important;
+  height: 40px;
+  width: 40px;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+
+  @media (min-width: 600px) {
+    height: 48px;
+    width: 48px;
+    font-size: 16px;
+  }
+
+  @media (min-width: 900px) {
+    height: 40px;
+    width: 40px;
+    font-size: 20px;
+  }
+
+  @media (max-width: 600px) {
+    border-radius: 30px;
+    height: 45px;
+    width: 45px;
+    margin-top: 5px;
+  }
+}
+
+.firstRow {
+  // @media(max-width : 600px){
+  //     display: flex !important;
+  //     flex-direction: row !important;
+  //     align-items: center;
+  //     gap: 8px;
+  // }
+
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+}
+
+.nameAndTag {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+
+  > * + * {
+    margin-left: 8px !important;
+  }
+}
+
+.name {
+  @media (min-width: 900px) {
+    white-space: nowrap;
+  }
+
+  @media (max-width: 600px) {
+    margin-right: 6px;
+    display: flex;
+    white-space: nowrap;
+  }
+
+  white-space: nowrap;
+}
+
+.messageIconBox {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  background: #eceff3;
+  color: red; // "#red" is invalid — assuming you meant just red
+  font-weight: 500;
+
+  // Default (assumes md and up)
+  gap: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+
+  // Small screens (≥600px)
+  @media (max-width: 899px) {
+    gap: 6px;
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  // Extra small screens (<600px)
+  @media (max-width: 599px) {
+    gap: 4px;
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+
+  width: max-content;
+
+  @media (max-width: 600px) {
+    padding: 2px !important;
+    padding-right: 5px !important;
+    margin-bottom: 10px !important;
+  }
+
+  @media (min-width: 600px) and (max-width: 1000px) {
+    margin-bottom: 5px !important;
+  }
+}
+
+.messageIconLable {
+  @media (max-width: 600px) {
+    font-size: 12px !important;
+  }
+}
+
+.serviceNameTypeBox {
+  width: 30%;
+  margin-left: 70px;
+
+  @media (min-width: 600px) and (max-width: 1000px) {
+    width: 100% !important;
+    // margin-right: 100px; // optional - uncomment if needed
+    margin-top: 10px !important;
+    margin-left: 100px !important;
+    // margin-right: 90px !important;
+  }
+
+  @media (max-width: 600px) {
+    margin-left: 58px !important;
+    // margin-top: -22px !important;
+    margin-bottom: 18px;
+    margin-right: 5px;
+  }
+
+  @media (min-width: 600px) and (max-width: 630px) {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-right: 90px;
+  }
+}
+
+.serviceName {
+  margin-bottom: 20px !important;
+  color: #666d80 !important;
+
+  @media (min-width: 900px) {
+    // margin-left: 70px !important;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 600px) and (max-width: 1000px) {
+    margin-bottom: 0px !important;
+    margin-top: 5px !important;
+    white-space: nowrap !important;
+    margin-left: 40px !important;
+  }
+
+  @media (max-width: 600px) {
+    margin-bottom: 0px !important;
+    display: flex !important;
+    white-space: nowrap !important;
+  }
+
+  @media (min-width: 630px) and (max-width: 700px) {
+    margin-left: 0px !important;
+  }
+}
+
+.message {
+  font-size: 16px;
+  color: #0d0d12;
+
+  @media (min-width: 900px) {
+    margin-left: 70px;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 600px) and (max-width: 1000px) {
+    margin-top: 0px;
+    margin-bottom: 10px !important;
+    white-space: nowrap;
+    margin-left: 40px !important;
+  }
+
+  @media (max-width: 600px) {
+    display: flex;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 630px) and (max-width: 700px) {
+    margin-left: 0px !important;
+  }
+}
+
+.icons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-right: 60px;
+
+  width: 100%;
+
+  @media (min-width: 900px) {
+    width: 50%;
+  }
+
+  @media (min-width: 1536px) {
+    width: 40%;
+  }
+
+  @media (min-width: 600px) and (max-width: 1000px) {
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    margin-right: 75px;
+  }
+
+  @media (max-width: 600px) {
+    margin-left: 60px;
+  }
+
+  @media (min-width: 1200px) {
+    margin-right: 10px;
+  }
+
+  @media (min-width: 1090px) and (max-width: 1200px) {
+    margin-right: -16px;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1090px) {
+    margin-left: 10px;
+  }
+
+  @media (min-width: 700px) and (max-width: 1000px) {
+    margin-right: -10px;
+    margin-top: 10px;
+  }
+
+  @media (min-width: 700px) and (max-width: 750px) {
+    margin-right: 0px;
+  }
+
+  @media (min-width: 650px) and (max-width: 700px) {
+    margin-top: 10px;
+    margin-right: -22px;
+    margin-left: -20px;
+  }
+
+  @media (min-width: 600px) and (max-width: 650px) {
+    margin-top: 10px;
+    margin-left: -44px;
+    margin-right: -43px;
+  }
+
+  @media (max-width: 600px) {
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+
+.actionButtons {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 16px !important;
+  width: 100%;
+
+  @media (min-width: 600px) {
+    width: 80%;
+  }
+
+  @media (min-width: 900px) {
+    width: 65%;
+  }
+
+  @media (min-width: 600px) and (max-width: 1000px) {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+.icon {
+  // border: 0.5px solid #6B39F4 !important;
+  @media (max-width: 600px) {
+    border: 0.5px solid #7a4df5 !important;
+  }
+
+  border: 1px solid #7a4df5 !important;
+  border-radius: 50% !important;
+  width: 52px !important;
+  height: 52px !important;
+  color: #8647f5 !important;
+}
+
+.chip {
+  background-color: #fff0f3 !important;
+  color: #36394a;
+  font-size: 12px;
+  font-weight: 500;
+  height: 24px;
+}
+
+.statusButton {
+  border-radius: 24px !important;
+  height: 40px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+
+  &:hover {
+    background-color: inherit !important;
+  }
+}
+
+.addressed {
+  border-color: #339446 !important;
+  background-color: #f1feef !important;
+  color: #339446;
+
+  &:hover {
+    background-color: #f1feef !important;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 10px !important;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1200px) {
+    font-size: 10px !important;
+  }
+
+  @media (min-width: 700px) and (max-width: 1000px) {
+    font-size: 10px !important;
+  }
+
+  @media (min-width: 600px) and (max-width: 750px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 12px !important;
+  }
+
+  @media (max-width: 380px) {
+    font-size: 12px !important;
+  }
+}
+
+.snoozed {
+  border-color: #36394a !important;
+  background-color: transparent !important;
+  color: #36394a !important;
+
+  &:hover {
+    background-color: transparent !important;
+    border-color: #36394a;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 10px !important;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1200px) {
+    font-size: 10px !important;
+  }
+
+  @media (min-width: 700px) and (max-width: 1000px) {
+    font-size: 10px !important;
+  }
+
+  @media (min-width: 600px) and (max-width: 750px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 380px) {
+    font-size: 10px !important;
+  }
+}
+
+.meeting {
+  border-color: #7a4df5 !important;
+  background-color: transparent !important;
+  color: #7a4df5 !important;
+
+  &:hover {
+    background-color: transparent !important;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 10px !important;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1200px) {
+    font-size: 10px !important;
+  }
+
+  @media (min-width: 700px) and (max-width: 1000px) {
+    font-size: 10px !important;
+  }
+
+  @media (min-width: 600px) and (max-width: 750px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 380px) {
+    font-size: 8px !important;
+  }
+}
+
+.dot {
+  font-size: 12px !important;
+  transform: scale(1.5);
+  transform-origin: center;
+
+  @media (max-width: 600px) {
+    transform: scale(0.9);
+    transform-origin: center;
+  }
+}
+
+.addressedDot {
+  color: #339446 !important;
+}
+
+.snoozedDot {
+  color: #36394a !important;
+}

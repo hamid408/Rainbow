@@ -4,10 +4,11 @@ import React from "react";
 import TaskReminderCard from "./TaskCard";
 import TaskHeader from "./TaskHeader";
 import { taskList } from "./data";
+import styles from "./styles.module.scss";
 
 const TaskReminder = () => {
   return (
-    <Box padding={"56px 48px 48px 48px"}>
+    <Box className = {styles.indexBox}>
       <TaskHeader />
       {taskList.map((task, index) => (
         <TaskReminderCard key={index} {...task} />

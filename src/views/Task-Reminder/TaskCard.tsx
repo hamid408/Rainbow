@@ -5,6 +5,7 @@ import CustomButton from "@/src/components/common/CustomButton";
 import { Bell, Details, Meeting, UrgentBlue } from "@/src/assests/icons";
 import CheckCircleOutlineIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import styles from "./styles.module.scss";
 
 interface TaskReminderCardProps {
   taskTitle: string;
@@ -26,26 +27,10 @@ const TaskReminderCard: React.FC<TaskReminderCardProps> = ({
   tagColor,
 }) => {
   return (
-    <Box
-      sx={{
-        // borderRadius: 2,
-        // border: "1px solid #DFE1E7",
-        p: 2,
-        bgcolor: dueLabel ? "#FFEAEA" : "#fff",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        // mb: 1.5,
-        flexWrap: "wrap",
-        borderBottom: "1px solid #DFE1E7",
-      }}
-    >
+    <Box className={`${styles.taskCardBox} ${dueLabel ? styles.due : ""}`}>
       <Stack
-        direction="row"
-        spacing={1}
-        alignItems="center"
-        flex={1}
-        minWidth={300}
+        className={styles.taskCardStack}
+        sx={{ "@media(max-width: 600px)": { display: "none" } }}
       >
         <Checkbox
           icon={<CheckCircleOutlineIcon />}
@@ -55,46 +40,28 @@ const TaskReminderCard: React.FC<TaskReminderCardProps> = ({
             "&.Mui-checked": {
               color: "#007BFF",
             },
+            "@media(max-width: 600px)": {
+              marginBottom: "20px",
+              display: "none",
+            },
           }}
         />
 
-        <Box sx={{ minWidth: 180 }}>
-          <Typography
-            variant="body1"
-            fontWeight={600}
-            sx={{ cursor: "pointer" }}
-            noWrap
-            mb={0.5}
-          >
+        <Box
+          className={styles.taskCardTypoBox}
+          sx={{ "@media(max-width: 600px)": { display: "none" } }}
+        >
+          <Typography variant="body1" className={styles.taskTitle}>
             {taskTitle}
           </Typography>
 
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            mt={0.3}
-            flexWrap="wrap"
-          >
-            <Details sx={{ fontSize: 16, color: "#787878" }} />
-            <Typography variant="caption" color="#787878" mr={1} noWrap>
+          <Stack className={styles.taskDetailStack}>
+            <Details className={styles.taskDetails} />
+            <Typography variant="caption" className={styles.taskDueDate}>
               {dueDate}
             </Typography>
             {dueLabel && (
-              <Box
-                sx={{
-                  bgcolor: "#fff",
-                  p: "6px 8px",
-                  borderRadius: 1,
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: "#36394A",
-                  whiteSpace: "nowrap",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                }}
-              >
+              <Box className={styles.taskDueLabel}>
                 <Bell />
                 {dueLabel}
               </Box>
@@ -103,75 +70,130 @@ const TaskReminderCard: React.FC<TaskReminderCardProps> = ({
         </Box>
       </Stack>
 
-      <Box
-        sx={{
-          gap: 1,
-          color: "#666",
-          fontSize: 14,
-          whiteSpace: "nowrap",
-          userSelect: "none",
-          minWidth: 250,
-          flex: "1 1 auto",
-          justifyContent: "center",
-        }}
-      >
-        <Box display={"flex"} alignItems={"center"} gap={2}>
-          <Typography variant="body2" color="#0D0D12" mb={0.5}>
-            Lead:&nbsp;{leadName}
-          </Typography>
-          {tagLabel && (
-            <Box
-              sx={{
-                bgcolor: tagColor || "#CEE5FF",
-                p: "6px 8px",
-                borderRadius: "4px",
-                fontSize: 12,
-                fontWeight: 400,
-                color: "#0062FF",
-                whiteSpace: "nowrap",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-              }}
-            >
-              <UrgentBlue />
-              {tagLabel}
-            </Box>
-          )}
-        </Box>
-        <Box>
-          <Typography color="#666D80" fontSize={16} fontWeight={400}>
+        <Box
+          className={styles.leadAndTaskBox}
+          sx={{ "@media(max-width: 600px)": { display: "none" } }}
+        >
+          <Box className={styles.leadNameBox}>
+            <Typography variant="body2" className={styles.leadName}>
+              Lead:&nbsp;{leadName}
+            </Typography>
+            {tagLabel && (
+              <Box
+                className={styles.tagLabelBox}
+                sx={{
+                  bgcolor: tagColor || "#CEE5FF",
+                }}
+              >
+                <UrgentBlue />
+                {tagLabel}
+              </Box>
+            )}
+          </Box>
+          <Box> 
+          <Typography className={styles.taskDescription}>
             Tasks:&nbsp;{taskDescription}
           </Typography>
+          </Box>
         </Box>
-      </Box>
 
-      <Stack
-        direction="row"
-        spacing={2}
-        sx={{ minWidth: 180, justifyContent: "flex-end" }}
+
+      {/* Component for smaller screen(> 600px) starts */}
+      <Box
+        sx={{
+          display: "none",
+          "@media(max-width: 600px)": {
+            display: "flex",
+          },
+
+          "@media(max-width: 360px)":{
+            marginLeft: "-10px",
+          }
+        }}
       >
-        <CustomButton
-          variant="outlined"
-          sx={{
-            border: "1px solid #36394A",
-            borderRadius: "60px",
-            color: "#36394A",
-            fontWeight: "600",
-          }}
-        >
+        <Stack className={styles.taskCardStack}>
+          <Checkbox
+            icon={<CheckCircleOutlineIcon />}
+            checkedIcon={<CheckCircleIcon />}
+            sx={{
+              color: "#A0A0A0",
+              "&.Mui-checked": {
+                color: "#007BFF",
+              },
+              "@media(max-width: 600px)": {
+                marginBottom: "20px",
+              },
+            }}
+          />
+
+          <Box className={styles.taskCardTypoBox}>
+            <Typography variant="body1" className={styles.taskTitle}>
+              {taskTitle}
+            </Typography>
+
+            <Stack className={styles.taskDetailStack}>
+              <Details className={styles.taskDetails} />
+              <Typography variant="caption" className={styles.taskDueDate}>
+                {dueDate}
+              </Typography>
+              {dueLabel && (
+                <Box className={styles.taskDueLabel}>
+                  <Bell />
+                  {dueLabel}
+                </Box>
+              )}
+
+              {tagLabel && (
+              <Box
+                className={styles.tagLabelBox}
+                sx={{
+                  bgcolor: tagColor || "#CEE5FF",
+                }}
+              >
+                <UrgentBlue />
+                {tagLabel}
+              </Box>
+            )}
+            </Stack>
+          </Box>
+        
+
+        <Box className={styles.leadAndTaskBox}>
+          <Box className={styles.leadNameBox}>
+            <Typography variant="body2" className={styles.leadName}>
+              Lead:&nbsp;{leadName}
+            </Typography>
+            {/* {tagLabel && (
+              <Box
+                className={styles.tagLabelBox}
+                sx={{
+                  bgcolor: tagColor || "#CEE5FF",
+                }}
+              >
+                <UrgentBlue />
+                {tagLabel}
+              </Box>
+            )} */}
+          </Box>
+          <Box>
+            <Typography className={styles.taskDescription}>
+              Tasks:&nbsp;{taskDescription}
+            </Typography>
+          </Box>
+        </Box>
+        </Stack>
+      </Box>
+      {/* Component for smaller screen ends */}
+
+      <Stack className={styles.taskBtnStack}>
+        <CustomButton variant="outlined" className={styles.taskSnoozeBtn}>
           Snooze
         </CustomButton>
         <CustomButton
           variant="outlined"
           startIcon={<Meeting />}
           customColor="#7A4DF5"
-          sx={{
-            borderRadius: "60px",
-            border: "1px solid #7A4DF5",
-            color: "#7A4DF5",
-            fontWeight: "600",
-          }}
+          className={styles.taskResheduleBtn}
         >
           Reschedule
         </CustomButton>

@@ -3,6 +3,7 @@ import CallIcon from '@mui/icons-material/Call';
 import EmailIcon from '@mui/icons-material/Email';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Call, Mail, Meeting, Phone } from '@/src/assests/icons';
+import styles from "./style.module.scss";
 
 const iconStyle = {
   border: '1px solid #7A4DF5',
@@ -13,14 +14,26 @@ const iconStyle = {
 };
 
 const ActionButtons = () => (
-  <Stack direction="row" spacing={2}>
-    <IconButton sx={iconStyle}>
+  <Stack 
+  className={styles.actionButtons}
+  // direction="row" spacing={2}
+  >
+    <IconButton 
+    // sx={iconStyle}
+    className={styles.icon}
+    >
       <Phone />
     </IconButton>
-    <IconButton sx={iconStyle}>
+    <IconButton 
+    // sx={iconStyle}
+    className={styles.icon}
+    >
       <Mail />
     </IconButton>
-    <IconButton sx={iconStyle}>
+    <IconButton 
+    // sx={iconStyle}
+    className={styles.icon}
+    >
       <Meeting />
     </IconButton>
   </Stack>

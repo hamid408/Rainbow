@@ -3,6 +3,7 @@ import { Button, Stack, Typography } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { Meeting } from '@/src/assests/icons';
+import styles from "./style.module.scss";
 
 interface StatusButtonProps {
   type: 'addressed' | 'snoozed' | 'meeting';
@@ -12,36 +13,24 @@ interface StatusButtonProps {
 
 const statusStyles = {
   addressed: {
-    borderColor: '#339446',
-    backgroundColor: '#F1FEEF',
-    textColor: '#339446',
     dotColor: '#339446',
     icon: null,
     hasDot: true,
   },
   snoozed: {
-    borderColor: '#36394A',
-    backgroundColor: 'transparent',
-    textColor: '#36394A',
     dotColor: '#36394A',
     icon: null,
     hasDot: true,
   },
   meeting: {
-    borderColor: '#7A4DF5',
-    backgroundColor: 'transparent',
-    textColor: '#7A4DF5',
     dotColor: '',
-    icon: <Meeting sx={{ fontSize: 18, color: '#8647F5' }} />,
+    icon: <Meeting className = {styles.meeting}/>,
     hasDot: false,
   },
 };
 
 const StatusButton: React.FC<StatusButtonProps> = ({ type, label, onClick }) => {
   const {
-    borderColor,
-    backgroundColor,
-    textColor,
     dotColor,
     icon,
     hasDot,
@@ -51,23 +40,27 @@ const StatusButton: React.FC<StatusButtonProps> = ({ type, label, onClick }) => 
     <Button
       variant="outlined"
       onClick={onClick}
-      sx={{
-        borderColor,
-        backgroundColor,
-        borderRadius: '24px',
-        height: 40,
-        px: 2,
-        textTransform: 'none',
-        fontWeight: 600,
-        fontSize: 14,
-        color: textColor,
-        '&:hover': {
-          backgroundColor,
-        },
-      }}
+      className={`${styles.statusButton} ${styles[type]}`}
+      // sx={{
+      //   borderColor,
+      //   backgroundColor,
+      //   borderRadius: '24px',
+      //   height: 40,
+      //   px: 2,
+      //   textTransform: 'none',
+      //   fontWeight: 600,
+      //   fontSize: 14,
+      //   color: textColor,
+      //   '&:hover': {
+      //     backgroundColor,
+      //   },
+      // }}
       startIcon={
         hasDot ? (
-          <FiberManualRecordIcon sx={{ fontSize: 12, color: dotColor }} />
+          <FiberManualRecordIcon 
+          className={`${styles.dot} ${styles[`${type}Dot`]}`}
+          // sx={{ fontSize: 12, color: dotColor }}
+           />
         ) : (
           icon
         )

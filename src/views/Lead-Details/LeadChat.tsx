@@ -12,6 +12,7 @@ import { useGetConversationQuery } from "@/src/redux/services/conversation/conve
 import { useEffect, useRef, useState } from "react";
 import { getInitials } from "@/src/utils/GetInitials";
 import { Message, Typing } from "@/src/assests/icons";
+import styles from "./style.module.scss";
 
 const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
@@ -54,13 +55,14 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
     const initials = getInitials(name);
     return (
       <Avatar
-        sx={{
-          bgcolor: "#1976d2",
-          width: 60,
-          height: 60,
-          fontSize: 32,
-          mb: 2,
-        }}
+        className={styles.leadChatAvatar}
+        // sx={{
+        //   bgcolor: "#1976d2",
+        //   width: 60,
+        //   height: 60,
+        //   fontSize: 32,
+        //   mb: 2,
+        // }}
       >
         {initials || "U"}
       </Avatar>
@@ -69,11 +71,12 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   console.log("data", data.data);
   return (
     <Box
-      p={"40px 32px 32px 0"}
-      sx={{
-        height: "400px",
-        overflowY: "auto",
-      }}
+     className = {styles.leadChat}
+      // p={"40px 32px 32px 0"}
+      // sx={{
+      //   height: "400px",
+      //   overflowY: "auto",
+      // }}
     >
       <Stack gap={4}>
         {allMessages.map((msg: any, index: number) => {
@@ -87,19 +90,26 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
           return (
             <Box
               key={index}
-              display={"flex"}
-              alignItems={"start"}
-              gap={2.5}
-              flexDirection="row"
+              className = {styles.leadChatMainBox}
+              // display={"flex"}
+              // alignItems={"start"}
+              // gap={2.5}
+              // flexDirection="row"
             >
               {isAI ? (
-                <Image src={AvatarPic} alt="AI Avatar" width={60} height={60} />
+                <Image src={AvatarPic} alt="AI Avatar" 
+                className={styles.leadImage}
+                // width={60} height={60} 
+                />
               ) : (
                 renderUserAvatar(userName)
               )}
               <Stack spacing={1.5}>
                 <Box>
-                  <Box display={"flex"} alignItems={"center"} gap={1}>
+                  <Box 
+                  className = {styles.leadChatFirstRow}
+                  // display={"flex"} alignItems={"center"} gap={1}
+                  >
                     <Typography mb={0.5} variant="body1">
                       {senderName}
                     </Typography>
@@ -107,11 +117,12 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                     {msg.channel === "sms" ? <Typing /> : <Message />}
 
                     <Typography
-                      mb={0.5}
+                     className={styles.leadChatDate}
                       variant="subtitle1"
-                      fontWeight={400}
-                      color="#666D80"
-                      mt={0.5}
+                      // mb={0.5}
+                      // fontWeight={400}
+                      // color="#666D80"
+                      // mt={0.5}
                     >
                       {time}
                     </Typography>

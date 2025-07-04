@@ -24,6 +24,7 @@ import {
 } from "@/src/redux/services/leads/leadsApi";
 import { toast } from "react-toastify";
 import CustomSelect from "@/src/components/common/CustomSelect";
+import styles from "./style.module.scss";
 
 const LeadDetailsSidebar = ({ data }: any) => {
   const [lead, setLead] = useState(data?.data?.[0]);
@@ -90,13 +91,8 @@ const LeadDetailsSidebar = ({ data }: any) => {
   };
 
   return (
-    <Box width="30%" p={4} bgcolor="#fff" borderLeft="1px solid #DFE1E7">
-      <Box
-        display="flex"
-        alignItems="flex-start"
-        justifyContent="space-between"
-        mb={3}
-      >
+    <Box className={styles.leadDetails}>
+      <Box className={styles.leadDetailTopIcon}>
         <Typography fontWeight={600} variant="h5" color="#0D0D12">
           Lead Details
         </Typography>
@@ -104,6 +100,8 @@ const LeadDetailsSidebar = ({ data }: any) => {
           <Edit />
         </IconButton>
       </Box>
+
+
       <Stack spacing={4}>
         <Box>
           <Typography variant="body2" color="#666D80" mb={1}>
@@ -115,7 +113,7 @@ const LeadDetailsSidebar = ({ data }: any) => {
         </Box>
 
         <Box>
-          <Box display="flex" alignItems="center" gap={1} mb={1}>
+          <Box className = {styles.leadDetailPhoneEmail}>
             <SmallPhone />
             <Typography variant="body2" color="#666D80">
               Phone Number
@@ -127,7 +125,7 @@ const LeadDetailsSidebar = ({ data }: any) => {
         </Box>
 
         <Box>
-          <Box display="flex" alignItems="center" gap={1} mb={1}>
+          <Box className = {styles.leadDetailPhoneEmail}>
             <SmallMail />
             <Typography variant="body2" color="#666D80">
               Email
@@ -139,7 +137,7 @@ const LeadDetailsSidebar = ({ data }: any) => {
         </Box>
 
         <Box>
-          <Box display="flex" alignItems="center" gap={1} mb={1}>
+          <Box className = {styles.leadDetailPhoneEmail}>
             <Inquiry />
             <Typography variant="body2" color="#666D80">
               Inquiry Type
@@ -207,7 +205,7 @@ const LeadDetailsSidebar = ({ data }: any) => {
         </Box>
 
         <Box>
-          <Box display="flex" alignItems="center" gap={1} mb={1}>
+          <Box className = {styles.leadDetailPhoneEmail}>
             <Notes />
             <Typography variant="body2" color="#666D80">
               Notes

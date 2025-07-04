@@ -11,6 +11,7 @@ import CallModal from "./CallModal";
 import { Email } from "@mui/icons-material";
 import { useSendSmsMutation } from "@/src/redux/services/conversation/conversationApi";
 import { toast } from "react-toastify";
+import styles from "./style.module.scss";
 
 const ChatInputBox = ({ data }: any) => {
   const [message, setMessage] = useState("");
@@ -34,18 +35,7 @@ const ChatInputBox = ({ data }: any) => {
     }
   };
   return (
-    <Box
-      sx={{
-        bgcolor: "#fff",
-        borderRadius: "12px",
-        marginTop: "55px",
-        padding: 2,
-        width: "100%",
-        maxWidth: "100%",
-        mx: "auto",
-        border: "1px solid #DFE1E7",
-      }}
-    >
+    <Box className={styles.chatInputBox}>
       <TextField
         multiline
         rows={5}
@@ -71,16 +61,10 @@ const ChatInputBox = ({ data }: any) => {
         }}
       />
 
-      <Box
-        mt={2}
-        display="flex"
-        alignItems="center"
-        gap={2}
-        width="100%"
-        justifyContent="space-between"
-      >
-        <Box display="flex" gap={2}>
+      <Box className={styles.chatInputBoxButtonsRoot}>
+        <Box className={styles.chatInputBoxButtons}>
           <CustomButton
+            className={styles.chatInputButtons}
             variant="outlined"
             startIcon={<SmallPhone />}
             fontWeight="600"
@@ -90,6 +74,7 @@ const ChatInputBox = ({ data }: any) => {
           </CustomButton>
 
           <CustomButton
+            className={styles.chatInputButtons}
             variant="outlined"
             startIcon={<Email />}
             fontWeight="600"
@@ -98,6 +83,7 @@ const ChatInputBox = ({ data }: any) => {
           </CustomButton>
 
           <CustomButton
+            className={styles.chatInputButtons}
             variant="outlined"
             startIcon={<Mark />}
             fontWeight="600"
@@ -107,6 +93,7 @@ const ChatInputBox = ({ data }: any) => {
         </Box>
 
         <CustomButton
+          className={styles.chatInputSendButton}
           variant="contained"
           startIcon={<SendIcon />}
           fontWeight="600px"
@@ -115,6 +102,7 @@ const ChatInputBox = ({ data }: any) => {
         >
           {isSending ? "Sending..." : "Send"}
         </CustomButton>
+
       </Box>
       <CallModal
         open={isCallOpen}

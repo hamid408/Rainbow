@@ -1,5 +1,6 @@
 import { Chip } from '@mui/material';
 import React from 'react';
+import styles from "./style.module.scss";
 
 interface StatusTagProps {
   label: string;
@@ -14,13 +15,14 @@ const StatusTag = ({ label, color = '#F6F8FA', icon }: StatusTagProps) => {
       size="small"
       icon={icon}
       color="default"
-      sx={{
-        backgroundColor: color,
-        color: '#36394A',
-        fontSize: '12px',
-        fontWeight: 500,
-        height: 24,
-      }}
+      className={styles.chip}
+      // sx={{
+      //   backgroundColor: color,
+      //   color: '#36394A',
+      //   fontSize: '12px',
+      //   fontWeight: 500,
+      //   height: 24,
+      // }}
     />
   );
 };

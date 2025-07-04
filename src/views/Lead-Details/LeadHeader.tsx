@@ -15,6 +15,7 @@ import React, { useEffect, useState } from "react";
 import { Refresh } from "@mui/icons-material";
 import { getInitials } from "@/src/utils/GetInitials";
 import CustomButton from "@/src/components/common/CustomButton";
+import styles from "./style.module.scss";
 interface LeadHeaderProps {
   name: string;
   status: string;
@@ -41,53 +42,29 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
   };
   return (
     <>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        paddingBottom={1.6}
-      >
-        <Box display={"flex"} alignItems={"center"} gap={2}>
-          <Box
-            sx={{
-              background: "#FFFFFF",
-              padding: "8px 16px",
-              boxShadow: "0px 1px 2px 0px #0D0D120F",
-              borderRadius: "8px",
-              cursor: "pointer",
-            }}
-          >
+      <Box className={styles.leadHeaderRoot}>
+        <Box className={styles.leadHeaderSecondRoot}>
+          <Box className={styles.leadHeaderFirstRow}>
             <Back onClick={handleRouteBack} />
             {/* <Back onClick={() => router.back()} /> */}
           </Box>
-          <Avatar
-            sx={{
-              bgcolor: "#1976d2",
-              width: 60,
-              height: 60,
-              fontSize: 32,
-              mb: 2,
-            }}
-          >
-            {initials || "U"}
-          </Avatar>
-          <Stack gap={1}>
-            <Typography fontWeight={600} variant="h5" color="#0D0D12">
+
+          <Avatar className={styles.leadHeaderAvatar}>{initials || "U"}</Avatar>
+
+          <Stack className={styles.leadHeaderBox}>
+            <Typography variant="h5" className={styles.leadHeaderName}>
               {name}
             </Typography>
+
             <Chip
+              className={styles.leadHeaderChip}
               label={status}
               size="small"
-              sx={{
-                background: "#FFF0F3",
-                color: "#36394A",
-                fontSize: "14",
-                fontWeight: "500",
-              }}
               icon={<Urgent />}
             />
           </Stack>
         </Box>
+
         <Box display={"flex"} alignItems="center" gap={2}>
           <CustomButton
             variant="contained"
@@ -125,7 +102,7 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
           </Box> */}
         </Box>
       </Box>
-      <Divider sx={{ marginX: "-30px", borderColor: "#DFE1E7" }} />
+      <Divider className={styles.leadHeaderSlider}/>
     </>
   );
 };
