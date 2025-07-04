@@ -62,10 +62,13 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
           </Box>
           <Avatar
             sx={{
-              bgcolor: "#1976d2",
-              width: 60,
-              height: 60,
-              fontSize: 32,
+              bgcolor: "#D9EFFF",
+              height: "60px",
+              width: "60px",
+              color: "#0062FF",
+
+              fontWeight: "600",
+              fontSize: "24px",
               mb: 2,
             }}
           >
@@ -79,7 +82,7 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
               label={status}
               size="small"
               sx={{
-                background: "#FFF0F3",
+                background: keyword === "hot" ? "#FFF0F3" : "#FAEDCC",
                 color: "#36394A",
                 fontSize: "14",
                 fontWeight: "500",

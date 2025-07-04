@@ -2,7 +2,7 @@ import { Stack, IconButton } from "@mui/material";
 import CallIcon from "@mui/icons-material/Call";
 import EmailIcon from "@mui/icons-material/Email";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { Call, Mail, Meeting, Phone } from "@/src/assests/icons";
+import { Call, Mail, Meeting, Phone, Typing } from "@/src/assests/icons";
 import CallModal from "../../Lead-Details/CallModal";
 
 const iconStyle = {
@@ -13,7 +13,7 @@ const iconStyle = {
   color: "#8647F5",
 };
 
-const ActionButtons = ({ callOpen, lead_id, phone }: any) => {
+const ActionButtons = ({ callOpen, emailOpen }: any) => {
   const handleOpenCallModal = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -28,7 +28,6 @@ const ActionButtons = ({ callOpen, lead_id, phone }: any) => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log("Phone clicked");
             handleOpenCallModal(e);
           }}
         >
@@ -39,10 +38,10 @@ const ActionButtons = ({ callOpen, lead_id, phone }: any) => {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log("Mail clicked");
+            emailOpen(true);
           }}
         >
-          <Mail />
+          <Typing />
         </IconButton>
         {/* Uncomment if needed */}
         {/* <IconButton
@@ -56,12 +55,6 @@ const ActionButtons = ({ callOpen, lead_id, phone }: any) => {
         <Meeting />
         </IconButton> */}
       </Stack>
-      {/* <CallModal
-        open={callOpen}
-        onClose={() => callOpen(false)}
-        leadId={lead_id}
-        phone={phone}
-      /> */}
     </>
   );
 };

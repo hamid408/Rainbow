@@ -16,8 +16,12 @@ import CustomTextField from "@/src/components/common/CustomTextfield";
 import { CloseRounded } from "@mui/icons-material";
 import CustomSelect from "@/src/components/common/CustomSelect";
 import { Controller } from "react-hook-form";
-import { useCreateLeadMutation } from "@/src/redux/services/leads/leadsApi";
+import {
+  useCreateLeadMutation,
+  useGetLeadsEnumsQuery,
+} from "@/src/redux/services/leads/leadsApi";
 import { toast } from "react-toastify";
+import { useMemo } from "react";
 
 const AddLeadModal = ({
   open,
@@ -35,6 +39,34 @@ const AddLeadModal = ({
     reset,
     formState: { isSubmitting, errors },
   } = useForm();
+  const { data: enumsData, refetch } = useGetLeadsEnumsQuery();
+
+  const inquiryTypeOptions = useMemo(
+    () =>
+      enumsData?.inquiry_types?.map((type: string) => ({
+        label: type,
+        value: type,
+      })) || [],
+    [enumsData]
+  );
+
+  const inquiryStatusOptions = useMemo(
+    () =>
+      enumsData?.inquiry_status?.map((status: string) => ({
+        label: status,
+        value: status,
+      })) || [],
+    [enumsData]
+  );
+
+  const tagOptions = useMemo(
+    () =>
+      enumsData?.tags?.map((tagItem: string) => ({
+        label: tagItem,
+        value: tagItem,
+      })) || [],
+    [enumsData]
+  );
   const [createLead, { isLoading }] = useCreateLeadMutation();
 
   const onSubmit = async (data: any) => {
@@ -107,10 +139,11 @@ const AddLeadModal = ({
                   placeholder="Select inquiry type"
                   value={field.value}
                   onChange={field.onChange}
-                  options={inquiryTypes.map((type) => ({
-                    label: type,
-                    value: type,
-                  }))}
+                  // options={inquiryTypes.map((type) => ({
+                  //   label: type,
+                  //   value: type,
+                  // }))}
+                  options={inquiryTypeOptions}
                   error={!!errors.inquiry_type}
                   helperText={
                     errors.inquiry_type
@@ -130,10 +163,11 @@ const AddLeadModal = ({
                   placeholder="Select inquiry status"
                   value={field.value}
                   onChange={field.onChange}
-                  options={inquiryStatuses.map((status) => ({
-                    label: status,
-                    value: status,
-                  }))}
+                  // options={inquiryStatuses.map((status) => ({
+                  //   label: status,
+                  //   value: status,
+                  // }))}
+                  options={inquiryStatusOptions}
                   error={!!errors.inquiry_status}
                   helperText={
                     errors.inquiry_status
@@ -154,7 +188,8 @@ const AddLeadModal = ({
                   placeholder="Select tag"
                   value={field.value}
                   onChange={field.onChange}
-                  options={tags.map((tag) => ({ label: tag, value: tag }))}
+                  // options={tags.map((tag) => ({ label: tag, value: tag }))}
+                  options={tagOptions}
                   error={!!errors.tag}
                   helperText={errors.tag ? String(errors.tag.message) : ""}
                 />

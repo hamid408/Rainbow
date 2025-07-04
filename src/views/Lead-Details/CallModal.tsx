@@ -71,6 +71,8 @@ export default function CallModal({
       onClose();
     } catch (err) {
       console.error("❌ Bot Call Failed:", err);
+      toast.error(" Bot Call Failed ");
+      onClose();
     }
   };
 
@@ -210,15 +212,6 @@ export default function CallModal({
               Start a Twilio Call
             </Typography>
             <Stack spacing={4} mt={2}>
-              {/* <CustomTextField
-                label="Enter Phone Number"
-                placeholder="+1234567890"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                error={!!error}
-                helperText={error}
-                fullWidth
-              /> */}
               <Box sx={{ display: "flex", justifyContent: "end", gap: "24px" }}>
                 <Button
                   variant="contained"

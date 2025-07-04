@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import CallModal from "../../Lead-Details/CallModal";
+import ChatInputModal from "./ChatInputModal";
 
 interface LeadCardProps {
   lead_id: string;
@@ -38,6 +39,7 @@ const LeadCard = ({
 }: LeadCardProps) => {
   const router = useRouter();
   const [isCallOpen, setIsCallOpen] = useState(false);
+  const [isEmailOpen, setIsEmailOpen] = useState(false);
 
   return (
     <>
@@ -67,11 +69,11 @@ const LeadCard = ({
               src={avatarUrl}
               sx={{
                 bgcolor: "#D9EFFF",
-                height: "56px",
-                width: "56px",
+                height: "60px",
+                width: "60px",
                 color: "#0062FF",
                 fontWeight: "600",
-                fontSize: "20px",
+                fontSize: "24px",
               }}
             >
               {initials}
@@ -151,11 +153,30 @@ const LeadCard = ({
                 </>
               )
             ) : (
-              <ActionButtons callOpen={setIsCallOpen} lead_id={lead_id} phone={phone} />
+              <ActionButtons
+                callOpen={setIsCallOpen}
+                emailOpen={setIsEmailOpen}
+                lead_id={lead_id}
+                phone={phone}
+              />
             )}
           </Box>
         </Box>
       </Link>
+      <CallModal
+        open={isCallOpen}
+        onClose={() => setIsCallOpen(false)}
+        leadId={lead_id}
+        phone={phone}
+      />
+      {isEmailOpen && (
+        <ChatInputModal
+          open={isEmailOpen}
+          onClose={() => setIsEmailOpen(false)}
+          leadId={lead_id}
+          phone={phone}
+        />
+      )}
     </>
   );
 };

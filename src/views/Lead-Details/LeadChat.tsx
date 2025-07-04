@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { getInitials } from "@/src/utils/GetInitials";
 import { Message, Typing } from "@/src/assests/icons";
 import { CallEnd } from "@mui/icons-material";
+import CustomButton from "@/src/components/common/CustomButton";
 
 const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
@@ -62,10 +63,13 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
     return (
       <Avatar
         sx={{
-          bgcolor: "#1976d2",
-          width: 60,
-          height: 60,
-          fontSize: 32,
+          bgcolor: "#D9EFFF",
+          height: "60px",
+          width: "60px",
+          color: "#0062FF",
+
+          fontWeight: "600",
+          fontSize: "24px",
           mb: 2,
         }}
       >
@@ -130,6 +134,15 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                     >
                       {time}
                     </Typography>
+                    {msg.channel === "call" && (
+                      <CustomButton
+                        variant="outlined"
+                        size="small"
+                        padding="2px 4px"
+                      >
+                        Call logs
+                      </CustomButton>
+                    )}
                   </Box>
                   <Typography variant="body2" color="#0D0D12">
                     {msg.content}
