@@ -14,6 +14,7 @@ import { getInitials } from "@/src/utils/GetInitials";
 import { Message, Typing } from "@/src/assests/icons";
 import { CallEnd } from "@mui/icons-material";
 import CustomButton from "@/src/components/common/CustomButton";
+import CallLogModal from "./CallLogModal";
 
 const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
@@ -24,6 +25,27 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
     offset: latestOffset.current,
   });
   const [hasMounted, setHasMounted] = useState(false);
+
+  const [callLogModalOpen, setCallLogModalOpen] = useState(false);
+  const [callLogData, setCallLogData] = useState<{
+    transcript: string;
+    RecordingUrl: string;
+  } | null>(null);
+
+  const handleOpenModal = (jsonString: string) => {
+    try {
+      const parsed = JSON.parse(jsonString);
+      setCallLogData(parsed);
+      setCallLogModalOpen(true);
+    } catch (e) {
+      console.error("Failed to parse call log JSON", e);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setCallLogModalOpen(false);
+    setCallLogData(null);
+  };
 
   useEffect(() => {
     setHasMounted(true);
@@ -77,83 +99,110 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
       </Avatar>
     );
   };
-  console.log("data", data.data);
+  const isValidCallLogJson = (str: string) => {
+    try {
+      const parsed = JSON.parse(str);
+      const hasTranscript = !!parsed?.transcript;
+      const hasRecordingUrl = !!parsed?.RecordingUrl;
+      return hasTranscript && hasRecordingUrl;
+    } catch (e) {
+      console.warn("❌ Invalid JSON string:", str);
+      return false;
+    }
+  };
+
   return (
-    <Box
-      p={"40px 32px 32px 0"}
-      sx={{
-        height: "400px",
-        overflowY: "auto",
-      }}
-    >
-      <Stack gap={4}>
-        {allMessages.map((msg: any, index: number) => {
-          // const time = extractTime(msg.created_at);
-          const time = msg.created_at;
-          const isAI = msg.sender_type === "user";
-          // const senderName = isAI ? "AI Assistant" : userName;
-          // const senderName = isAI ? "AI Assistant" : msg.sender_name;
-          const senderName = msg.sender_name || "Unknown";
+    <>
+      <Box
+        p={"40px 32px 32px 0"}
+        sx={{
+          height: "400px",
+          overflowY: "auto",
+        }}
+      >
+        <Stack gap={4}>
+          {allMessages.map((msg: any, index: number) => {
+            const time = msg.created_at;
+            const isAI = msg.is_bot === true;
 
-          return (
-            <Box
-              key={index}
-              display={"flex"}
-              alignItems={"start"}
-              gap={2.5}
-              flexDirection="row"
-            >
-              {/* {isAI ? (
-                <Image src={AvatarPic} alt="AI Avatar" width={60} height={60} />
-              ) : (
-                renderUserAvatar(userName)
-              )} */}
-              {renderUserAvatar(senderName)}
-              <Stack spacing={1.5}>
-                <Box>
-                  <Box display={"flex"} alignItems={"center"} gap={1}>
-                    <Typography mb={0.5} variant="body1">
-                      {senderName}
-                    </Typography>
+            const senderName = msg.sender_name || "Unknown";
+            return (
+              <Box
+                key={index}
+                display={"flex"}
+                alignItems={"start"}
+                gap={2.5}
+                flexDirection="row"
+              >
+                {isAI ? (
+                  <Image
+                    src={AvatarPic}
+                    alt="AI Avatar"
+                    width={60}
+                    height={60}
+                  />
+                ) : (
+                  renderUserAvatar(senderName)
+                )}
+                {/* {renderUserAvatar(senderName)} */}
+                <Stack spacing={1.5}>
+                  <Box>
+                    <Box display={"flex"} alignItems={"center"} gap={1}>
+                      <Typography mb={0.5} variant="body1">
+                        {senderName}
+                      </Typography>
 
-                    {/* {msg.channel === "sms" ? <Typing /> : <Message />} */}
-                    {msg.channel === "sms" ? (
-                      <Typing />
-                    ) : msg.channel === "call" ? (
-                      <CallEnd />
-                    ) : (
-                      <Message />
-                    )}
+                      {/* {msg.channel === "sms" ? <Typing /> : <Message />} */}
+                      {msg.channel === "sms" ? (
+                        <Typing />
+                      ) : msg.channel === "call" ? (
+                        <CallEnd />
+                      ) : (
+                        <Message />
+                      )}
 
-                    <Typography
-                      mb={0.5}
-                      variant="subtitle1"
-                      fontWeight={400}
-                      color="#666D80"
-                      mt={0.5}
-                    >
-                      {time}
-                    </Typography>
-                    {msg.channel === "call" && (
-                      <CustomButton
-                        variant="outlined"
-                        size="small"
-                        padding="2px 4px"
+                      <Typography
+                        mb={0.5}
+                        variant="subtitle1"
+                        fontWeight={400}
+                        color="#666D80"
+                        mt={0.5}
                       >
-                        Call logs
-                      </CustomButton>
-                    )}
+                        {time}
+                      </Typography>
+
+                      {msg.channel === "call" &&
+                        isValidCallLogJson(msg.provider_metadata) && (
+                          <>
+                            <CustomButton
+                              variant="outlined"
+                              size="small"
+                              padding="2px 4px"
+                              // onClick={() =>
+                              //   handleOpenModal(msg.provider_metadata)
+                              // }
+                            >
+                              Call logs
+                            </CustomButton>
+                          </>
+                        )}
+                    </Box>
+                    <Typography variant="body2" color="#0D0D12">
+                      {msg.content}
+                    </Typography>
                   </Box>
-                  <Typography variant="body2" color="#0D0D12">
-                    {msg.content}
-                  </Typography>
-                </Box>
-              </Stack>
-            </Box>
-          );
-        })}
-      </Stack>
-    </Box>
+                </Stack>
+              </Box>
+            );
+          })}
+        </Stack>
+        <CallLogModal
+          open={callLogModalOpen}
+          onClose={handleCloseModal}
+          data={callLogData}
+        />
+      </Box>
+    </>
   );
 };
 

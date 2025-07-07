@@ -7,6 +7,7 @@ import {
   Button,
   Stack,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import { initTwilioDevice } from "@/src/utils/Twilio";
 import {
@@ -60,7 +61,13 @@ export default function CallModal({
     refetch,
   } = useGetCurrentUserQuery();
 
-  if (userLoading) return <div>loading...</div>;
+  if (userLoading)
+    return (
+      // <div>
+      //   <CircularProgress />
+      // </div>
+      null
+    );
   const user = userData?.data?.[0];
   console.log("user information", user.id);
   const handleBotCall = async () => {
