@@ -78,6 +78,7 @@ const ChatInputBox = ({ data }: any) => {
             variant="outlined"
             startIcon={<Email />}
             fontWeight="600"
+            disabled
           >
             Send Email
           </CustomButton>

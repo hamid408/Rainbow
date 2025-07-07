@@ -60,7 +60,7 @@ const Sidebar = () => {
       router.replace("/auth/sign-in");
     } catch (error: any) {
       setLoading(false);
-      alert(error?.data?.message || "Logout failed.");
+      // alert(error?.data?.message || "Logout failed.");
     }
   };
 

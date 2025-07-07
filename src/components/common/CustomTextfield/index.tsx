@@ -25,7 +25,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = forwardRef(
       readOnly = false,
       ...rest
     },
-    ref,
+    ref
   ) => {
     return (
       <Box sx={{ width: "100%", marginTop: "-4px" }}>
@@ -76,7 +76,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = forwardRef(
             sx: {
               "&::placeholder": {
                 color: "#667185",
-                fontSize: "14px",
+                fontSize: "16px",
                 fontWeight: 500,
               },
             },
@@ -85,7 +85,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = forwardRef(
             borderRadius: "6px",
             width: width || "100%",
             "& .MuiOutlinedInput-root": {
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: 400,
               lineHeight: "1.4375em",
               color: "#344054",
@@ -107,12 +107,12 @@ const CustomTextField: React.FC<CustomTextFieldProps> = forwardRef(
               },
             },
             "& .MuiOutlinedInput-input": {
-  fontSize: "12px !important" ,
-  fontWeight: "400 !important",
-  color: "#344054",
-  lineHeight: "1.4375em",
-  fontFamily: "Mulish, sans-serif",
-},
+              fontSize: "16px !important",
+              fontWeight: "400 !important",
+              color: "#344054",
+              lineHeight: "1.4375em",
+              fontFamily: "Mulish, sans-serif",
+            },
 
             "& .MuiFormHelperText-root": {
               color: error ? "#D32F2F" : "#667185",
@@ -124,7 +124,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = forwardRef(
         />
       </Box>
     );
-  },
+  }
 );
 
 CustomTextField.displayName = "CustomTextField";

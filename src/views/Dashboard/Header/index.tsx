@@ -32,7 +32,7 @@ const Header = ({
           </Typography>
         </Box>
       </Box>
-      <Box className={styles.filterAndSearchBox}>
+      <Box display={"flex"} gap={2}>
         <CustomFilterSelect items={filterItems} onSelect={handleSelect} />
         <CustomSearchField
           endIcon={<Search />}

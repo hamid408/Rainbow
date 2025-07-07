@@ -12,6 +12,7 @@ import {
 import { Edit } from "@mui/icons-material";
 import {
   Call,
+  Cold,
   Inquiry,
   Notes,
   SmallMail,
@@ -26,8 +27,15 @@ import { toast } from "react-toastify";
 import CustomSelect from "@/src/components/common/CustomSelect";
 import styles from "./style.module.scss";
 
-const LeadDetailsSidebar = ({ data }: any) => {
-  const [lead, setLead] = useState(data?.data?.[0]);
+// const LeadDetailsSidebar = ({ data }: any) => {
+const LeadDetailsSidebar = ({
+  lead,
+  setLead,
+}: {
+  lead: any;
+  setLead: (lead: any) => void;
+}) => {
+  // const [lead, setLead] = useState(data?.data?.[0]);
   const [isEditing, setIsEditing] = useState(false);
   const [inquiryType, setInquiryType] = useState(lead.inquiry_type || "");
   const [inquiryStatus, setInquiryStatus] = useState(lead.inquiry_status || "");
@@ -74,13 +82,20 @@ const LeadDetailsSidebar = ({ data }: any) => {
         notes,
       }).unwrap();
 
-      setLead((prev: any) => ({
-        ...prev,
+      // setLead((prev: any) => ({
+      //   ...prev,
+      //   inquiry_type: inquiryType,
+      //   inquiry_status: inquiryStatus,
+      //   tag,
+      //   notes,
+      // }));
+      setLead({
+        ...lead,
         inquiry_type: inquiryType,
         inquiry_status: inquiryStatus,
         tag,
         notes,
-      }));
+      });
       setIsEditing(false);
       refetch();
       toast.success("Lead updated successfully!");
@@ -89,6 +104,7 @@ const LeadDetailsSidebar = ({ data }: any) => {
       toast.error("Failed to update lead. Please try again.");
     }
   };
+  const tagStatus = (lead.tag || "").toLowerCase().trim();
 
   return (
     <Box className={styles.leadDetails}>
@@ -145,7 +161,6 @@ const LeadDetailsSidebar = ({ data }: any) => {
           </Box>
           {isEditing ? (
             <CustomSelect
-              // label="Select Inquiry Type"
               value={inquiryType}
               onChange={(e) => setInquiryType(e.target.value)}
               options={inquiryTypeOptions}
@@ -171,17 +186,20 @@ const LeadDetailsSidebar = ({ data }: any) => {
               placeholder="Select status"
             />
           ) : (
-            <Chip
-              label={lead.inquiry_status || "Unknown"}
-              size="medium"
-              sx={{
-                background: "#FFF0F3",
-                color: "#36394A",
-                fontSize: "14px",
-                fontWeight: 600,
-              }}
-              icon={<Urgent />}
-            />
+            // <Chip
+            //   label={lead.inquiry_status || "Unknown"}
+            //   size="medium"
+            //   sx={{
+            //     background: "#FFF0F3",
+            //     color: "#36394A",
+            //     fontSize: "14px",
+            //     fontWeight: 600,
+            //   }}
+            //   icon={<Urgent />}
+            // />
+            <Typography variant="body2" color="#0062FF" fontWeight={500}>
+              {lead.inquiry_status || "N/A"}
+            </Typography>
           )}
         </Box>
 
@@ -198,16 +216,27 @@ const LeadDetailsSidebar = ({ data }: any) => {
               placeholder="Select tag"
             />
           ) : (
-            <Typography variant="body2" color="#0062FF" fontWeight={500}>
-              {lead.tag || "N/A"}
-            </Typography>
+            // <Typography variant="body2" color="#0062FF" fontWeight={500}>
+            //   {lead.tag || "N/A"}
+            // </Typography>
+            <Chip
+              label={lead.tag || "Unknown"}
+              size="medium"
+              sx={{
+                background: "#FFF0F3",
+                color: "#36394A",
+                fontSize: "14px",
+                fontWeight: 600,
+              }}
+              icon={tagStatus === "hot" ? <Urgent /> : <Cold />}
+            />
           )}
         </Box>
 
         <Box>
           <Box className = {styles.leadDetailPhoneEmail}>
             <Notes />
-            <Typography variant="body2" color="#666D80">
+            <Typography variant="body2" color="#666D80" fontSize={16}>
               Notes
             </Typography>
           </Box>
@@ -219,21 +248,31 @@ const LeadDetailsSidebar = ({ data }: any) => {
             disabled={!isEditing}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
+            placeholder="Add a note"
             sx={{
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "12px",
-                fontSize: "15px",
-                fontWeight: 600,
-                color: "#000",
+              // "& .MuiOutlinedInput-root": {
+              //   borderRadius: "12px",
+              //   fontSize: "16px",
+              //   fontWeight: 400,
+              //   backgroundColor: "#fff",
+              //   "&.Mui-disabled": {
+              //     WebkitTextFillColor: "#000", // ✅ makes text look black even if disabled
+              //     color: "#000",
+              //     opacity: 1, // ✅ keeps text full contrast
+              //   },
+              // },
+              "& .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-input": {
+                WebkitTextFillColor: "#0D0D12", // ✅ dark text in disabled mode
+                opacity: 1,
               },
               "& .MuiOutlinedInput-input": {
-                fontSize: "15px",
-                fontWeight: 600,
-                color: "#0D0D12",
+                fontSize: "16px",
+                fontWeight: 400,
+                color: "#000", // ✅ ensures active and editable color is black
               },
               "& .MuiInputBase-input::placeholder": {
-                color: "#000",
-                fontWeight: 600,
+                color: "#999", // ✅ optional: use light grey placeholder like Figma
+                fontWeight: 400,
                 fontSize: "14px",
               },
             }}

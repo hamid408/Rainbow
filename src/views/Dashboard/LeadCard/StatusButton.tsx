@@ -41,25 +41,10 @@ const StatusButton: React.FC<StatusButtonProps> = ({ type, label, onClick }) => 
       variant="outlined"
       onClick={onClick}
       className={`${styles.statusButton} ${styles[type]}`}
-      // sx={{
-      //   borderColor,
-      //   backgroundColor,
-      //   borderRadius: '24px',
-      //   height: 40,
-      //   px: 2,
-      //   textTransform: 'none',
-      //   fontWeight: 600,
-      //   fontSize: 14,
-      //   color: textColor,
-      //   '&:hover': {
-      //     backgroundColor,
-      //   },
-      // }}
       startIcon={
         hasDot ? (
           <FiberManualRecordIcon 
           className={`${styles.dot} ${styles[`${type}Dot`]}`}
-          // sx={{ fontSize: 12, color: dotColor }}
            />
         ) : (
           icon

@@ -16,13 +16,6 @@ const StatusTag = ({ label, color = '#F6F8FA', icon }: StatusTagProps) => {
       icon={icon}
       color="default"
       className={styles.chip}
-      // sx={{
-      //   backgroundColor: color,
-      //   color: '#36394A',
-      //   fontSize: '12px',
-      //   fontWeight: 500,
-      //   height: 24,
-      // }}
     />
   );
 };

@@ -10,6 +10,7 @@ import { useGetLeadsQuery } from "@/src/redux/services/leads/leadsApi";
 import { useDebounce } from "use-debounce";
 import CustomPagination from "@/src/components/common/CustomPagination";
 import { usePathname, useSearchParams } from "next/navigation";
+import styles from "./style.module.scss";
 
 const Dashboard = () => {
   const searchParams = useSearchParams();
@@ -66,29 +67,34 @@ const Dashboard = () => {
     return null;
   }
   return (
-    <Box padding="48px">
+    <Box 
+    padding="48px"
+    >
       <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-
       <Box
         borderRadius="12px"
         padding={1}
         bgcolor="#fff"
         boxShadow="0px 4px 12px rgba(0, 0, 0, 0.05)"
         mt={4}
+        className = {styles.cardback}
       >
-        <Box mb={2.5} display="flex" justifyContent="space-between">
+        <Box mb={2.5} display="flex" justifyContent="space-between"
+        className = {styles.spaceBottom}
+        >
           <CustomTabs tabs={tabsData} onTabChange={handleTabChange} />
           <Box
             display="flex"
             justifyContent="flex-end"
             height="48px"
             width={"100%"}
+            className = {styles.leftSpace}
           >
             <CustomButton
               variant="contained"
               onClick={() => setOpenModal(true)}
             >
-              Add New Lead
+              Add
             </CustomButton>
           </Box>
         </Box>
@@ -136,6 +142,7 @@ const Dashboard = () => {
                   avatarUrl={undefined}
                   tag={lead.tag || "Urgent"}
                   page={page}
+                  phone={lead.phone || ""}
                 />
               );
             })

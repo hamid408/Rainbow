@@ -1,3 +1,4 @@
+
 "use client";
 import { Box, CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -7,19 +8,28 @@ import CallLogsSection from "./LeadCallLog";
 import LeadDetailsSidebar from "./LeadDetailSidebar";
 import ChatInputBox from "./ChatInputBox";
 import { useGetLeadByIdQuery } from "@/src/redux/services/leads/leadsApi";
-// import { useGetLeadByIdQuery } from "@/redux/services/leads/leadsApi";
 import styles from "./style.module.scss";
 
 const LeadDetails = ({ leadId }: { leadId: string }) => {
   const [refreshChat, setRefreshChat] = useState(0);
   const { data, isLoading, error, isFetching, refetch } =
     useGetLeadByIdQuery(leadId);
+  const [lead, setLead] = useState<any>(null);
+
+  useEffect(() => {
+    if (data?.data?.[0]) {
+      setLead(data.data[0]);
+    }
+  }, [data]);
 
   useEffect(() => {
     refetch();
   }, []);
 
-  if (isLoading || isFetching)
+  const isLoadingState =
+    isLoading || isFetching || !data || !data.data?.length || !lead;
+
+  if (isLoadingState) {
     return (
       <Box
         sx={{
@@ -32,32 +42,39 @@ const LeadDetails = ({ leadId }: { leadId: string }) => {
         <CircularProgress />
       </Box>
     );
-  if (error || !data?.data?.length) return <div>Error loading lead data</div>;
+  }
 
-  const lead = data.data[0];
-  const name = lead.first_name + " " + (lead.last_name || "");
-  const status =
-  lead.inquiry_status + (lead.inquiry_type ? ` (${lead.inquiry_type})` : "");
+  const name = `${lead.first_name || ""} ${lead.last_name || ""}`.trim();
+  const status = `${lead.tag || ""}${
+    lead.inquiry_type ? ` (${lead.inquiry_type})` : ""
+  }`;
+
+
 
   return (
-    <Box className = {styles.indexMainBox}>
+    <Box 
+    className = {styles.indexMainBox}
+    >
       <LeadHeader
         name={name}
         status={status}
         onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
       />
-      <Box className = {styles.indexSecondaryBox}>
-        <Box className = {styles.indexLastBox}>
+      <Box 
+      className = {styles.indexSecondaryBox}
+      >
+        <Box 
+        className = {styles.indexLastBox}
+        >
           <LeadChatSection
             refreshTrigger={refreshChat}
             leadId={leadId}
             userName={name}
           />
           <CallLogsSection lead_id={leadId} />
-          {/* <ChatInputBox leadId={leadId} /> */}
           <ChatInputBox data={data} />
         </Box>
-        <LeadDetailsSidebar data={data} />
+        <LeadDetailsSidebar lead={lead} setLead={setLead} />
       </Box>
     </Box>
   );

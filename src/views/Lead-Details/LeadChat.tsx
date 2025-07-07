@@ -12,7 +12,8 @@ import { useGetConversationQuery } from "@/src/redux/services/conversation/conve
 import { useEffect, useRef, useState } from "react";
 import { getInitials } from "@/src/utils/GetInitials";
 import { Message, Typing } from "@/src/assests/icons";
-import styles from "./style.module.scss";
+import { CallEnd } from "@mui/icons-material";
+import CustomButton from "@/src/components/common/CustomButton";
 
 const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
@@ -22,6 +23,11 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
     lead_ID: leadId,
     offset: latestOffset.current,
   });
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   useEffect(() => {
     if (data?.data?.length) {
@@ -41,6 +47,7 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
     }, 30000);
     return () => clearInterval(interval);
   }, [refetch]);
+  if (!hasMounted) return null;
 
   if (isLoading && allMessages.length === 0)
     return <CircularProgress sx={{ m: 5 }} />;
@@ -51,18 +58,20 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
         No Conversation Found!
       </Typography>
     );
-  const renderUserAvatar = (name: string) => {
+  const renderUserAvatar = (name: string | undefined | null) => {
     const initials = getInitials(name);
     return (
       <Avatar
-        className={styles.leadChatAvatar}
-        // sx={{
-        //   bgcolor: "#1976d2",
-        //   width: 60,
-        //   height: 60,
-        //   fontSize: 32,
-        //   mb: 2,
-        // }}
+        sx={{
+          bgcolor: "#D9EFFF",
+          height: "60px",
+          width: "60px",
+          color: "#0062FF",
+
+          fontWeight: "600",
+          fontSize: "24px",
+          mb: 2,
+        }}
       >
         {initials || "U"}
       </Avatar>
@@ -84,8 +93,8 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
           const time = msg.created_at;
           const isAI = msg.sender_type === "user";
           // const senderName = isAI ? "AI Assistant" : userName;
-          // const senderName = msg.sender_name;
-          const senderName = isAI ? "AI Assistant" : msg.sender_name;
+          // const senderName = isAI ? "AI Assistant" : msg.sender_name;
+          const senderName = msg.sender_name || "Unknown";
 
           return (
             <Box
@@ -96,14 +105,12 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
               // gap={2.5}
               // flexDirection="row"
             >
-              {isAI ? (
-                <Image src={AvatarPic} alt="AI Avatar" 
-                className={styles.leadImage}
-                // width={60} height={60} 
-                />
+              {/* {isAI ? (
+                <Image src={AvatarPic} alt="AI Avatar" width={60} height={60} />
               ) : (
                 renderUserAvatar(userName)
-              )}
+              )} */}
+              {renderUserAvatar(senderName)}
               <Stack spacing={1.5}>
                 <Box>
                   <Box 
@@ -114,7 +121,14 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                       {senderName}
                     </Typography>
 
-                    {msg.channel === "sms" ? <Typing /> : <Message />}
+                    {/* {msg.channel === "sms" ? <Typing /> : <Message />} */}
+                    {msg.channel === "sms" ? (
+                      <Typing />
+                    ) : msg.channel === "call" ? (
+                      <CallEnd />
+                    ) : (
+                      <Message />
+                    )}
 
                     <Typography
                      className={styles.leadChatDate}
@@ -126,6 +140,15 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                     >
                       {time}
                     </Typography>
+                    {msg.channel === "call" && (
+                      <CustomButton
+                        variant="outlined"
+                        size="small"
+                        padding="2px 4px"
+                      >
+                        Call logs
+                      </CustomButton>
+                    )}
                   </Box>
                   <Typography variant="body2" color="#0D0D12">
                     {msg.content}

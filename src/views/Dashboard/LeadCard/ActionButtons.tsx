@@ -1,42 +1,48 @@
-import { Stack, IconButton } from '@mui/material';
-import CallIcon from '@mui/icons-material/Call';
-import EmailIcon from '@mui/icons-material/Email';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { Call, Mail, Meeting, Phone } from '@/src/assests/icons';
-import styles from "./style.module.scss";
-
+import { Stack, IconButton } from "@mui/material";
+ 
+import { Phone, Typing } from "@/src/assests/icons";
+ 
 const iconStyle = {
-  border: '1px solid #7A4DF5',
-  borderRadius: '50%',
+  border: "1px solid #7A4DF5",
+  borderRadius: "50%",
   width: 52,
   height: 52,
-  color: '#8647F5',
+  color: "#8647F5",
 };
-
-const ActionButtons = () => (
-  <Stack 
-  className={styles.actionButtons}
-  // direction="row" spacing={2}
-  >
-    <IconButton 
-    // sx={iconStyle}
-    className={styles.icon}
-    >
-      <Phone />
-    </IconButton>
-    <IconButton 
-    // sx={iconStyle}
-    className={styles.icon}
-    >
-      <Mail />
-    </IconButton>
-    <IconButton 
-    // sx={iconStyle}
-    className={styles.icon}
-    >
-      <Meeting />
-    </IconButton>
-  </Stack>
-);
-
+ 
+const ActionButtons = ({ callOpen, emailOpen }: any) => {
+  const handleOpenCallModal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    callOpen(true);
+  };
+ 
+  return (
+    <>
+      <Stack direction="row" spacing={2}>
+        <IconButton
+          sx={iconStyle}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleOpenCallModal(e);
+          }}
+        >
+          <Phone />
+        </IconButton>
+        <IconButton
+          sx={iconStyle}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            emailOpen(true);
+          }}
+        >
+          <Typing />
+        </IconButton>
+      </Stack>
+    </>
+  );
+};
+ 
 export default ActionButtons;

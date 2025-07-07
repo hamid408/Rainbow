@@ -111,6 +111,7 @@ export default function SignIn() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
+            // fontSize="1rem"
           />
 
           <CustomTextField

@@ -21,6 +21,7 @@ const customBaseQuery: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   const result = await rawBaseQuery(args, api, extraOptions);
+  const errorType = result?.meta?.response?.headers.get("x-amzn-errortype");
 
   // if (result.error && result.error.status === 401) {
   //   Cookies.remove("id_token");

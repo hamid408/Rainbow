@@ -29,3 +29,19 @@
 .noMargin {
   margin-right: 4px;
 }
+
+.space {
+  @media (max-width: 600px) {
+    margin-bottom: 0px;
+  }
+}
+
+.rootBox {
+  width: 100%;
+
+  @media (max-width: 600px) {
+    width: 100vw;
+    margin-left: -56px;
+    margin-bottom: 0px;
+  }
+}

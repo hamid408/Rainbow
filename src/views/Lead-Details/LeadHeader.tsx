@@ -1,5 +1,5 @@
 "use client";
-import { Back, Call, Urgent } from "@/src/assests/icons";
+import { Back, Call, Cold, Urgent } from "@/src/assests/icons";
 import {
   Box,
   Typography,
@@ -29,9 +29,9 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
   const handleRouteBack = () => {
     const page = searchParams.get("page") || "1";
     router.push(`/dashboard?page=${page}`);
-
-    // router.push("/dashboard");
   };
+  const keyword = status?.split(" ")[0]?.toLowerCase();
+  console.log("stats", keyword);
   const initials = getInitials(name);
   const handleRefreshClick = () => {
     setLoading(true);
@@ -48,11 +48,22 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
             <Back onClick={handleRouteBack} />
             {/* <Back onClick={() => router.back()} /> */}
           </Box>
+          <Avatar
+            sx={{
+              bgcolor: "#D9EFFF",
+              height: "60px",
+              width: "60px",
+              color: "#0062FF",
 
-          <Avatar className={styles.leadHeaderAvatar}>{initials || "U"}</Avatar>
-
-          <Stack className={styles.leadHeaderBox}>
-            <Typography variant="h5" className={styles.leadHeaderName}>
+              fontWeight: "600",
+              fontSize: "24px",
+              mb: 2,
+            }}
+          >
+            {initials || "U"}
+          </Avatar>
+          <Stack gap={1}>
+            <Typography fontWeight={600} variant="h5" color="#0D0D12">
               {name}
             </Typography>
 
@@ -60,6 +71,12 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
               className={styles.leadHeaderChip}
               label={status}
               size="small"
+              sx={{
+                background: "#FFF0F3",
+                color: "#36394A",
+                fontSize: "14",
+                fontWeight: "500",
+              }}
               icon={<Urgent />}
             />
           </Stack>
