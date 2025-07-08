@@ -162,7 +162,6 @@ const Dashboard = () => {
           const searchParams = new URLSearchParams(window.location.search);
 
           if (val === 1) {
-            // Remove ?page from URL if it's page 1
             searchParams.delete("page");
           } else {
             searchParams.set("page", String(val));
