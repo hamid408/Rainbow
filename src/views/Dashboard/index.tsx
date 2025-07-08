@@ -9,7 +9,7 @@ import AddLeadModal from "./AddLeadModal";
 import { useGetLeadsQuery } from "@/src/redux/services/leads/leadsApi";
 import { useDebounce } from "use-debounce";
 import CustomPagination from "@/src/components/common/CustomPagination";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
 
 const Dashboard = () => {
@@ -18,7 +18,7 @@ const Dashboard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
-
+  const router = useRouter();
   const ITEMS_PER_PAGE = 5;
   const offset = (page - 1) * ITEMS_PER_PAGE;
   const isAll = activeTab === "All";
@@ -41,19 +41,25 @@ const Dashboard = () => {
   const leads = data?.data || [];
   const totalCount = data?.total_records || 0;
 
-  const { data: allTagsData } = useGetLeadsQuery(
-    { limit: 1000, offset: 0 },
-    { skip: !isAll }
-  );
+  // const { data: allTagsData } = useGetLeadsQuery(
+  //   { limit: 1000, offset: 0 },
+  //   // { skip: !isAll }
+  //   { skip: false }
+  // );
 
-  const allTagsLeads = allTagsData?.data || [];
+  // const allTagsLeads = allTagsData?.data || [];
+
+  // const tags = useMemo(() => {
+  //   const tagSet = new Set(
+  //     allTagsLeads.map((lead: any) => lead.tag || "Untagged")
+  //   );
+  //   return ["All", ...Array.from(tagSet)];
+  // }, [allTagsLeads]);
 
   const tags = useMemo(() => {
-    const tagSet = new Set(
-      allTagsLeads.map((lead: any) => lead.tag || "Untagged")
-    );
+    const tagSet = new Set(leads.map((lead: any) => lead.tag || "Untagged"));
     return ["All", ...Array.from(tagSet)];
-  }, [allTagsLeads]);
+  }, [leads]);
 
   const tabsData = tags.map((tag) => ({ label: String(tag) }));
 
@@ -150,11 +156,28 @@ const Dashboard = () => {
         </Stack>
       </Box>
 
-      <CustomPagination
+      {/* <CustomPagination
         page={page}
         count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
         onChange={(val) => setPage(val)}
+      /> */}
+      <CustomPagination
+        page={page}
+        count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
+        onChange={(val) => {
+          setPage(val);
+          const searchParams = new URLSearchParams(window.location.search);
+
+          if (val === 1) {
+            searchParams.delete("page");
+          } else {
+            searchParams.set("page", String(val));
+          }
+
+          router.push(`?${searchParams.toString()}`);
+        }}
       />
+
       <AddLeadModal
         open={openModal}
         onClose={() => setOpenModal(false)}

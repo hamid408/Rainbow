@@ -14,6 +14,7 @@ import { getInitials } from "@/src/utils/GetInitials";
 import { Message, Typing } from "@/src/assests/icons";
 import { CallEnd } from "@mui/icons-material";
 import CustomButton from "@/src/components/common/CustomButton";
+import CallLogModal from "./CallLogModal";
 
 const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
@@ -24,6 +25,27 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
     offset: latestOffset.current,
   });
   const [hasMounted, setHasMounted] = useState(false);
+
+  const [callLogModalOpen, setCallLogModalOpen] = useState(false);
+  const [callLogData, setCallLogData] = useState<{
+    transcript: string;
+    RecordingUrl: string;
+  } | null>(null);
+
+  const handleOpenModal = (jsonString: string) => {
+    try {
+      const parsed = JSON.parse(jsonString);
+      setCallLogData(parsed);
+      setCallLogModalOpen(true);
+    } catch (e) {
+      console.error("Failed to parse call log JSON", e);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setCallLogModalOpen(false);
+    setCallLogData(null);
+  };
 
   useEffect(() => {
     setHasMounted(true);
@@ -77,7 +99,18 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
       </Avatar>
     );
   };
-  console.log("data", data.data);
+  const isValidCallLogJson = (str: string) => {
+    try {
+      const parsed = JSON.parse(str);
+      const hasTranscript = !!parsed?.transcript;
+      const hasRecordingUrl = !!parsed?.RecordingUrl;
+      return hasTranscript && hasRecordingUrl;
+    } catch (e) {
+      console.warn("❌ Invalid JSON string:", str);
+      return false;
+    }
+  };
+
   return (
     <Box
      className = {styles.leadChat}
@@ -121,14 +154,14 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                       {senderName}
                     </Typography>
 
-                    {/* {msg.channel === "sms" ? <Typing /> : <Message />} */}
-                    {msg.channel === "sms" ? (
-                      <Typing />
-                    ) : msg.channel === "call" ? (
-                      <CallEnd />
-                    ) : (
-                      <Message />
-                    )}
+                      {/* {msg.channel === "sms" ? <Typing /> : <Message />} */}
+                      {msg.channel === "sms" ? (
+                        <Typing />
+                      ) : msg.channel === "call" ? (
+                        <CallEnd />
+                      ) : (
+                        <Message />
+                      )}
 
                     <Typography
                      className={styles.leadChatDate}

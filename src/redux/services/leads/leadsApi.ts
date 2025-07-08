@@ -73,6 +73,16 @@ export const leadsapi = createApi({
     getLeadsEnums: builder.query<any, void>({
       query: () => `leads/enums`,
     }),
+    resolvedLead: builder.mutation<
+      any,
+      { lead_id: string; is_active: boolean }
+    >({
+      query: ({ lead_id, is_active }) => ({
+        url: `leads`,
+        method: "PATCH",
+        body: { lead_id, is_active },
+      }),
+    }),
   }),
 });
 
@@ -82,4 +92,5 @@ export const {
   useGetLeadByIdQuery,
   useUpdateLeadMutation,
   useGetLeadsEnumsQuery,
+  useResolvedLeadMutation,
 } = leadsapi;
