@@ -173,15 +173,21 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                     >
                       {time}
                     </Typography>
-                    {msg.channel === "call" && (
-                      <CustomButton
-                        variant="outlined"
-                        size="small"
-                        padding="2px 4px"
-                      >
-                        Call logs
-                      </CustomButton>
-                    )}
+                    {msg.channel === "call" &&
+                      isValidCallLogJson(msg.provider_metadata) && (
+                        <>
+                          <CustomButton
+                            variant="outlined"
+                            size="small"
+                            padding="2px 4px"
+                            onClick={() =>
+                              handleOpenModal(msg.provider_metadata)
+                            }
+                          >
+                            Call logs
+                          </CustomButton>
+                        </>
+                      )}
                   </Box>
                   <Typography variant="body2" color="#0D0D12">
                     {msg.content}
