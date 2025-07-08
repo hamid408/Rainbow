@@ -6,8 +6,13 @@
   }
 
   @media (min-width: 600px) and (max-width: 700px) {
-    width: 113% !important;
-    margin-left: -22px !important;
+    width: 126% !important;
+    margin-left: -40px !important;
+  }
+
+  @media(max-width: 700px) and (min-width: 600px){
+    width: 120% !important;
+    margin-left: -33px !important;
   }
 }
 
@@ -15,10 +20,38 @@
   @media (max-width: 600px) {
     margin-bottom: 0px !important;
   }
+
+  @media(min-width: 600px) and (max-width: 700px){
+    width: 126%;
+  }
 }
 
 .leftSpace {
   @media (max-width: 600px) {
     margin-right: -40px !important;
   }
+
+  @media(min-width: 600px) and (max-width: 740px){
+    margin-right: 112px !important;
+  }
 }
+
+.fullText{
+    display: none;
+    @media(min-width: 800px){
+        display: inline;
+    }
+}
+
+.shortText{
+    display: none;
+    @media(max-width: 800px){
+        display: inline;
+    }
+}
+
+// .paginationBox{
+//     @media(max-width: 600px){
+//         margin-bottom: 56px !important;
+//     }
+// }

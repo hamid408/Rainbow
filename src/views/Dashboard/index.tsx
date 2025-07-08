@@ -73,9 +73,7 @@ const Dashboard = () => {
     return null;
   }
   return (
-    <Box 
-    padding="48px"
-    >
+    <Box padding="48px">
       <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Box
         borderRadius="12px"
@@ -83,10 +81,13 @@ const Dashboard = () => {
         bgcolor="#fff"
         boxShadow="0px 4px 12px rgba(0, 0, 0, 0.05)"
         mt={4}
-        className = {styles.cardback}
+        className={styles.cardback}
       >
-        <Box mb={2.5} display="flex" justifyContent="space-between"
-        className = {styles.spaceBottom}
+        <Box
+          mb={2.5}
+          display="flex"
+          justifyContent="space-between"
+          className={styles.spaceBottom}
         >
           <CustomTabs tabs={tabsData} onTabChange={handleTabChange} />
           <Box
@@ -94,13 +95,15 @@ const Dashboard = () => {
             justifyContent="flex-end"
             height="48px"
             width={"100%"}
-            className = {styles.leftSpace}
+            className={styles.leftSpace}
           >
             <CustomButton
               variant="contained"
               onClick={() => setOpenModal(true)}
             >
-              Add
+              {/* Add New Lead */}
+              <span className={styles.fullText}>Add New Lead</span>
+              <span className={styles.shortText}>Add</span>
             </CustomButton>
           </Box>
         </Box>
@@ -161,7 +164,9 @@ const Dashboard = () => {
         count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
         onChange={(val) => setPage(val)}
       /> */}
-      <CustomPagination
+
+      <Box className = {styles.paginationBox}>
+        <CustomPagination
         page={page}
         count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
         onChange={(val) => {
@@ -177,6 +182,8 @@ const Dashboard = () => {
           router.push(`?${searchParams.toString()}`);
         }}
       />
+      </Box>
+      
 
       <AddLeadModal
         open={openModal}

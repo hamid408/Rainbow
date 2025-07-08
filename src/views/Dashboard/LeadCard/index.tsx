@@ -50,6 +50,7 @@ const LeadCard = ({
       >
         <Box
           className={styles.root}
+          
           // onClick={() => router.push(`/dashboard/${lead_id}`)} // <-- navigate to dynamic route
           // onClick={() => router.push(`/dashboard/${lead_id}?page=${page}`)}
         >
@@ -104,7 +105,7 @@ const LeadCard = ({
               {message}
             </Typography>
           </Box>
-          
+
           <Box className={styles.icons}>
             {isGoingCold ? (
               serviceType.toLowerCase().startsWith("missed") ? (
