@@ -178,9 +178,9 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                               variant="outlined"
                               size="small"
                               padding="2px 4px"
-                              // onClick={() =>
-                              //   handleOpenModal(msg.provider_metadata)
-                              // }
+                              onClick={() =>
+                                handleOpenModal(msg.provider_metadata)
+                              }
                             >
                               Call logs
                             </CustomButton>

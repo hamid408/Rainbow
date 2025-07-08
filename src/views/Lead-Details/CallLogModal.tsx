@@ -25,10 +25,12 @@ const CallLogModal = ({ open, onClose, data }: CallLogModalProps) => {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Call Recording & Transcript</DialogTitle>
+      <DialogTitle sx={{ fontSize: "22px", fontWeight: "600" }}>
+        Call Recording & Transcript
+      </DialogTitle>
       <DialogContent>
         <Box mb={2}>
-          <Typography fontWeight={600} mb={1}>
+          <Typography fontWeight={600} mb={1} fontSize={20}>
             Recording:
           </Typography>
           <audio controls src={data.RecordingUrl} style={{ width: "100%" }} />
@@ -43,7 +45,7 @@ const CallLogModal = ({ open, onClose, data }: CallLogModalProps) => {
           </Typography>
         </Box>
 
-        <Typography fontWeight={600} mb={1}>
+        <Typography fontWeight={600} mb={1} fontSize={20}>
           Transcript:
         </Typography>
         <Typography variant="body2" whiteSpace="pre-wrap">
