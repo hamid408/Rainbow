@@ -105,11 +105,7 @@ const LeadCard = ({
             </Typography>
             <Typography variant="body1" className={styles.message}>
               {/* {message} */}
-              <Typography  className={styles.message}>
-                {isSmallScreen && message.length > 20
-                  ? `${message.slice(0, 20)}...`
-                  : message}
-              </Typography>
+              {message.length > 20 ? `${message.slice(0, 20)}...` : message}
             </Typography>
           </Box>
 
