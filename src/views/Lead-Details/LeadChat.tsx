@@ -15,7 +15,7 @@ import { Message, Typing } from "@/src/assests/icons";
 import { CallEnd } from "@mui/icons-material";
 import CustomButton from "@/src/components/common/CustomButton";
 import CallLogModal from "./CallLogModal";
-
+import styles from "./style.module.scss";
 const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
   const latestOffset = useRef(0);
@@ -113,7 +113,7 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
 
   return (
     <Box
-     className = {styles.leadChat}
+      className={styles.leadChat}
       // p={"40px 32px 32px 0"}
       // sx={{
       //   height: "400px",
@@ -132,7 +132,7 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
           return (
             <Box
               key={index}
-              className = {styles.leadChatMainBox}
+              className={styles.leadChatMainBox}
               // display={"flex"}
               // alignItems={"start"}
               // gap={2.5}
@@ -146,25 +146,25 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
               {renderUserAvatar(senderName)}
               <Stack spacing={1.5}>
                 <Box>
-                  <Box 
-                  className = {styles.leadChatFirstRow}
-                  // display={"flex"} alignItems={"center"} gap={1}
+                  <Box
+                    className={styles.leadChatFirstRow}
+                    // display={"flex"} alignItems={"center"} gap={1}
                   >
                     <Typography mb={0.5} variant="body1">
                       {senderName}
                     </Typography>
 
-                      {/* {msg.channel === "sms" ? <Typing /> : <Message />} */}
-                      {msg.channel === "sms" ? (
-                        <Typing />
-                      ) : msg.channel === "call" ? (
-                        <CallEnd />
-                      ) : (
-                        <Message />
-                      )}
+                    {/* {msg.channel === "sms" ? <Typing /> : <Message />} */}
+                    {msg.channel === "sms" ? (
+                      <Typing />
+                    ) : msg.channel === "call" ? (
+                      <CallEnd />
+                    ) : (
+                      <Message />
+                    )}
 
                     <Typography
-                     className={styles.leadChatDate}
+                      className={styles.leadChatDate}
                       variant="subtitle1"
                       // mb={0.5}
                       // fontWeight={400}

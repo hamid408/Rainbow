@@ -10,6 +10,7 @@ import { useState } from "react";
 import CallModal from "../../Lead-Details/CallModal";
 import ChatInputModal from "./ChatInputModal";
 import styles from "./style.module.scss";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 interface LeadCardProps {
   lead_id: string;
@@ -41,6 +42,8 @@ const LeadCard = ({
   const router = useRouter();
   const [isCallOpen, setIsCallOpen] = useState(false);
   const [isEmailOpen, setIsEmailOpen] = useState(false);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <>
@@ -101,10 +104,15 @@ const LeadCard = ({
               {serviceName}
             </Typography>
             <Typography variant="body1" className={styles.message}>
-              {message}
+              {/* {message} */}
+              <Typography  className={styles.message}>
+                {isSmallScreen && message.length > 20
+                  ? `${message.slice(0, 20)}...`
+                  : message}
+              </Typography>
             </Typography>
           </Box>
-          
+
           <Box className={styles.icons}>
             {isGoingCold ? (
               serviceType.toLowerCase().startsWith("missed") ? (
