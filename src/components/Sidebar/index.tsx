@@ -107,8 +107,8 @@ const Sidebar = () => {
 
             transform: "scale(0.875)",
             transformOrigin: "top left",
-            width: "114.2857%",
-            height: "114.2857%",
+            width: "110.2857%",
+            height: "110.2857%",
           },
         }}
       >
