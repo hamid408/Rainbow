@@ -20,6 +20,10 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 12.5px;
+
+  @media (max-width: 740px) {
+    display: block;
+  }
 }
 
 .leadHeaderSecondRoot {
@@ -53,11 +57,19 @@
 }
 
 .leadHeaderAvatar {
-  background-color: #1976d2 !important;
-  width: 60px !important;
+  background-color: #d9efff !important;
   height: 60px !important;
-  font-size: 32px !important;
-  margin-bottom: 16px !important;
+  width: 60px !important;
+  color: #0062ff !important;
+
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  margin-bottom: 8px !important;
+
+  @media (max-width: 600px) {
+    width: 56px !important;
+    height: 56px !important;
+  }
 }
 
 .leadHeaderBox {
@@ -74,9 +86,10 @@
 .leadHeaderName {
   font-weight: 600 !important;
   color: #0d0d12 !important;
+  font-size: 24px !important;
 
-  @media (max-width: 400px) {
-    font-size: 15px !important;
+  @media (max-width: 600px) {
+    font-size: 24px !important;
   }
 }
 
@@ -87,7 +100,7 @@
   font-weight: 500 !important;
 
   @media (max-width: 400px) {
-    font-size: 10px !important;
+    font-size: 14px !important;
   }
 
   @media (min-width: 600px) and (max-width: 700px) {
@@ -314,6 +327,10 @@
     width: 178% !important;
     margin-left: -20px !important;
   }
+
+  @media (max-width: 600px) {
+    margin-bottom: 66px !important;
+  }
 }
 
 .chatInputBoxButtonsRoot {
@@ -333,6 +350,14 @@
   @media (min-width: 700px) {
     flex-direction: row;
   }
+
+  //   @media(max-width: 900px){
+  //     display: block;
+  //   }
+
+  //  @media(max-width: 600px){
+  //     margin-bottom: -50px;
+  //  }
 }
 
 .chatInputBoxButtons {
@@ -355,9 +380,53 @@
   @media (min-width: 600px) and (max-width: 700px) {
     width: 100%;
   }
+
+  @media (min-width: 600px) and (max-width: 900px) {
+    display: block;
+  }
 }
 
-.chatInputButtons {
+.chatInputCallBtn {
+  @media (min-width: 1000px) and (max-width: 1100px) {
+    font-size: 12px !important;
+  }
+
+  @media (min-width: 700px) and (max-width: 900px) {
+    font-size: 10px !important;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 10px !important;
+  }
+}
+
+.chatInputSendBtn {
+  @media (min-width: 1000px) and (max-width: 1100px) {
+    font-size: 12px !important;
+  }
+
+  @media (min-width: 700px) and (max-width: 900px) {
+    font-size: 10px !important;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 10px !important;
+  }
+}
+
+.chatInputMarkBtn {
   @media (min-width: 1000px) and (max-width: 1100px) {
     font-size: 12px !important;
   }
@@ -426,27 +495,26 @@
 }
 
 .leadChatMainBox {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    flex-direction: row;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-direction: row;
 }
 
 .leadChatFirstRow {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-
 
 .leadChatDate {
-    margin-bottom: 4px !important;
-    font-weight: 400 !important;
-    color: #666d80 !important;
-    margin-top: 4px !important;
+  margin-bottom: 4px !important;
+  font-weight: 400 !important;
+  color: #666d80 !important;
+  margin-top: 4px !important;
 }
 
-.leadChatAvatar{
+.leadChatAvatar {
   background-color: #1976d2 !important;
   width: 60px !important;
   height: 60px !important;
@@ -454,12 +522,12 @@
   margin-bottom: 16px !important;
 }
 
-.leadImage{
+.leadImage {
   width: 60px;
   height: 60px;
 }
 
-.callModalBox{
+.callModalBox {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -471,19 +539,19 @@
   padding: 32px; // MUI p: 4 = 4 * 8px = 32px
 }
 
-.callModalTypo{
+.callModalTypo {
   font-weight: 600 !important;
   font-size: 22px !important;
-  margin-bottom: 24px !important; 
+  margin-bottom: 24px !important;
 }
 
-.callModalBtnBox{
+.callModalBtnBox {
   display: flex;
   justify-content: flex-end;
   gap: 24px;
 }
 
-.callModalSelfCall{
+.callModalSelfCall {
   background-color: green !important;
   border-radius: 50px !important;
   max-width: 120px !important;
@@ -499,7 +567,7 @@
   }
 }
 
-.callModalBotCall{
+.callModalBotCall {
   border-radius: 50px !important;
   max-width: 160px !important;
   width: 100% !important;
@@ -509,30 +577,45 @@
   margin: 12px auto 0 auto !important;
 }
 
-.callingBox{
+.callingBox {
   align-items: center;
-  gap: 16px;          
-  margin-bottom: 24px; 
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-.callLogOutline{
-  width: 120px !important; 
+.callLogOutline {
+  width: 120px !important;
   height: 120px !important;
 }
 
-.ringingStack{
+.ringingStack {
   display: flex;
   flex-direction: row;
-  gap: 16px;        
-  margin-top: 40px;    
+  gap: 16px;
+  margin-top: 40px;
 }
 
-.ringingBtn{
+.ringingBtn {
   background-color: red !important;
   border-radius: 50px !important;
   transition: background-color 0.3s ease !important;
 
   &:hover {
     background-color: red !important;
+  }
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  @media (max-width: 7000px) {
+    margin-left: 150px;
+    margin-top: 18px;
+  }
+
+  @media (max-width: 400px) {
+    margin-left: 113px;
   }
 }

@@ -11,6 +11,8 @@
   justify-content: space-between;
   gap: 8px;
   box-sizing: border-box;
+  
+
 
   // width: 700px;
   // width: 115% !important;
@@ -47,6 +49,7 @@
     margin-bottom: -8px;
     padding-left: 26px;
     // width: 190% !important;
+    width: 160% !important;
   }
 
   @media (min-width: 630px) and (max-width: 700px) {
@@ -71,7 +74,7 @@
 
   @media (min-width: 700px) {
     width: 100% !important;
-    max-width: 1120px !important;
+    max-width: 1050px !important;
     margin-left: 0px !important;
   }
 
@@ -84,6 +87,7 @@
   display: flex;
   width: 30%;
   gap: 16px;
+
 
   @media (min-width: 600px) and (max-width: 1000px) {
     width: 100% !important;
@@ -125,8 +129,8 @@
 
   @media (max-width: 600px) {
     border-radius: 30px;
-    height: 45px;
-    width: 45px;
+    height: 48px  !important;
+    width: 48px !important;
     margin-top: 5px;
   }
 
@@ -174,6 +178,13 @@
     margin-right: 6px;
     display: flex;
     white-space: nowrap;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+  }
+
+  @media(max-width: 1000px){
+    font-size: 18px !important;
+    font-weight: 600 !important;
   }
 
   white-space: nowrap;
@@ -220,6 +231,9 @@
 }
 
 .messageIconLable {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+
   @media (max-width: 600px) {
     font-size: 12px !important;
   }
@@ -258,7 +272,7 @@
 
 .serviceName {
   margin-bottom: 20px !important;
-  color: #666d80 !important;
+  color: #666D80!important;
 
   @media (min-width: 900px) {
     // margin-left: 70px !important;
@@ -276,15 +290,16 @@
     margin-bottom: 0px !important;
     display: flex !important;
     white-space: nowrap !important;
-    font-size: 16px !important;
+     font-size: 16px !important;
+     font-weight: 400 !important;
   }
 
   @media (min-width: 630px) and (max-width: 700px) {
     margin-left: 0px !important;
   }
 
-  @media (min-width: 750px) and (max-width: 1000px) {
-    font-size: 20px !important;
+  @media(min-width: 750px) and (max-width: 1000px){
+    font-size: 16px !important;
     font-weight: 400 !important;
   }
 }
@@ -309,6 +324,7 @@
     display: flex;
     white-space: nowrap;
     font-size: 16px !important;
+    font-weight: 500 !important;
   }
 
   @media (min-width: 630px) and (max-width: 700px) {

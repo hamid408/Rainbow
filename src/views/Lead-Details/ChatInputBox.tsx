@@ -89,7 +89,7 @@ const ChatInputBox = ({ data }: any) => {
       <Box className={styles.chatInputBoxButtonsRoot}>
         <Box className={styles.chatInputBoxButtons}>
           <CustomButton
-            className={styles.chatInputButtons}
+            className={styles.chatInputCallBtn}
             variant="outlined"
             startIcon={<SmallPhone />}
             fontWeight="600"
@@ -99,21 +99,35 @@ const ChatInputBox = ({ data }: any) => {
           </CustomButton>
 
           <CustomButton
-            className={styles.chatInputButtons}
+            className={styles.chatInputSendBtn}
             variant="outlined"
             startIcon={<Email />}
             fontWeight="600"
             disabled
+            sx={{"@media(max-width: 900px)": {
+              marginLeft: "23px"
+            },
+            "@media(max-width: 320px)": {
+              marginLeft: "0px"
+            }
+          }}
           >
             Send Email
           </CustomButton>
 
           <CustomButton
-            className={styles.chatInputButtons}
+            className={styles.chatInputMarkBtn}
             variant="outlined"
             startIcon={<Mark />}
             fontWeight="600"
             onClick={() => setIsConfirmOpen(true)}
+            sx={{"@media(max-width: 900px)": {
+              marginTop: "15px",
+            },
+              "@media(min-width: 680px) and (max-width: 700px)" : {
+                marginLeft: "16px"
+              }
+          }}
           >
             Mark as Resolved
           </CustomButton>
@@ -126,6 +140,13 @@ const ChatInputBox = ({ data }: any) => {
           fontWeight="600"
           onClick={handleSendMessage}
           disabled={isSending}
+          sx={{"@media(max-width: 900px)": {
+              marginTop: "55px"
+            },
+            "@media(max-width: 600px)" : {
+              marginTop: "0px"
+            }
+          }}
         >
           {isSending ? "Sending..." : "Send"}
         </CustomButton>

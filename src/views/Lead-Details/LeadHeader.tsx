@@ -49,21 +49,22 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
             {/* <Back onClick={() => router.back()} /> */}
           </Box>
           <Avatar
-            sx={{
-              bgcolor: "#D9EFFF",
-              height: "60px",
-              width: "60px",
-              color: "#0062FF",
+          className = {styles.leadHeaderAvatar}
+            // sx={{
+            //   bgcolor: "#D9EFFF",
+            //   height: "60px",
+            //   width: "60px",
+            //   color: "#0062FF",
 
-              fontWeight: "600",
-              fontSize: "24px",
-              mb: 2,
-            }}
+            //   fontWeight: "600",
+            //   fontSize: "24px",
+            //   mb: 2,
+            // }}
           >
             {initials || "U"}
           </Avatar>
           <Stack gap={1}>
-            <Typography fontWeight={600} variant="h5" color="#0D0D12">
+            <Typography className={styles.leadHeaderName}>
               {name}
             </Typography>
 
@@ -71,18 +72,12 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
               className={styles.leadHeaderChip}
               label={status}
               size="small"
-              sx={{
-                background: "#FFF0F3",
-                color: "#36394A",
-                fontSize: "14",
-                fontWeight: "500",
-              }}
               icon={<Urgent />}
             />
           </Stack>
         </Box>
 
-        <Box display={"flex"} alignItems="center" gap={2}>
+        <Box className = {styles.refreshBtn}>
           <CustomButton
             variant="contained"
             onClick={handleRefreshClick}
