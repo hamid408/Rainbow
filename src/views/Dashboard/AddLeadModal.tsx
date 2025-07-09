@@ -67,6 +67,15 @@ const AddLeadModal = ({
       })) || [],
     [enumsData]
   );
+  const timeZoneOptions = useMemo(
+    () =>
+      enumsData?.time_zone?.map((time: string) => ({
+        label: time,
+        value: time,
+      })) || [],
+    [enumsData]
+  );
+  // timeZoneOptions
   const [createLead, { isLoading }] = useCreateLeadMutation();
 
   const onSubmit = async (data: any) => {
@@ -201,15 +210,32 @@ const AddLeadModal = ({
               placeholder="Add any notes or comments"
               {...register("notes")}
             />
-            <CustomTextField
+            {/* <CustomTextField
               label="Time Zone"
               {...register("time_zone")}
               placeholder="Select time zone"
+            /> */}
+             <Controller
+              name="time_zone"
+              control={control}
+              rules={{ required: "time zone is required" }}
+              render={({ field }) => (
+                <CustomSelect
+                  label="Time Zone"
+                  placeholder="Select Time Zone"
+                  value={field.value}
+                  onChange={field.onChange}
+                  // options={tags.map((tag) => ({ label: tag, value: tag }))}
+                  options={timeZoneOptions}
+                  error={!!errors.time_zone}
+                  helperText={errors.time_zone ? String(errors.time_zone.message) : ""}
+                />
+              )}
             />
           </Box>
         </DialogContent>
         <DialogActions sx={{ p: "16px 24px" }}>
-          <CustomButton onClick={onClose} variant="outlined">
+          <CustomButton onClick={onClose} variant="outlined" >
             Cancel
           </CustomButton>
           <CustomButton
