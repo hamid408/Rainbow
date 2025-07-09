@@ -328,9 +328,9 @@
     margin-left: -20px !important;
   }
 
-//   @media (max-width: 600px) {
-//     margin-bottom: 66px !important;
-//   }
+  //   @media (max-width: 600px) {
+  //     margin-bottom: 66px !important;
+  //   }
 }
 
 .chatInputBoxButtonsRoot {
@@ -437,12 +437,20 @@
     padding-right: 18px;
   }
 
+  @media(min-width: 900px) and (max-width: 880px){
+    margin-left: 10px;
+  }
+
   @media (min-width: 600px) and (max-width: 700px) {
     font-size: 10px !important;
   }
 
   @media (max-width: 400px) {
     font-size: 10px !important;
+  }
+
+  @media(max-width: 600px){
+    margin-top: 0px !important;
   }
 }
 
@@ -453,6 +461,10 @@
 
   @media (max-width: 400px) {
     font-size: 10px !important;
+  }
+
+  @media(min-width: 600px) and (max-width: 700px){
+    margin-top: 0px !important;
   }
 }
 
@@ -617,5 +629,20 @@
 
   @media (max-width: 400px) {
     margin-left: 113px;
+  }
+}
+
+.divider {
+  display: none;
+  @media (max-width: 700px) {
+    display: inline;
+  }
+}
+
+.sendBtn {
+  @media (max-width: 700px) {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
   }
 }
