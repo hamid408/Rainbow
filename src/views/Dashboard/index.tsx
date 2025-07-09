@@ -103,7 +103,7 @@ const Dashboard = () => {
             >
               {/* Add New Lead */}
               <span className={styles.fullText}>Add New Lead</span>
-              <span className={styles.shortText}>Add</span>
+              <span className={styles.shortText}>Add Lead</span>
             </CustomButton>
           </Box>
         </Box>

@@ -36,8 +36,9 @@ body {
 body {
   font-family: "Switzer", sans-serif !important;
 }
+
 .zoomed-layout {
-  transform: scale(0.9);
+  transform: scale(0.875);
   transform-origin: top left;
   width: 111.1111%;
   height: 111.1111%;

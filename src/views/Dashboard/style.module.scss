@@ -38,20 +38,20 @@
 
 .fullText{
     display: none;
-    @media(min-width: 800px){
+    @media(min-width: 750px){
         display: inline;
     }
 }
 
 .shortText{
     display: none;
-    @media(max-width: 800px){
+    @media(max-width: 750px){
         display: inline;
     }
 }
 
-// .paginationBox{
-//     @media(max-width: 600px){
-//         margin-bottom: 56px !important;
-//     }
-// }
+.paginationBox{
+    @media(max-width: 600px){
+        margin-bottom: -40px !important;
+    }
+}
