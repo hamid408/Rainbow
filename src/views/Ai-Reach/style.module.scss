@@ -1,0 +1,549 @@
+  .indexRoot {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; // MUI spacing unit 2 = 8px * 2 = 16px
+    padding: 16px; // padding: 2 = 16px
+    background-color: white;
+    margin-left: 10px;
+
+    @media (max-width: 600px) {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px 0; // top-bottom only
+      margin: 0; // no side margin
+      background-color: white;
+    }
+  }
+
+  .indexSecondary {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px; // 1.5 * 8px (MUI spacing unit) = 12px
+    background-color: #fff;
+    box-shadow: none;
+    
+    @media(max-width: 600px){
+      border-radius: 0px;
+      width: 101%;
+      margin-left: -1px;
+      border-top: 0px;
+      box-shadow: 0px 4px 10px #F6F8FA !important;
+    }
+  }
+
+  .contactProgressRoot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    gap: 12px;
+    background-color: #fff;
+    flex-wrap: wrap;
+  }
+
+  .contactBox {
+    display: flex;
+    align-items: center;
+    min-width: 140px;
+  }
+
+  .avatarBox {
+    width: 60.54px !important;
+    height: 64px !important;
+    margin-right: 8px !important;
+    font-size: 20px !important;
+    border: 1px solid #bdecc6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.green {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    &.yellow {
+      background-color: #ffeb3b;
+      color: #000;
+    }
+
+    &.red {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    @media(max-width : 600px){
+      width: 50px !important;
+      height: 50px !important;
+      font-size: 22px !important;
+    }
+
+    // @media(max-width: 400px){
+    //   height: 40px !important;
+    //   width: 40px !important;
+    //   font-size: 16px !important;
+    // }
+
+    @media(min-width: 600px) and (max-width: 700px){
+      height: 45px !important;
+      width: 45px !important;
+    }
+  }
+
+  .progressBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    width: 164px;
+    height: 45px;
+    gap: 16px;
+
+    @media(max-width: 400px){
+      margin-right: 100px;
+    }
+  }
+
+  .progressText {
+    color: #666d80 !important;
+    // font-size: 16px !important;
+    // font-weight: 400 !important;
+
+    @media(max-width: 700px){
+      display: none;
+    }
+
+  }
+
+  .progressbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-left: 16px;
+
+    @media(max-width: 600px){
+      margin-top: 12px ;
+      width: 111px;
+    }
+
+    @media(min-width: 600px) and (max-width: 700px){
+      width: 90px;
+      margin-top: 14px;
+    }
+  }
+
+  .progressBarStep {
+    width: 22px;
+    height: 8px;
+    border-radius: 6px;
+    background-color: #ccc;
+
+    &.active {
+      background-color: #00bfff;
+    }
+
+    @media(max-width: 600px){
+      width: 16px;
+      height: 10px;
+      border-radius: 16px;
+    }
+
+    // @media(max-width: 400px){
+    //   width: 15px;
+    //   height: 5px;
+    // }
+  }
+
+  .buttonBox {
+    display: flex;
+    gap: 0.7rem; // or `gap: 11.2px` if you're using exact pixel spacing
+    min-width: 150px;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+
+    @media(max-width: 600px){
+      display: flex;
+      justify-content: flex-end;
+      margin-left: auto;
+    }
+
+    @media(max-width: 900px){
+      display: flex;
+      justify-content: flex-end;
+      margin-left: auto;
+    }
+
+    @media(max-width: 400px){
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      margin-left: 30px;
+    }
+  }
+
+  .pauseButton {
+    border-radius: 999px !important;
+    text-transform: none !important;
+    padding: 2px 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    height: 40px !important;
+    min-width: 0 !important;
+    border: 1px solid #36394a !important;
+
+    @media(max-width: 600px){
+      padding-left: 25px !important;
+      padding-right: 25px !important;
+    }
+
+    @media(max-width: 400px){
+      font-size: 12px !important;
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+    }
+  }
+
+  .assignAIButton{
+    border-radius: 999px !important;
+    text-transform: none !important;
+    padding: 2px 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    height: 40px !important;
+    min-width: 0 !important;
+    border: 1px solid #7A4DF5 !important;
+    color: #7A4DF5 !important;
+
+    @media(max-width: 600px){
+      padding-left: 25px !important;
+      padding-right: 25px !important;
+    }
+
+    @media(max-width: 400px){
+      font-size: 12px !important;
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+    }
+  }
+
+  .takeOverButton {
+    background-color: #7a4df5 !important;
+    color: #ffffff Im !important;
+    border-radius: 999px !important;
+    text-transform: none !important;
+    font-size: 14px !important;
+    height: 40px !important;
+    padding: 0 10px !important;
+    font-weight: 600 !important;
+    min-width: 0 !important;
+
+    &:hover {
+      background-color: #5e1a8e !important;
+    }
+
+    @media(max-width: 600px){
+      padding-left: 25px !important;
+      padding-right: 25px !important;
+    }
+
+    @media(max-width: 400px){
+      font-size: 12px !important;
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+    }
+  }
+
+  .outReachRoot {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 12px;
+
+    @media(max-width: 600px){
+      display: block;
+    }
+  }
+
+  .outReachBox {
+    flex: 1;
+    min-width: 180px;
+    border: 1px solid #dfe1e7;
+    border-radius: 8px;
+    padding: 10px 14px;
+    background-color: #fff;
+    // box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2); // Approximate for `boxShadow: 1`
+    color: #ffffff;
+
+    @media(max-width: 600px){
+      margin-bottom: 12px;
+    }
+  }
+
+  .outReachText {
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    color: #818898 !important;
+  }
+
+  .statusesBox {
+    margin-top: 6px;
+  }
+
+  .statusesStack {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6.4px !important; // 0.8 * 8 (MUI spacing unit)
+    margin-bottom: 2.4px !important; // 0.3 * 8
+  }
+
+  .statusColor {
+    color: #36394a !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+  }
+
+  .AiText {
+    font-weight: 500 !important;
+    color: #7a4df5 !important;
+    font-size: 14px !important;
+  }
+
+  .messageBox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    @media(max-width: 1000px){
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .editButton {
+    background-color: #ffffff !important;
+    height: 38px !important;
+    width: 38px !important;
+    border: 1px solid #dfe1e7 !important;
+    border-radius: 50% !important;
+    padding: 5px !important;
+    box-shadow: 0px 1px 2px 0px #0d0d120f !important;
+    transition: background-color 0.2s ease !important;
+
+    &:hover {
+      background-color: #ddd !important;
+    }
+  }
+
+  .previewButton {
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    border: 1px solid #7a4df5 !important;
+    color: #7a4df5 !important;
+    min-width: 64px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-shadow: 0px 1px 2px 0px #0d0d120f !important;
+    background-color: transparent !important;
+    transition: border-color 0.2s ease, color 0.2s ease !important;
+
+    &:hover {
+      border-color: #5e1a8e !important;
+      color: #5e1a8e !important;
+    }
+  }
+
+  .saveButton {
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    border: 1px solid #7a4df5 !important;
+    color: #7a4df5 !important;
+    min-width: 64px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    box-shadow: 0px 1px 2px 0px #0d0d120f !important;
+    background-color: transparent !important;
+    transition: border-color 0.2s ease, color 0.2s ease !important;
+    margin-left: 40px !important;
+
+    &:hover {
+      border-color: #5e1a8e !important;
+      color: #5e1a8e !important;
+    }
+  }
+
+  .tickMark{
+    margin-left: 5px;
+  }
+
+  .divider {
+    margin: 4px -12px 4px -12px !important;
+    border: 1px solid #eceff3 !important;
+  }
+
+
+  .input {
+    border: none;
+    // outline: none;
+    // background: transparent;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    resize: none;
+    font-weight: 400;
+
+    width: 500px;
+    height: 38px;
+    background-color: #f6f8fa;
+    border-radius: 8px;
+    padding: 9px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+  
+
+    &:not(:disabled){
+      background-color: #FFFFFF !important;
+      border: 1px solid #B59CFA !important;
+    }
+
+    @media(max-width: 1000px){
+      width: 100%;
+    }
+
+    @media(max-width: 1200px){
+      height: 60px;
+    }
+
+    @media(min-width: 700px) and (max-width: 760px){
+      height: 75px;
+    }
+  }
+
+  .suggestedMessageBox {
+    flex: 2;
+    min-width: 240px;
+    border: 1px solid #dfe1e7;
+    border-radius: 10px;
+    padding: 12px; // 1.5 * 8px = 12px (MUI spacing unit)
+    background-color: #fff;
+    // box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  .takeOverSelect{
+    border: 1px solid #DFE1E7;
+    border-radius: 10px;
+  }
+
+  .mainHeading{
+    margin-top: 40px !important;
+    font-size: 40px !important;
+    font-weight: 600 !important;
+
+    @media(max-width: 600px){
+      margin-left: 20px !important;
+    }
+
+    @media(max-width: 400px){
+      font-size: 30px !important;
+    }
+  }
+
+  .pauseDialogBox{
+    width: 100%  !important;
+    max-width: 700px !important;
+    // height: 388px;
+    border-radius: 8px !important;
+  }
+
+  .dialogCrossIcon{
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+  }
+
+  .dialogContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px;
+  }
+
+  .dialogHeading {
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 16px;
+  }
+
+  .dialogSubheading {
+    color: #666D80 !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    margin-bottom: 20px !important;
+    margin-top: 10px !important;
+  }
+
+  .dialogButton{
+    background-color: #6B39F4 !important;
+    color: #FFFFFF !important;
+    border-radius: 10px !important;
+    padding: 8px 16px !important;
+  }
+
+  .dialogSelectBox{
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .dialogSelectText{
+    display: flex !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #0D0D12 !important;
+  }
+
+  .editPreiewStack{
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-top: 5px;
+  }
+
+  .title{
+    font-size: 18px !important;
+    font-weight: 600 !important;
+
+    // @media(max-width: 400px){
+    //   font-size: 14px !important;
+    // }
+
+    @media(max-width: 600px){
+      font-size: 18px !important;
+      font-weight: 600 !important;
+    }
+  }
+
+  .subTitle{
+    font-size: 16px;
+    font-weight: 400;
+
+    // @media(max-width: 400px){
+    //   font-size: 12px !important;
+    // }
+
+    @media(max-width: 600px){
+      font-size: 16px !important;
+      font-weight: 400 !important;
+    }
+
+  }
+

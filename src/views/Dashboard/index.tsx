@@ -10,6 +10,7 @@ import { useGetLeadsQuery } from "@/src/redux/services/leads/leadsApi";
 import { useDebounce } from "use-debounce";
 import CustomPagination from "@/src/components/common/CustomPagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import styles from "./style.module.scss";
 
 const Dashboard = () => {
   const searchParams = useSearchParams();
@@ -80,20 +81,29 @@ const Dashboard = () => {
         bgcolor="#fff"
         boxShadow="0px 4px 12px rgba(0, 0, 0, 0.05)"
         mt={4}
+        className={styles.cardback}
       >
-        <Box mb={2.5} display="flex" justifyContent="space-between">
+        <Box
+          mb={2.5}
+          display="flex"
+          justifyContent="space-between"
+          className={styles.spaceBottom}
+        >
           <CustomTabs tabs={tabsData} onTabChange={handleTabChange} />
           <Box
             display="flex"
             justifyContent="flex-end"
             height="48px"
             width={"100%"}
+            className={styles.leftSpace}
           >
             <CustomButton
               variant="contained"
               onClick={() => setOpenModal(true)}
             >
-              Add New Lead
+              {/* Add New Lead */}
+              <span className={styles.fullText}>Add New Lead</span>
+              <span className={styles.shortText}>Add Lead</span>
             </CustomButton>
           </Box>
         </Box>
@@ -154,7 +164,9 @@ const Dashboard = () => {
         count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
         onChange={(val) => setPage(val)}
       /> */}
-      <CustomPagination
+
+      <Box className = {styles.paginationBox}>
+        <CustomPagination
         page={page}
         count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
         onChange={(val) => {
@@ -170,6 +182,8 @@ const Dashboard = () => {
           router.push(`?${searchParams.toString()}`);
         }}
       />
+      </Box>
+      
 
       <AddLeadModal
         open={openModal}

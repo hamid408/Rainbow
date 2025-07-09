@@ -15,7 +15,7 @@ import { Message, Typing } from "@/src/assests/icons";
 import { CallEnd } from "@mui/icons-material";
 import CustomButton from "@/src/components/common/CustomButton";
 import CallLogModal from "./CallLogModal";
-
+import styles from "./style.module.scss";
 const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
   const latestOffset = useRef(0);
@@ -114,40 +114,43 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   return (
     <>
       <Box
-        p={"40px 32px 32px 0"}
-        sx={{
-          height: "400px",
-          overflowY: "auto",
-        }}
+        className={styles.leadChat}
+        // p={"40px 32px 32px 0"}
+        // sx={{
+        //   height: "400px",
+        //   overflowY: "auto",
+        // }}
       >
         <Stack gap={4}>
           {allMessages.map((msg: any, index: number) => {
+            // const time = extractTime(msg.created_at);
             const time = msg.created_at;
-            const isAI = msg.is_bot === true;
-
+            const isAI = msg.sender_type === "user";
+            // const senderName = isAI ? "AI Assistant" : userName;
+            // const senderName = isAI ? "AI Assistant" : msg.sender_name;
             const senderName = msg.sender_name || "Unknown";
+
             return (
               <Box
                 key={index}
-                display={"flex"}
-                alignItems={"start"}
-                gap={2.5}
-                flexDirection="row"
+                className={styles.leadChatMainBox}
+                // display={"flex"}
+                // alignItems={"start"}
+                // gap={2.5}
+                // flexDirection="row"
               >
-                {isAI ? (
-                  <Image
-                    src={AvatarPic}
-                    alt="AI Avatar"
-                    width={60}
-                    height={60}
-                  />
+                {/* {isAI ? (
+                <Image src={AvatarPic} alt="AI Avatar" width={60} height={60} />
                 ) : (
-                  renderUserAvatar(senderName)
-                )}
-                {/* {renderUserAvatar(senderName)} */}
+                  renderUserAvatar(userName)
+                  )} */}
+                {renderUserAvatar(senderName)}
                 <Stack spacing={1.5}>
                   <Box>
-                    <Box display={"flex"} alignItems={"center"} gap={1}>
+                    <Box
+                      className={styles.leadChatFirstRow}
+                      // display={"flex"} alignItems={"center"} gap={1}
+                    >
                       <Typography mb={0.5} variant="body1">
                         {senderName}
                       </Typography>
@@ -162,15 +165,15 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                       )}
 
                       <Typography
-                        mb={0.5}
+                        className={styles.leadChatDate}
                         variant="subtitle1"
-                        fontWeight={400}
-                        color="#666D80"
-                        mt={0.5}
+                        // mb={0.5}
+                        // fontWeight={400}
+                        // color="#666D80"
+                        // mt={0.5}
                       >
                         {time}
                       </Typography>
-
                       {msg.channel === "call" &&
                         isValidCallLogJson(msg.provider_metadata) && (
                           <>

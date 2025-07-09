@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useState } from "react";
 import CallModal from "../../Lead-Details/CallModal";
 import ChatInputModal from "./ChatInputModal";
+import styles from "./style.module.scss";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 interface LeadCardProps {
   lead_id: string;
@@ -40,6 +42,8 @@ const LeadCard = ({
   const router = useRouter();
   const [isCallOpen, setIsCallOpen] = useState(false);
   const [isEmailOpen, setIsEmailOpen] = useState(false);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <>
@@ -48,41 +52,23 @@ const LeadCard = ({
         style={{ textDecoration: "none" }}
       >
         <Box
-          sx={{
-            height: "112px",
-            borderRadius: "12px",
-            border: "1px solid #DFE1E7",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "20px 32px",
-            boxSizing: "border-box",
-            backgroundColor: "#F6F8FA",
-            // flexWrap:"wrap"
-            cursor: "pointer",
-          }}
+          className={styles.root}
+          
           // onClick={() => router.push(`/dashboard/${lead_id}`)} // <-- navigate to dynamic route
           // onClick={() => router.push(`/dashboard/${lead_id}?page=${page}`)}
         >
-          <Box display="flex" width="30%" gap={2}>
-            <Avatar
-              src={avatarUrl}
-              sx={{
-                bgcolor: "#D9EFFF",
-                height: "60px",
-                width: "60px",
-                color: "#0062FF",
-                fontWeight: "600",
-                fontSize: "24px",
-              }}
-            >
+          <Box className={styles.secondaryRoot}>
+            <Avatar src={avatarUrl} className={styles.avator}>
               {initials}
             </Avatar>
 
-            <Stack spacing={1.5}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Typography variant="body1">{name}</Typography>
-                <Box sx={{ display: { sm: "none", md: "block" } }}>
+            <Stack className={styles.firstRow}>
+              <Stack direction="row" className={styles.nameAndTag}>
+                <Typography variant="body1" className={styles.name}>
+                  {name}
+                </Typography>
+
+                <Box>
                   {tag?.toLowerCase() === "cold" ? (
                     <StatusTag
                       label="Cold"
@@ -98,48 +84,33 @@ const LeadCard = ({
                   )}
                 </Box>
               </Stack>
-              {message !== "No message available" && (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    borderRadius: "8px",
-                    padding: "6px 10px",
-                    background: "#ECEFF3",
-                    color: "#36394A",
-                  }}
+
+              {/* {message !== "No message available" && ( */}
+              <Box className={styles.messageIconBox}>
+                <Typing />
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  className={styles.messageIconLable}
                 >
-                  <Typing />
-                  <Typography variant="subtitle1" color="text.secondary">
-                    {serviceType}
-                  </Typography>
-                </Box>
-              )}
+                  {serviceType}
+                </Typography>
+              </Box>
+              {/* )}  */}
             </Stack>
           </Box>
 
-          <Box width="30%">
-            <Typography variant="body2" color="#666D80" mb={2.5}>
+          <Box className={styles.serviceNameTypeBox}>
+            <Typography variant="body2" className={styles.serviceName}>
               {serviceName}
             </Typography>
-            <Typography variant="body1" fontSize={16} color="#0D0D12">
-              {message}
+            <Typography variant="body1" className={styles.message}>
+              {/* {message} */}
+              {message.length > 20 ? `${message.slice(0, 20)}...` : message}
             </Typography>
           </Box>
 
-          <Box
-            sx={{
-              width: {
-                xs: "100%",
-                md: "50%",
-                xl: "40%",
-              },
-            }}
-            display="flex"
-            justifyContent="flex-end"
-            gap={2}
-          >
+          <Box className={styles.icons}>
             {isGoingCold ? (
               serviceType.toLowerCase().startsWith("missed") ? (
                 <>

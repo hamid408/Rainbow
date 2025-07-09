@@ -18,6 +18,7 @@ import { AssignTask, Mark, SmallPhone } from "@/src/assests/icons";
 import CallModal from "./CallModal";
 import { useSendSmsMutation } from "@/src/redux/services/conversation/conversationApi";
 import { useResolvedLeadMutation } from "@/src/redux/services/leads/leadsApi";
+import styles from "./style.module.scss";
 
 const ChatInputBox = ({ data }: any) => {
   const [message, setMessage] = useState("");
@@ -62,18 +63,7 @@ const ChatInputBox = ({ data }: any) => {
   };
 
   return (
-    <Box
-      sx={{
-        bgcolor: "#fff",
-        borderRadius: "12px",
-        marginTop: "55px",
-        padding: 2,
-        width: "100%",
-        maxWidth: "100%",
-        mx: "auto",
-        border: "1px solid #DFE1E7",
-      }}
-    >
+    <Box className={styles.chatInputBox}>
       <TextField
         multiline
         rows={5}
@@ -96,16 +86,10 @@ const ChatInputBox = ({ data }: any) => {
         }}
       />
 
-      <Box
-        mt={2}
-        display="flex"
-        alignItems="center"
-        gap={2}
-        width="100%"
-        justifyContent="space-between"
-      >
-        <Box display="flex" gap={2}>
+      <Box className={styles.chatInputBoxButtonsRoot}>
+        <Box className={styles.chatInputBoxButtons}>
           <CustomButton
+            className={styles.chatInputCallBtn}
             variant="outlined"
             startIcon={<SmallPhone />}
             fontWeight="600"
@@ -115,33 +99,58 @@ const ChatInputBox = ({ data }: any) => {
           </CustomButton>
 
           <CustomButton
+            className={styles.chatInputSendBtn}
             variant="outlined"
             startIcon={<Email />}
             fontWeight="600"
             disabled
+            sx={{"@media(max-width: 900px)": {
+              marginLeft: "23px"
+            },
+            "@media(max-width: 320px)": {
+              marginLeft: "0px"
+            }
+          }}
           >
             Send Email
           </CustomButton>
 
           <CustomButton
+            className={styles.chatInputMarkBtn}
             variant="outlined"
             startIcon={<Mark />}
             fontWeight="600"
             onClick={() => setIsConfirmOpen(true)}
+            sx={{"@media(max-width: 900px)": {
+              marginTop: "15px",
+            },
+              "@media(min-width: 680px) and (max-width: 700px)" : {
+                marginLeft: "16px"
+              }
+          }}
           >
             Mark as Resolved
           </CustomButton>
         </Box>
 
         <CustomButton
+          className={styles.chatInputSendButton}
           variant="contained"
           startIcon={<SendIcon />}
           fontWeight="600"
           onClick={handleSendMessage}
           disabled={isSending}
+          sx={{"@media(max-width: 900px)": {
+              marginTop: "55px"
+            },
+            "@media(max-width: 600px)" : {
+              marginTop: "0px"
+            }
+          }}
         >
           {isSending ? "Sending..." : "Send"}
         </CustomButton>
+
       </Box>
 
       <CallModal

@@ -4,47 +4,27 @@ import React, { useState } from "react";
 import { viewButtons } from "./data";
 import CustomButton from "@/src/components/common/CustomButton";
 import { Add } from "@/src/assests/icons";
+import styles from "./styles.module.scss";
 
 const TaskHeader = () => {
   const [activeButton, setActiveButton] = useState("list");
 
-  return (
-    <Box mb={4.2}>
-      <Box
-        display={"flex"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        flexWrap={"wrap"}
-      >
-        <Typography variant="h1" color="#0D0D12">
+   return (
+    <Box className={styles.headerMainBox}>
+      <Box className={styles.headerSecondaryBox}>
+        <Typography variant="h1" className={styles.heading}>
           Task & Reminder
         </Typography>
-        <Box display={"flex"} alignItems={"center"} gap={2}>
-          <Box
-            sx={{
-              display: "inline-flex",
-              border: "1px solid #ccc",
-              borderRadius: "12px",
-              overflow: "hidden",
-              padding: "4px",
-              background: "#fff",
-            }}
-          >
+
+        <Box className={styles.headerLastBox}>
+          <Box className={styles.toggleBox}>
             {viewButtons.map(({ id, icon }) => (
               <Box
                 key={id}
                 onClick={() => setActiveButton(id)}
-                sx={{
-                  cursor: "pointer",
-                  padding: "10px 16px",
-                  backgroundColor:
-                    activeButton === id ? "#F4EDFF" : "transparent",
-                  borderRadius: "8px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderColor: "#C1C7D0",
-                }}
+                className={`${styles.headerToggleButton} ${
+                  activeButton === id ? styles.active : ""
+                }`}
               >
                 {React.cloneElement(icon, {
                   backgroundColor: activeButton === id ? "#7A4DF5" : "#A0A0A0",
@@ -59,10 +39,13 @@ const TaskHeader = () => {
           <CustomButton
             variant="contained"
             startIcon={<Add />}
-            padding="15px"
-            background="#6B39F4"
+            className={styles.headerNewTaskBtn}
           >
             Create New Task
+          </CustomButton>
+
+          <CustomButton className = {styles.floatingAddBtn}>
+            <Add />
           </CustomButton>
         </Box>
       </Box>

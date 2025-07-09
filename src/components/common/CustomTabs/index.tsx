@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { Box, Tabs, Tab } from "@mui/material";
+import styles from "./index.module.scss";
 
 export interface TabItem {
   label: string;
@@ -34,7 +35,7 @@ const CustomTabs: React.FC<CustomMuiTabsProps> = ({
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box className = {styles.rootBox}>
       <Tabs
         value={value}
         onChange={handleChange}
@@ -56,6 +57,14 @@ const CustomTabs: React.FC<CustomMuiTabsProps> = ({
             color: activeColor,
             fontSize: "16px",
             fontWeight: "600",
+          },
+          "@media (max-width: 600px)": {
+            "& .Mui-selected": {
+              backgroundColor: "#F8F5FF",
+              border: "none",
+              padding: "0px",
+              borderRadius: "0px",
+            },
           },
         }}
       >

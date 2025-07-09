@@ -26,6 +26,17 @@ import UrgentBlue from "./UrgentBlue.svg";
 import Add from "./Add.svg";
 import MailBlack from "./MailBlack.svg";
 import Copy from "./Copy.svg";
+import SliderShow from "./SliderShow.svg";
+import Pause from "./Pause.svg";
+import MailGrey from "./MailGrey.svg";
+import MessageGrey from "./MessageGrey.svg";
+import Lightning from "./Lightning.svg";
+import Editting from "./Edit.svg";
+import TickMark from "./TickMark.svg";
+import BigPause from "./BigPause.svg";
+import AssignAI from "./AssignAI.svg";
+import TakeOver from "./TakeOver.svg";
+import AfterTakeOver  from "./AfterTakeOver.svg";
 export {
   LeadsIcon,
   UserIcon,
@@ -55,4 +66,15 @@ export {
   Add,
   MailBlack,
   Copy,
+  SliderShow,
+  Pause,
+  MailGrey,
+  MessageGrey,
+  Lightning,
+  Editting,
+  TickMark,
+  BigPause,
+  AssignAI,
+  TakeOver,
+  AfterTakeOver,
 };

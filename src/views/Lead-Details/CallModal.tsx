@@ -23,6 +23,7 @@ import {
 import { useCreateBotCallMutation } from "@/src/redux/services/twilio/twilioApi";
 import { toast } from "react-toastify";
 import { useGetCurrentUserQuery } from "@/src/redux/services/users/usersApi";
+import styles from "./style.module.scss";
 
 const style = {
   position: "absolute" as const,
@@ -186,28 +187,22 @@ export default function CallModal({
       aria-labelledby="twilio-call-modal"
       aria-describedby="twilio-call-description"
     >
-      <Box sx={style}>
+      <Box className = {styles.callModalBox}>
         {callStarted ? (
-          <Stack alignItems="center" spacing={2} mb={3}>
+          <Stack className = {styles.callingBox}>
             <Typography variant="h6" mb={3}>
               Ringing {phone}...
               {/* {callConnected ? "Connected" : `Ringing ${phone}...`} */}
             </Typography>
             <Box>
-              <PersonOutline sx={{ width: "120px", height: "120px" }} />
+              <PersonOutline className = {styles.callLogOutline}/>
             </Box>
-            <Stack direction="row" spacing={2} mt={5}>
+            <Stack className={styles.ringingStack}>
               <Button
                 variant="contained"
                 color="error"
                 onClick={handleEndCall}
-                sx={{
-                  backgroundColor: "red",
-                  borderRadius: "50px",
-                  "&:hover": {
-                    backgroundColor: "red",
-                  },
-                }}
+                className = {styles.ringingBtn}
               >
                 <CallEnd />
               </Button>
@@ -215,7 +210,7 @@ export default function CallModal({
           </Stack>
         ) : (
           <>
-            <Typography variant="h6" fontWeight={600} fontSize={22} mb={3}>
+            <Typography variant="h6" className = {styles.callModalTypo}>
               Start a Twilio Call
             </Typography>
             <Stack spacing={4} mt={2}>
@@ -226,20 +221,7 @@ export default function CallModal({
                   onClick={handleCall}
                   disabled={isCalling}
                   startIcon={<CallRounded />}
-                  sx={{
-                    backgroundColor: "green",
-                    borderRadius: "50px",
-                    maxWidth: "120px",
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    margin: "24px auto 0 auto",
-                    "&:hover": {
-                      backgroundColor: "green",
-                    },
-                    marginTop: "12px",
-                  }}
+                  className = {styles.callModalSelfCall}
                 >
                   Self Call
                 </Button>
@@ -249,17 +231,7 @@ export default function CallModal({
                   onClick={handleBotCall}
                   disabled={isCalling}
                   startIcon={<CallRounded />}
-                  sx={{
-                    borderRadius: "50px",
-                    maxWidth: "160px",
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    margin: "24px auto 0 auto",
-
-                    marginTop: "12px",
-                  }}
+                  className={styles.callModalBotCall}
                 >
                   Call via Bot
                 </Button>

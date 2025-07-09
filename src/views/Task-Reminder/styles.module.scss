@@ -1,0 +1,382 @@
+.indexBox {
+  padding: 56px 48px 48px 48px;
+}
+
+.headerMainBox {
+  margin-bottom: 33.6px;
+}
+
+.headerSecondaryBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: 450px) {
+    flex-wrap: nowrap;
+  }
+}
+
+.heading {
+  color: #0d0d12 !important;
+
+  @media (min-width: 600px) and (max-width: 740px) {
+    font-size: 26px !important;
+    font-weight: 600 !important;
+    margin-left: -26px !important;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 32px !important;
+    font-weight: 600 !important;
+  }
+
+  @media(max-width: 360px){
+    font-size: 24px !important;
+  }
+
+  @media (max-width: 450px) {
+    color: transparent !important;
+    position: relative;
+    margin-bottom: 40px !important;
+
+    &::before {
+      content: "Task &\A Reminder"; 
+      white-space: pre-line;
+      color: #0d0d12;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+}
+
+.headerLastBox {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  @media (max-width: 435px) {
+    margin-bottom: 32px;
+  }
+
+  @media (min-width: 600px) and (max-width: 620px) {
+    margin-right: -33px;
+  }
+}
+
+.toggleBox {
+  display: inline-flex;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 4px;
+  background: #fff;
+
+  @media (min-width: 600px) and (max-width: 740px) {
+    width: 110px;
+    height: 45px;
+  }
+
+  @media(max-width: 360px){
+    width: 110px;
+    height: 45px;
+  }
+}
+
+.headerToggleButton {
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: #c1c7d0;
+
+  // Default background
+  background-color: transparent;
+
+  // You can add a modifier class for the active state
+  &.active {
+    background-color: #f4edff;
+  }
+}
+
+.headerNewTaskBtn {
+  padding: 15px !important;
+  background-color: #6b39f4 !important;
+
+  @media (max-width: 890px) {
+    display: none !important;
+  }
+}
+
+.floatingAddBtn {
+  display: none !important;
+
+  @media (max-width: 890px) {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 100px !important;
+    right: 20px !important;
+    width: 72px !important;
+    height: 72px !important;
+    min-width: 56px !important;
+    border-radius: 50% !important;
+    background-color: #6b39f4 !important;
+    color: white !important;
+    z-index: 9999 !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+}
+
+.taskCardBox {
+  padding: 16px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #dfe1e7;
+
+  &.due {
+    background-color: #ffeaea;
+  }
+
+  @media (min-width: 600px) and (max-width: 920px) {
+    width: 80%;
+    margin-left: 55px;
+  }
+
+  @media (min-width: 700px) and (max-width: 800px) {
+    width: 100%;
+    margin-left: 3px;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    width: 120%;
+    margin-left: -28px;
+  }
+
+  @media (max-width: 600px) {
+    width: 150%;
+    margin-left: -49px;
+  }
+}
+
+.taskCardStack {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex: 1 !important;
+  min-width: 300px !important;
+}
+
+.taskCardTypoBox {
+  min-width: 180px;
+}
+
+.taskTitle {
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  margin-bottom: 4px !important;
+
+  @media (max-width: 600px) {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+  }
+}
+
+.taskDetailStack {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 2.4px !important;
+
+  @media (max-width: 600px) {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+  }
+}
+
+.taskDetails {
+  font-size: 16px;
+  color: #787878;
+}
+
+.taskDueDate {
+  color: #787878 !important;
+  margin-right: 8px !important;
+  white-space: nowrap !important;
+
+  @media (max-width: 600px) {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 12px !important;
+  }
+}
+
+.taskDueLabel {
+  background-color: #fff;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #36394a;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+.leadAndTaskBox {
+  //   display: flex !important;
+  //   justify-content: center !important;
+  //   align-items: center !important; // add if needed for vertical centering
+  gap: 8px !important;
+  color: #666 !important;
+  font-size: 14px !important;
+  white-space: nowrap !important;
+  user-select: none !important;
+  min-width: 250px !important;
+  flex: 1 1 auto !important;
+
+  @media (min-width: 600px) and (max-width: 920px) {
+    margin-top: 25px;
+    margin-left: 52px;
+  }
+}
+
+.leadNameBox {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  @media (max-width: 1150px) {
+    display: flex !important;
+    justify-content: flex-end !important;
+  }
+
+  @media (min-width: 600px) and (max-width: 920px) {
+    justify-content: flex-start !important;
+  }
+}
+
+.leadName {
+  color: #0d0d12 !important;
+  margin-bottom: 4px !important;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+// .noTagMargin {
+//     @media(max-width: 1150px){
+//         margin-right: 177px !important;
+//     }
+// }
+
+.tagLabelBox {
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #0062ff;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  @media (max-width: 360px) {
+    font-size: 10px;
+    padding: 4px;
+    margin-left: -10px;
+  }
+}
+
+.taskDescription {
+  color: #666d80 !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+
+  @media (max-width: 600px) {
+    display: none !important;
+  }
+
+  @media (max-width: 1150px) {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @media (min-width: 600px) and (max-width: 920px) {
+    justify-content: flex-start !important;
+  }
+}
+
+.taskBtnStack {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-end !important;
+  gap: 16px !important;
+  min-width: 180px !important;
+
+  @media (max-width: 600px) {
+    margin-left: 44px;
+    margin-top: 11px;
+  }
+
+  @media (max-width: 1150px) {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    margin-top: 18px;
+    margin-left: 47px;
+  }
+
+  @media (min-width: 505px) and (max-width: 514px) {
+    margin-right: 20px;
+  }
+
+  @media (min-width: 505px) and (max-width: 514px) {
+    margin-right: 20px;
+  }
+
+  @media (min-width: 442px) and (max-width: 452px) {
+    margin-right: 15px;
+  }
+
+  @media (min-width: 600px) and (max-width: 920px) {
+    margin-top: 25px;
+  }
+
+  @media (max-width: 360px) {
+    margin-left: 28px;
+  }
+}
+
+.taskSnoozeBtn {
+  border: 1px solid #36394a !important;
+  border-radius: 60px !important;
+  color: #36394a !important;
+  font-weight: 600 !important;
+}
+
+.taskResheduleBtn {
+  border-radius: 60px !important;
+  border: 1px solid #7a4df5 !important;
+  color: #7a4df5 !important;
+  font-weight: 600 !important;
+}

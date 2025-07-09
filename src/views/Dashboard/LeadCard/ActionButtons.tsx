@@ -1,7 +1,7 @@
 import { Stack, IconButton } from "@mui/material";
-
+ 
 import { Phone, Typing } from "@/src/assests/icons";
-
+ 
 const iconStyle = {
   border: "1px solid #7A4DF5",
   borderRadius: "50%",
@@ -9,14 +9,14 @@ const iconStyle = {
   height: 52,
   color: "#8647F5",
 };
-
+ 
 const ActionButtons = ({ callOpen, emailOpen }: any) => {
   const handleOpenCallModal = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     callOpen(true);
   };
-
+ 
   return (
     <>
       <Stack direction="row" spacing={2}>
@@ -44,5 +44,5 @@ const ActionButtons = ({ callOpen, emailOpen }: any) => {
     </>
   );
 };
-
+ 
 export default ActionButtons;

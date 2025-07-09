@@ -1,0 +1,621 @@
+.indexMainBox {
+  padding: 20px 32px 32px 32px;
+  //     transform: scale(0.9);
+  //   transform-origin: top left;
+}
+
+.indexSecondaryBox {
+  display: flex;
+  flex-grow: 1;
+}
+
+.indexLastBox {
+  width: 75%;
+  background-color: #fff;
+  padding-right: 32px;
+}
+
+.leadHeaderRoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12.5px;
+
+  @media (max-width: 740px) {
+    display: block;
+  }
+}
+
+.leadHeaderSecondRoot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.leadHeaderFirstRow {
+  background: #ffffff;
+  padding: 8px 16px;
+  box-shadow: 0px 1px 2px 0px #0d0d120f !important;
+  border-radius: 8px;
+  cursor: pointer;
+
+  @media (max-width: 400px) {
+    margin-left: -15px;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    margin-left: -20px;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    padding: 4px 8px;
+  }
+
+  @media (max-width: 400px) {
+    padding: 2px 4px;
+  }
+}
+
+.leadHeaderAvatar {
+  background-color: #d9efff !important;
+  height: 60px !important;
+  width: 60px !important;
+  color: #0062ff !important;
+
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  margin-bottom: 8px !important;
+
+  @media (max-width: 600px) {
+    width: 56px !important;
+    height: 56px !important;
+  }
+}
+
+.leadHeaderBox {
+  gap: 8px;
+  @media (max-width: 400px) {
+    margin-left: -5px;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    margin-left: -8px;
+  }
+}
+
+.leadHeaderName {
+  font-weight: 600 !important;
+  color: #0d0d12 !important;
+  font-size: 24px !important;
+
+  @media (max-width: 600px) {
+    font-size: 24px !important;
+  }
+}
+
+.leadHeaderChip {
+  background: #fff0f3 !important;
+  color: #36394a !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+
+  @media (max-width: 400px) {
+    font-size: 14px !important;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    font-size: 10px !important;
+  }
+}
+
+.leadHeaderSlider {
+  margin-left: -30px !important;
+  margin-right: -30px !important;
+  border-color: #dfe1e7 !important;
+}
+
+.leadDetails {
+  width: 30%;
+  padding: 32px;
+  background-color: #fff;
+  border-left: 1px solid #dfe1e7;
+
+  @media (max-width: 1000px) {
+    display: none;
+  }
+}
+
+.leadDetailTopIcon {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.leadDetailPhoneEmail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.leadCallLog {
+  border: 1px solid #d3c4fc;
+  border-radius: 12px;
+  padding: 16px;
+  max-width: 100%;
+  background-color: #fff;
+
+  @media (max-width: 1000px) {
+    width: 137%;
+    max-width: 1000px !important;
+    margin-left: 9px;
+  }
+
+  @media (min-width: 600px) and (max-width: 760px) {
+    width: 160%;
+    margin-left: -12px;
+  }
+
+  @media (min-width: 655px) and (max-width: 600px) {
+    width: 170%;
+    margin-left: -11px;
+  }
+
+  @media (min-width: 600px) and (max-width: 660px) {
+    width: 173%;
+    margin-left: -15px;
+  }
+
+  @media (min-width: 356px) and (max-width: 456px) {
+    width: 160%;
+    margin-left: -12px;
+  }
+
+  @media (max-width: 355px) {
+    width: 178%;
+    margin-left: -20px;
+  }
+
+  // @media(max-width: 400px) {
+  //     width: 155%;
+  //     margin-left: 0px;
+  // }
+}
+
+.leadCallLogMessageBox {
+  background-color: #f3f2ff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  max-width: 100%;
+  font-size: 16px;
+  line-height: 20px;
+  color: #0d0d12;
+  white-space: pre-wrap;
+}
+
+.leadCallLogEditTextfield {
+  width: 100%;
+  height: 100px;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 16px;
+  line-height: 20px;
+  color: #0d0d12;
+  border: 1px solid #6b39f4;
+  background-color: #f3f2ff;
+  resize: none;
+  outline: none;
+}
+
+.leadCallLogInvitationButtons {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.leadCallLogEditMessage {
+  // @media(max-width: 445px) {
+  //     padding: 10px !important;
+  //     font-size: 8px !important;
+  // }
+
+  @media (min-width: 600px) and (max-width: 760px) {
+    padding: 8px !important;
+    font-size: 12px !important;
+  }
+
+  @media (max-width: 410px) {
+    padding: 10px !important;
+    font-size: 10px !important;
+  }
+}
+
+.leadCallLogSendNow {
+  font-weight: 600px !important;
+  background: #6b39f4 !important;
+
+  // @media(max-width: 445px) {
+  //     padding: 10px !important;
+  //     font-size: 8px !important;
+  //     margin-right: 40px !important;
+  // }
+
+  @media (min-width: 600px) and (max-width: 760px) {
+    padding: 8px !important;
+    font-size: 12px !important;
+  }
+
+  @media (max-width: 410px) {
+    padding: 10px !important;
+    font-size: 6px !important;
+  }
+}
+
+.leadCallLogSendNow {
+  font-weight: 600 !important;
+  background: #6b39f4 !important;
+
+  // @media(max-width: 445px) {
+  //     padding: 10px !important;
+  //     font-size: 8px !important;
+  //     margin-right: 40px !important;
+  // }
+
+  @media (min-width: 600px) and (max-width: 760px) {
+    padding: 8px !important;
+    font-size: 12px !important;
+  }
+
+  @media (max-width: 410px) {
+    padding: 10px !important;
+    font-size: 10px !important;
+  }
+}
+
+.leadCallLogStack {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-bottom: 8px !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+.leadCallLogTypo {
+  font-size: 16px !important;
+  color: #6b39f4 !important;
+}
+
+.chatInputBox {
+  background-color: #fff;
+  border-radius: 12px;
+  margin-top: 55px;
+  padding: 16px;
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #dfe1e7;
+
+  @media (max-width: 1000px) {
+    width: 137% !important;
+    max-width: 1000px !important;
+    margin-left: 9px;
+  }
+
+  @media (min-width: 600px) and (max-width: 760px) {
+    width: 160% !important;
+    margin-left: -12px !important;
+  }
+
+  @media (min-width: 600px) and (max-width: 660px) {
+    width: 170% !important;
+    margin-left: -11px !important;
+  }
+
+  @media (min-width: 356px) and (max-width: 456px) {
+    width: 160% !important;
+    margin-left: -12px !important;
+  }
+
+  @media (max-width: 355px) {
+    width: 178% !important;
+    margin-left: -20px !important;
+  }
+
+//   @media (max-width: 600px) {
+//     margin-bottom: 66px !important;
+//   }
+}
+
+.chatInputBoxButtonsRoot {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: column;
+
+  // @media(max-width: 1060px){
+  //     display: flex;
+  //     flex-wrap: wrap;
+  // }
+
+  @media (min-width: 700px) {
+    flex-direction: row;
+  }
+
+  //   @media(max-width: 900px){
+  //     display: block;
+  //   }
+
+  //  @media(max-width: 600px){
+  //     margin-bottom: -50px;
+  //  }
+}
+
+.chatInputBoxButtons {
+  display: flex;
+  gap: 16px;
+
+  @media (max-width: 600px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  @media (min-width: 1000px) and (max-width: 1100px) {
+    width: 70% !important;
+  }
+
+  @media (min-width: 700px) and (max-width: 900px) {
+    width: 70%;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    width: 100%;
+  }
+
+  @media (min-width: 600px) and (max-width: 900px) {
+    display: block;
+  }
+}
+
+.chatInputCallBtn {
+  @media (min-width: 1000px) and (max-width: 1100px) {
+    font-size: 12px !important;
+  }
+
+  @media (min-width: 700px) and (max-width: 900px) {
+    font-size: 10px !important;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 10px !important;
+  }
+}
+
+.chatInputSendBtn {
+  @media (min-width: 1000px) and (max-width: 1100px) {
+    font-size: 12px !important;
+  }
+
+  @media (min-width: 700px) and (max-width: 900px) {
+    font-size: 10px !important;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 10px !important;
+  }
+}
+
+.chatInputMarkBtn {
+  @media (min-width: 1000px) and (max-width: 1100px) {
+    font-size: 12px !important;
+  }
+
+  @media (min-width: 700px) and (max-width: 900px) {
+    font-size: 10px !important;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 10px !important;
+  }
+}
+
+.chatInputSendButton {
+  @media (min-width: 600px) and (max-width: 700px) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 10px !important;
+  }
+}
+
+.leadChat {
+  padding: 40px 32px 32px 0;
+  height: 400px;
+  overflow-y: auto;
+
+  @media (max-width: 1000px) {
+    width: 150%;
+  }
+
+  @media (max-width: 600px) {
+    width: 157%;
+  }
+
+  @media (min-width: 800px) and (max-width: 950px) {
+    width: 155%;
+  }
+
+  @media (min-width: 700px) and (max-width: 800px) {
+    width: 168%;
+  }
+
+  @media (min-width: 600px) and (max-width: 700px) {
+    width: 175%;
+  }
+
+  @media (min-width: 400px) and (max-width: 500px) {
+    width: 165%;
+  }
+
+  @media (max-width: 400px) {
+    width: 173%;
+  }
+
+  @media (max-width: 335px) {
+    width: 180%;
+  }
+}
+
+.leadChatMainBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-direction: row;
+}
+
+.leadChatFirstRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.leadChatDate {
+  margin-bottom: 4px !important;
+  font-weight: 400 !important;
+  color: #666d80 !important;
+  margin-top: 4px !important;
+}
+
+.leadChatAvatar {
+  background-color: #1976d2 !important;
+  width: 60px !important;
+  height: 60px !important;
+  font-size: 32px !important;
+  margin-bottom: 16px !important;
+}
+
+.leadImage {
+  width: 60px;
+  height: 60px;
+}
+
+.callModalBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #fff; // or use a CSS variable for MUI theme
+  border-radius: 12px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16); // approximate of boxShadow: 24
+  padding: 32px; // MUI p: 4 = 4 * 8px = 32px
+}
+
+.callModalTypo {
+  font-weight: 600 !important;
+  font-size: 22px !important;
+  margin-bottom: 24px !important;
+}
+
+.callModalBtnBox {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+.callModalSelfCall {
+  background-color: green !important;
+  border-radius: 50px !important;
+  max-width: 120px !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 12px auto 0 auto !important; // 👈 margin-top overrides earlier margin-top
+  transition: background-color 0.3s ease !important;
+
+  &:hover {
+    background-color: green !important;
+  }
+}
+
+.callModalBotCall {
+  border-radius: 50px !important;
+  max-width: 160px !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 12px auto 0 auto !important;
+}
+
+.callingBox {
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.callLogOutline {
+  width: 120px !important;
+  height: 120px !important;
+}
+
+.ringingStack {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.ringingBtn {
+  background-color: red !important;
+  border-radius: 50px !important;
+  transition: background-color 0.3s ease !important;
+
+  &:hover {
+    background-color: red !important;
+  }
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  @media (max-width: 7000px) {
+    margin-left: 150px;
+    margin-top: 18px;
+  }
+
+  @media (max-width: 400px) {
+    margin-left: 113px;
+  }
+}

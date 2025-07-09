@@ -9,6 +9,7 @@ import {
   useSendSmsMutation,
 } from "@/src/redux/services/conversation/conversationApi";
 import { toast } from "react-toastify";
+import styles from "./style.module.scss";
 
 const CallLogsSection = ({ lead_id }: any) => {
   const { data: SuggestionData, isLoading } = useGetSuggestionsQuery({
@@ -80,35 +81,16 @@ const CallLogsSection = ({ lead_id }: any) => {
   }
 
   return (
-    <Box
-      sx={{
-        border: "1px solid #D3C4FC",
-        borderRadius: "12px",
-        p: 2,
-        backgroundColor: "#fff",
-        marginTop: "32px",
-      }}
-    >
-      <Stack direction="row" alignItems="center" spacing={1} mb={1} px={0.5}>
+    <Box className={styles.leadCallLog}>
+      <Stack className = {styles.leadCallLogStack}>
         <Ai />
-        <Typography variant="body1" fontSize={16} color="#6B39F4">
+        <Typography variant="body1" className = {styles.leadCallLogTypo}>
           AI Draft & Suggestion Panel
         </Typography>
       </Stack>
 
       {!isEditing ? (
-        <Box
-          sx={{
-            backgroundColor: "#F3F2FF",
-            borderRadius: "12px",
-            p: 2,
-            mb: 1.5,
-            fontSize: "16px",
-            lineHeight: "20px",
-            color: "#0D0D12",
-            whiteSpace: "pre-wrap",
-          }}
-        >
+        <Box className = {styles.leadCallLogMessageBox}>
           {!message ? (
             <Typography color="error">No Suggestion Found!</Typography>
           ) : (
@@ -116,29 +98,16 @@ const CallLogsSection = ({ lead_id }: any) => {
           )}
         </Box>
       ) : (
-        <textarea
-          style={{
-            width: "100%",
-            // maxWidth: 560,
-            height: 100,
-            borderRadius: 12,
-            padding: 16,
-            fontSize: 16,
-            lineHeight: "20px",
-            color: "#0D0D12",
-            border: "1px solid #6B39F4",
-            backgroundColor: "#F3F2FF",
-            resize: "none",
-            outline: "none",
-          }}
+        <textarea className={styles.leadCallLogEditTextfield}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
       )}
 
-      <Box display="flex" justifyContent="end" gap={1.5} mt={2}>
+      <Box className = {styles.leadCallLogInvitationButtons}>
         {!isEditing && (
-          <CustomButton variant="outlined" onClick={handleEditClick}>
+          <CustomButton variant="outlined" onClick={handleEditClick}
+          className={styles.leadCallLogEditMessage}>
             Edit Message
           </CustomButton>
         )}
@@ -159,10 +128,11 @@ const CallLogsSection = ({ lead_id }: any) => {
         {!isEditing && (
           <CustomButton
             variant="contained"
-            background="#6B39F4"
-            fontWeight="600px"
+            // background="#6B39F4"
+            // fontWeight="600px"
             onClick={SendNowMessage}
             disabled={isSending}
+            className={styles.leadCallLogSendNow}
           >
             {isSending ? "Sending..." : "Send Now"}
           </CustomButton>
