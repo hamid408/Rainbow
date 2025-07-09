@@ -17,7 +17,7 @@ export const sidebarItems = [
   // { label: "Tasks & Reminder", icon: Tasks },
   { label: "AI Outreach", icon: Aireach, disabled: true },
   { label: "Tasks & Reminder", icon: Tasks, disabled: true },
-  { label: "Analytics", icon: Analytics },
+  { label: "Analytics", icon: Analytics, disabled: true },
   { label: "Admin Oversight", icon: UserIcon },
 ];
 export const sidebarItemsMobile = [
