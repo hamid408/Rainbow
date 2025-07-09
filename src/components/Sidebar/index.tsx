@@ -295,6 +295,7 @@ const Sidebar = () => {
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
+              
               fontWeight:
                 activeTab === label.toLowerCase().replace(/\s+/g, "-")
                   ? 600
