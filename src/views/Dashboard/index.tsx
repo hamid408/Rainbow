@@ -11,7 +11,7 @@ import { useDebounce } from "use-debounce";
 import CustomPagination from "@/src/components/common/CustomPagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
-
+import Cookies from "js-cookie";
 const Dashboard = () => {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("All");
@@ -26,13 +26,35 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch] = useDebounce(searchQuery, 1000);
 
-  const { data, isLoading, isFetching, refetch } = useGetLeadsQuery({
-    tag: isAll ? undefined : activeTab,
-    limit: ITEMS_PER_PAGE,
-    offset,
-    name: debouncedSearch?.trim() || undefined,
-  });
+  const { data, isLoading, isFetching, refetch, isError, error } =
+    useGetLeadsQuery(
+      {
+        tag: isAll ? undefined : activeTab,
+        limit: ITEMS_PER_PAGE,
+        offset,
+        name: debouncedSearch?.trim() || undefined,
+      },
+      // new added options to refetch on mount or arg change
+      {
+        refetchOnMountOrArgChange: true,
+      }
+    );
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (
+      isError &&
+      error &&
+      "status" in error &&
+      error.status === 401 &&
+      typeof window !== "undefined"
+    ) {
+      Cookies.remove("id_token");
+      if (window.location.pathname !== "/auth/sign-in") {
+        window.location.replace("/auth/sign-in");
+      }
+    }
+  }, [isError, error]);
 
   useEffect(() => {
     refetch();
@@ -165,25 +187,24 @@ const Dashboard = () => {
         onChange={(val) => setPage(val)}
       /> */}
 
-      <Box className = {styles.paginationBox}>
+      <Box className={styles.paginationBox}>
         <CustomPagination
-        page={page}
-        count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
-        onChange={(val) => {
-          setPage(val);
-          const searchParams = new URLSearchParams(window.location.search);
+          page={page}
+          count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
+          onChange={(val) => {
+            setPage(val);
+            const searchParams = new URLSearchParams(window.location.search);
 
-          if (val === 1) {
-            searchParams.delete("page");
-          } else {
-            searchParams.set("page", String(val));
-          }
+            if (val === 1) {
+              searchParams.delete("page");
+            } else {
+              searchParams.set("page", String(val));
+            }
 
-          router.push(`?${searchParams.toString()}`);
-        }}
-      />
+            router.push(`?${searchParams.toString()}`);
+          }}
+        />
       </Box>
-      
 
       <AddLeadModal
         open={openModal}
