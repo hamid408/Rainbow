@@ -24,6 +24,7 @@ const DisplayField = ({
   showCopyIcon = false,
   onCopy,
   placeholder,
+  disabled,
 }: any) => {
   const [copied, setCopied] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -71,8 +72,9 @@ const DisplayField = ({
           <TextField
             value={value}
             fullWidth
+            onChange={(e) => onChange && onChange(e.target.value)}
             size="small"
-            disabled
+            disabled={disabled}
             variant="outlined"
             sx={{ maxWidth: "510px" }}
           />

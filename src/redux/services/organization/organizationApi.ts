@@ -11,7 +11,15 @@ export const organizationApi = createApi({
       query: ({ organization_id }) =>
         `/organizations/config?organization_id=${organization_id}`,
     }),
+    updateOrganization: builder.mutation<any, Record<string, any>>({
+      query: (body) => ({
+        url: `organizations/config`,
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetOrganzationQuery } = organizationApi;
+export const { useGetOrganzationQuery, useUpdateOrganizationMutation } =
+  organizationApi;

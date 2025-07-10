@@ -18,6 +18,7 @@ import { Add, DeleteOutline } from "@mui/icons-material";
 import SettingsPanel from "./SettingPanel";
 import {
   useDeactivateUserMutation,
+  useGetCurrentUserQuery,
   useGetUsersQuery,
 } from "@/src/redux/services/users/usersApi";
 import { toast } from "react-toastify";
@@ -34,9 +35,19 @@ const UserManagement = () => {
   const [selectedUserEmail, setSelectedUserEmail] = useState<string | null>(
     null
   );
-  const { data, isLoading } = useGetOrganzationQuery({
-    organization_id: "12345",
-  });
+  const {
+    data: userData,
+    isLoading: userLoading,
+    error: userError,
+  } = useGetCurrentUserQuery();
+  const organizationsId = userData?.data?.[0].organizations_id;
+  // console.log("userData", userData);
+
+  const { data: organizationData, isLoading: isOrgLoading } =
+    useGetOrganzationQuery(
+      { organization_id: organizationsId },
+      { skip: !organizationsId }
+    );
 
   const {
     data: users,
@@ -57,7 +68,13 @@ const UserManagement = () => {
       console.error("Failed to deactivate user:", error);
     }
   };
-
+  if (isOrgLoading) {
+    return (
+      <Box sx={{ padding: "48px" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <Box sx={{ padding: "48px" }}>
       <Box sx={{ marginBottom: "24px" }}>
@@ -71,11 +88,11 @@ const UserManagement = () => {
         />
       </Box>
       <Box mb={4}>
-        <SettingsPanel />
+        <SettingsPanel data={organizationData} />
         <Divider />
       </Box>
       <Box mb={4}>
-        <AIOutreachSettings />
+        <AIOutreachSettings data={organizationData} editable organizationsId={organizationsId}/>
         <Divider />
       </Box>
       <Box mb={4}>
