@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import DisplayField from "./DisplayField";
 
 const SettingsPanel = () => {
@@ -9,7 +9,7 @@ const SettingsPanel = () => {
   };
 
   return (
-    <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}>
+    <Box p={4} bgcolor="#fff" borderRadius={2}>
       <Typography variant="h2" fontSize={24} fontWeight={600} mb={3}>
         Twilio Integration Settings
       </Typography>
@@ -20,18 +20,15 @@ const SettingsPanel = () => {
         showCopyIcon={true}
         onCopy={() => handleCopy("+123 456 0000")}
       />
+      <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
+
       <DisplayField
         label="Account SID"
         value="Aadsadihdujasfh19283cq1m2189"
         showCopyIcon={true}
         onCopy={() => handleCopy("Aadsadihdujasfh19283cq1m2189")}
       />
-      <DisplayField
-        label="Auth Token"
-        value="•••••••••••••••••••••••••••"
-        showCopyIcon={true}
-        onCopy={() => handleCopy("your_real_token_here")}
-      />
+      {/*  */}
     </Box>
   );
 };
