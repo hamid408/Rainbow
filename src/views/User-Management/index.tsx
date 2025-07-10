@@ -21,6 +21,7 @@ import {
   useGetUsersQuery,
 } from "@/src/redux/services/users/usersApi";
 import { toast } from "react-toastify";
+import AdminDashboard from "./AdminDashboard";
 
 const UserManagement = () => {
   const [open, setOpen] = useState(false);
@@ -66,7 +67,7 @@ const UserManagement = () => {
       </Box>
 
       <SettingsPanel />
-
+      
       <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}>
         <Typography variant="h6" gutterBottom fontSize={24} fontWeight={600}>
           User management
@@ -155,6 +156,8 @@ const UserManagement = () => {
           </CustomButton>
         </Box>
       </Box>
+
+
       <Dialog
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}
