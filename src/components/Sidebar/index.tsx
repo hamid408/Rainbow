@@ -70,7 +70,7 @@ const Sidebar = () => {
   };
 
   const pathMap: Record<string, string> = {
-    "Hot Leads": "/dashboard",
+    "Dashboard": "/dashboard",
     "AI Outreach": "/ai-reach",
     "Tasks & Reminder": "/tasks",
     Analytics: "/analytics",

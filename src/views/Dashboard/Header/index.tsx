@@ -29,7 +29,7 @@ const Header = ({
     <Box className={styles.root}>
       <Box className={styles.secondaryBox}>
         <Box className={styles.row}>
-          <Typography variant="h1">Leads Dashboard</Typography>
+          <Typography variant="h1" ml={3}>Leads Dashboard</Typography>
           <Typography variant="caption" className={styles.priorityResponses}>
             {/* (Priority Responses) */}
           </Typography>
