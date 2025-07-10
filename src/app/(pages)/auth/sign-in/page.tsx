@@ -17,7 +17,9 @@ import CustomTextField from "@/src/components/common/CustomTextfield";
 import CustomButton from "@/src/components/common/CustomButton";
 import { useSignInMutation } from "@/src/redux/services/auth/authApi";
 import { setCredentials } from "@/src/redux/services/auth/authSlice";
+import Logo from "@/src/assests/images/newlogo.jpg";
 import Link from "next/link";
+import Image from "next/image";
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -100,7 +102,19 @@ export default function SignIn() {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h5" align="center" mb={2}>
+        <Box>
+          <Image
+            src={Logo}
+            alt="logo"
+            style={{
+              maxWidth: "470px",
+              width: "100%",
+              height: "auto",
+              marginBottom: "48px",
+            }}
+          />
+        </Box>
+        <Typography variant="h5" align="center" mb={3.1} fontSize={28}>
           Sign in
         </Typography>
 

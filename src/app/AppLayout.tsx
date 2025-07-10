@@ -7,7 +7,8 @@ import { Provider } from "react-redux";
 import { store } from "@/src/redux/store";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
@@ -21,29 +22,31 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <Provider store={store}>
-      {isAuthPage ? (
-        <>
-          {children}
-          <ToastContainer position="top-right" autoClose={3000} />
-        </>
-      ) : (
-        <Box
-          sx={{
-            display: "flex",
-            height: "100vh",
-            width: "100vw",
-            overflow: "hidden",
-          }}
-        >
-          <Box sx={{ flexShrink: 0 }}>
-            <Sidebar />
-          </Box>
-          <Box component="main" sx={{ flexGrow: 1, overflowY: "auto" }}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        {isAuthPage ? (
+          <>
             {children}
             <ToastContainer position="top-right" autoClose={3000} />
+          </>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              height: "100vh",
+              width: "100vw",
+              overflow: "hidden",
+            }}
+          >
+            <Box sx={{ flexShrink: 0 }}>
+              <Sidebar />
+            </Box>
+            <Box component="main" sx={{ flexGrow: 1, overflowY: "auto" }}>
+              {children}
+              <ToastContainer position="top-right" autoClose={3000} />
+            </Box>
           </Box>
-        </Box>
-      )}
+        )}
+      </LocalizationProvider>
     </Provider>
   );
 }

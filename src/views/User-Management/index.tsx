@@ -21,6 +21,9 @@ import {
   useGetUsersQuery,
 } from "@/src/redux/services/users/usersApi";
 import { toast } from "react-toastify";
+import AIOutreachSettings from "./AiOutreach";
+import { useGetOrganzationQuery } from "@/src/redux/services/organization/organizationApi";
+import TemplateSetting from "./TemplateSetting";
 
 const UserManagement = () => {
   const [open, setOpen] = useState(false);
@@ -31,6 +34,9 @@ const UserManagement = () => {
   const [selectedUserEmail, setSelectedUserEmail] = useState<string | null>(
     null
   );
+  const { data, isLoading } = useGetOrganzationQuery({
+    organization_id: "12345",
+  });
 
   const {
     data: users,
@@ -61,12 +67,21 @@ const UserManagement = () => {
       <Box mb={2.5}>
         <CustomTabs
           tabs={tabItems}
-          onTabChange={(label:any) => setActiveTab(label)}
+          onTabChange={(label: any) => setActiveTab(label)}
         />
       </Box>
-
-      <SettingsPanel />
-
+      <Box mb={4}>
+        <SettingsPanel />
+        <Divider />
+      </Box>
+      <Box mb={4}>
+        <AIOutreachSettings />
+        <Divider />
+      </Box>
+      <Box mb={4}>
+        <TemplateSetting />
+        <Divider />
+      </Box>
       <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}>
         <Typography variant="h6" gutterBottom fontSize={24} fontWeight={600}>
           User management
@@ -189,7 +204,6 @@ const UserManagement = () => {
             onClick={() => {
               setConfirmOpen(false);
               setSelectedUserEmail(null);
-              
             }}
             variant="outlined"
           >
