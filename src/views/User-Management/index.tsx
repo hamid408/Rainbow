@@ -23,6 +23,7 @@ import {
 import { toast } from "react-toastify";
 import AIOutreachSettings from "./AiOutreach";
 import { useGetOrganzationQuery } from "@/src/redux/services/organization/organizationApi";
+import TemplateSetting from "./TemplateSetting";
 
 const UserManagement = () => {
   const [open, setOpen] = useState(false);
@@ -71,9 +72,16 @@ const UserManagement = () => {
       </Box>
       <Box mb={4}>
         <SettingsPanel />
+        <Divider />
       </Box>
-      <AIOutreachSettings />
-
+      <Box mb={4}>
+        <AIOutreachSettings />
+        <Divider />
+      </Box>
+      <Box mb={4}>
+        <TemplateSetting />
+        <Divider />
+      </Box>
       <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}>
         <Typography variant="h6" gutterBottom fontSize={24} fontWeight={600}>
           User management

@@ -15,7 +15,7 @@ const TemplateSetting = () => {
   ];
 
   return (
-    <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}>
+    <Box p={4} bgcolor="#fff" borderRadius={2} >
       <Typography variant="h2" fontSize={24} fontWeight={600} mb={3}>
         Templates and Tone Settings{" "}
       </Typography>
@@ -29,7 +29,6 @@ const TemplateSetting = () => {
         placeholder="Select frequency"
       />
 
-      <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
     </Box>
   );
 };

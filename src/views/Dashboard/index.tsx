@@ -96,7 +96,7 @@ const Dashboard = () => {
   }
   return (
     <Box padding="48px">
-      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} activeTab={activeTab}/>
       <Box
         borderRadius="12px"
         padding={1}

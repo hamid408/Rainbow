@@ -15,7 +15,7 @@ const AIOutreachSettings = () => {
   ];
 
   return (
-    <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}>
+    <Box p={4} bgcolor="#fff" borderRadius={2}>
       <Typography variant="h2" fontSize={24} fontWeight={600} mb={3}>
         AI Outreach Cadence Settings
       </Typography>
@@ -45,6 +45,35 @@ const AIOutreachSettings = () => {
           <TimeSelector label="To" value={toTime} onChange={setToTime} />
         </Box>
       </Box>
+      <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
+
+      <DisplayField
+        label="Time Zone"
+        value={frequency}
+        onChange={setFrequency}
+        options={frequencyOptions}
+        type="select"
+        placeholder="Select frequency"
+      />
+      <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
+      <DisplayField
+        label="Transfer Type"
+        value={frequency}
+        onChange={setFrequency}
+        options={frequencyOptions}
+        type="select"
+        placeholder="Select frequency"
+      />
+      <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
+      <DisplayField
+        label="Transfer Number"
+        value={frequency}
+        onChange={setFrequency}
+        options={frequencyOptions}
+        type="select"
+        placeholder="Select frequency"
+      />
+      {/* <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} /> */}
     </Box>
   );
 };
