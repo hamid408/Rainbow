@@ -76,10 +76,10 @@ export default function RootLayout({
               // sx={{ overflowX: "hidden", height: "100vh" }}
               sx={{
                 overflowX: "hidden",
-                paddingBottom: {
-                  xs: "0px", // on screens <600px
-                  sm: "0px", // on larger screens
-                },
+                // paddingBottom: {
+                //   xs: "-20px", // on screens <600px
+                //   sm: "-20px", // on larger screens
+                // },
               }}
             >
               <div className="zoomed-layout">{children}</div>

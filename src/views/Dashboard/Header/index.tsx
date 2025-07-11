@@ -33,7 +33,7 @@ const Header = ({
         </Box>
       </Box>
       <Box display={"flex"} gap={2}>
-        <CustomFilterSelect items={filterItems} onSelect={handleSelect} />
+        {/* <CustomFilterSelect items={filterItems} onSelect={handleSelect} /> */}
         <CustomSearchField
           endIcon={<Search />}
           searchQuery={searchQuery}
