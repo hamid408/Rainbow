@@ -25,6 +25,8 @@ import { toast } from "react-toastify";
 import AIOutreachSettings from "./AiOutreach";
 import { useGetOrganzationQuery } from "@/src/redux/services/organization/organizationApi";
 import TemplateSetting from "./TemplateSetting";
+import AdminDashboard from "./AdminDashboard";
+import styles from "./styles.module.scss";
 
 const UserManagement = () => {
   const [open, setOpen] = useState(false);
@@ -76,12 +78,14 @@ const UserManagement = () => {
     );
   }
   return (
-    <Box sx={{ padding: "48px" }}>
-      <Box sx={{ marginBottom: "24px" }}>
-        <Typography variant="h1">Admin Oversight</Typography>
+    <Box className = {styles.indexRoot}>
+      <Box className = {styles.indexHeadingBox}>
+        <Typography variant="h1" className={styles.indexHeading}>
+          Admin Oversight
+        </Typography>
       </Box>
 
-      <Box mb={2.5}>
+      <Box className={styles.indexCustomTabBox}>
         <CustomTabs
           tabs={tabItems}
           onTabChange={(label: any) => setActiveTab(label)}
@@ -112,51 +116,43 @@ const UserManagement = () => {
             {users?.data?.length > 0 &&
               users.data.map((user: any, index: number) => (
                 <Box key={index}>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    py={1.5}
-                  >
-                    <Box flex={1}>
-                      <Typography fontWeight={600} fontSize={14}>
-                        {user.name || user.first_name}
-                      </Typography>
+                  <Box className={styles.userManagementRowBox}>
+                    <Box className = {styles.nameAndEmailBox}>
+                      <Box flex={1} className = {styles.nameBox}>
+                        <Typography fontWeight={600} fontSize={14}>
+                          {user.name || user.first_name}
+                        </Typography>
+                      </Box>
+
+                      <Box className={styles.userManagementEmailBox}>
+                        <MailOutlineIcon
+                          fontSize="small"
+                          sx={{ color: "#888" }}
+                        />
+                        <Typography className={styles.emailTypo}>
+                          {user.email}
+                        </Typography>
+                      </Box>
                     </Box>
 
-                    <Box display="flex" alignItems="center" gap={1} flex={1}>
-                      <MailOutlineIcon
-                        fontSize="small"
-                        sx={{ color: "#888" }}
-                      />
-                      <Typography
-                        fontSize={14}
-                        color="#666D80"
-                        fontWeight={400}
-                      >
-                        {user.email}
-                      </Typography>
-                    </Box>
+                    <Divider className={styles.myDivider}></Divider>
 
-                    <Box textAlign="right" pr={6}>
-                      <Typography
-                        fontSize={14}
-                        color="#0D0D12"
-                        fontWeight={400}
+                    <Box className={styles.roleAndRemoveBox}>
+                      <Box className={styles.roleBox}>
+                        <Typography className={styles.userTypo}>
+                          {user.role || "—"}
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        className={styles.removeBox}
+                        onClick={() => {
+                          setSelectedUserEmail(user.email);
+                          setConfirmOpen(true);
+                        }}
                       >
-                        {user.role || "—"}
-                      </Typography>
-                    </Box>
-                    <Box
-                      textAlign="right"
-                      pr={6}
-                      sx={{ cursor: "pointer" }}
-                      onClick={() => {
-                        setSelectedUserEmail(user.email);
-                        setConfirmOpen(true);
-                      }}
-                    >
-                      <DeleteOutline />
+                        <DeleteOutline />
+                      </Box>
                     </Box>
                   </Box>
                   {index !== users.length - 1 && <Divider />}
@@ -176,17 +172,19 @@ const UserManagement = () => {
             color="primary"
             onClick={handleOpen}
             startIcon={<Add />}
-            sx={{
-              fontSize: 14,
-              fontWeight: "600",
-              borderColor: "#6B39F4",
-              color: "#6B39F4",
-            }}
+            className = {styles.addBtn}
+            // sx={{
+            //   fontSize: 14,
+            //   fontWeight: "600",
+            //   borderColor: "#6B39F4",
+            //   color: "#6B39F4",
+            // }}
           >
             Add New Solo User
           </CustomButton>
         </Box>
       </Box>
+
       <Dialog
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}

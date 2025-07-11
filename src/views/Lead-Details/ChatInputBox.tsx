@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogActions,
   Typography,
+  Divider,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Email } from "@mui/icons-material";
@@ -55,7 +56,7 @@ const ChatInputBox = ({ data }: any) => {
       }).unwrap();
       toast.success("Lead marked resolved!");
       setIsConfirmOpen(false);
-      router.push("/dashboard"); 
+      router.push("/dashboard");
     } catch (error) {
       console.error("Failed to resolve lead:", error);
       toast.error("Failed to resolve lead. Try again.");
@@ -104,13 +105,14 @@ const ChatInputBox = ({ data }: any) => {
             startIcon={<Email />}
             fontWeight="600"
             disabled
-            sx={{"@media(max-width: 900px)": {
-              marginLeft: "23px"
-            },
-            "@media(max-width: 320px)": {
-              marginLeft: "0px"
-            }
-          }}
+            sx={{
+              "@media(max-width: 900px)": {
+                marginLeft: "23px",
+              },
+              "@media(max-width: 320px)": {
+                marginLeft: "0px",
+              },
+            }}
           >
             Send Email
           </CustomButton>
@@ -121,36 +123,49 @@ const ChatInputBox = ({ data }: any) => {
             startIcon={<Mark />}
             fontWeight="600"
             onClick={() => setIsConfirmOpen(true)}
-            sx={{"@media(max-width: 900px)": {
-              marginTop: "15px",
-            },
-              "@media(min-width: 680px) and (max-width: 700px)" : {
-                marginLeft: "16px"
-              }
-          }}
+            sx={{
+              "@media(max-width: 900px)": {
+                marginTop: "15px",
+              },
+              "@media(min-width: 680px) and (max-width: 700px)": {
+                marginLeft: "16px",
+              },
+            }}
           >
             Mark as Resolved
           </CustomButton>
         </Box>
 
-        <CustomButton
-          className={styles.chatInputSendButton}
-          variant="contained"
-          startIcon={<SendIcon />}
-          fontWeight="600"
-          onClick={handleSendMessage}
-          disabled={isSending}
-          sx={{"@media(max-width: 900px)": {
-              marginTop: "55px"
-            },
-            "@media(max-width: 600px)" : {
-              marginTop: "0px"
-            }
+        <Divider
+         className={styles.divider}
+          sx={{
+            my: 2, // vertical margin
+            borderColor: "#ccc", // optional
+            width: "108%",
           }}
         >
-          {isSending ? "Sending..." : "Send"}
-        </CustomButton>
+        </Divider>
 
+        <div className = {styles.sendBtn} >
+          <CustomButton
+            className={styles.chatInputSendButton}
+            variant="contained"
+            startIcon={<SendIcon />}
+            fontWeight="600"
+            onClick={handleSendMessage}
+            disabled={isSending}
+            sx={{
+              "@media(max-width: 900px)": {
+                marginTop: "55px",
+              },
+              "@media(max-width: 600px)": {
+                marginTop: "0px",
+              },
+            }}
+          >
+            {isSending ? "Sending..." : "Send"}
+          </CustomButton>
+        </div>
       </Box>
 
       <CallModal
