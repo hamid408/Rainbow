@@ -92,12 +92,12 @@ const AIOutreachSettings = ({
 }: any) => {
   const aiData = data?.data || {};
 
-  const parseMinutesToTime = (minutes: number) => {
-    const h = Math.floor(minutes / 60)
+  const convert24HourNumberToTimeString = (num: number): string => {
+    const hours = Math.floor(num / 100)
       .toString()
       .padStart(2, "0");
-    const m = (minutes % 60).toString().padStart(2, "0");
-    return `${h}:${m}`;
+    const minutes = (num % 100).toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
   };
 
   const [frequency, setFrequency] = useState("once");
@@ -116,8 +116,8 @@ const AIOutreachSettings = ({
     if (aiData?.preferred_calling_window) {
       try {
         const [from, to] = JSON.parse(aiData.preferred_calling_window);
-        setFromTime(parseMinutesToTime(from));
-        setToTime(parseMinutesToTime(to));
+        setFromTime(convert24HourNumberToTimeString(from));
+        setToTime(convert24HourNumberToTimeString(to));
       } catch (e) {
         console.warn("Invalid preferred_calling_window format");
       }
@@ -129,33 +129,21 @@ const AIOutreachSettings = ({
     { label: "2", value: "twice" },
     { label: "3", value: "thrice" },
   ];
-  const convertToMinutes = (timeStr: string): number => {
+  const convertTo24HourNumber = (timeStr: string): number => {
     const [hours, minutes] = timeStr.split(":").map(Number);
-    return hours * 60 + minutes;
+    return hours * 100 + minutes;
   };
 
-  const fromTimeInMinutes = convertToMinutes(fromTime);
-  const toTimeInMinutes = convertToMinutes(toTime);
-  const handleSave = async () => {
-    const payload = {
-      organization_id: organizationsId,
-      organization_time_zone: timeZone, // Corrected casing
-      // transfer_type: transferType,
-      // transfer_number: transferNumber,
-      organization_preferred_calling_window: `[${fromTimeInMinutes}, ${toTimeInMinutes}]`,
-    };
+  const fromTimeValue = convertTo24HourNumber(fromTime);
+  const toTimeValue = convertTo24HourNumber(toTime);
 
+  const handleSave = async () => {
     try {
       await updateOrganization({
         organization_id: organizationsId,
-        body: {
-          organization_id: organizationsId, // required by API
-          organization_time_zone: timeZone,
-          organization_preferred_calling_window: [
-            fromTimeInMinutes,
-            toTimeInMinutes,
-          ],
-        },
+        organization_time_zone: timeZone,
+        organization_preferred_calling_window: [fromTimeValue, toTimeValue],
+        transfer_number: transferNumber,
       }).unwrap();
 
       toast.success("Organization settings updated successfully!");
@@ -237,7 +225,7 @@ const AIOutreachSettings = ({
         value={transferType}
         onChange={editable ? setTransferType : undefined}
         placeholder="Select transfer type"
-        disabled={!editable}
+        disabled={true}
       />
 
       <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
@@ -255,7 +243,7 @@ const AIOutreachSettings = ({
           <CustomButton
             onClick={handleSave}
             variant="contained"
-            disabled={isUpdating}
+            disabled={editable ? isUpdating : true}
           >
             {isUpdating ? "Saving..." : "Save Settings"}
           </CustomButton>
