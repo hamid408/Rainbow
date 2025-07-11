@@ -146,7 +146,7 @@ const ChatInputBox = ({ data }: any) => {
         >
         </Divider>
 
-        <div className = {styles.sendBtn}>
+        <div className = {styles.sendBtn} >
           <CustomButton
             className={styles.chatInputSendButton}
             variant="contained"

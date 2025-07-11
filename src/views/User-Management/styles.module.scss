@@ -1,0 +1,232 @@
+.indexHeading {
+  font-size: 40px !important;
+  font-weight: 600 !important;
+
+  @media (max-width: 600px) {
+    font-size: 32px !important;
+  }
+}
+
+.indexCustomTabBox {
+  margin-bottom: 20px;
+
+  @media (max-width: 600px) {
+    margin-left: 8px;
+  }
+}
+
+.settingPanelMainBox {
+  padding: 32px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px rgba(0, 0, 0, 0.12);
+
+  @media (max-width: 500px) {
+    width: 116%;
+    margin-left: -28px;
+  }
+
+  @media (min-width: 400px) and (max-width: 450px) {
+    width: 124% !important;
+    margin-left: -36px !important;
+  }
+
+  @media (min-width: 350px) and (max-width: 400px) {
+    width: 128% !important;
+    margin-left: -39px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  @media (min-width: 300px) and (max-width: 350px) {
+    width: 132% !important;
+    margin-left: -38px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  @media (min-width: 670px) and (max-width: 720px) {
+    width: 120% !important;
+    margin-left: -36px !important;
+  }
+
+  @media (min-width: 600px) and (max-width: 670px) {
+    width: 128% !important;
+    margin-left: -46px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+}
+
+.userManagementBox {
+  padding: 32px;
+  background-color: #fff;
+  border-radius: 16px;
+  margin-top: 32px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2), 0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px rgba(0, 0, 0, 0.12);
+
+  @media (max-width: 500px) {
+    width: 116%;
+    margin-left: -28px;
+  }
+
+  @media (min-width: 400px) and (max-width: 450px) {
+    width: 124% !important;
+    margin-left: -36px !important;
+  }
+
+  @media (min-width: 350px) and (max-width: 400px) {
+    width: 128% !important;
+    margin-left: -39px !important;
+  }
+
+  @media (min-width: 300px) and (max-width: 350px) {
+    width: 132% !important;
+    margin-left: -38px !important;
+  }
+
+  @media (min-width: 670px) and (max-width: 720px) {
+    width: 120% !important;
+    margin-left: -36px !important;
+  }
+
+  @media (min-width: 600px) and (max-width: 670px) {
+    width: 128% !important;
+    margin-left: -46px !important;
+  }
+}
+
+.userManagementEmailBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  //   margin-left: 200px;
+
+  @media (max-width: 1100px) {
+    margin-right: 40px !important;
+  }
+
+  @media (max-width: 950px) {
+    margin-left: 6px !important;
+  }
+}
+
+.userManagementRowBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px; // py={1.5} = 1.5 * 8 = 12px
+  padding-bottom: 12px;
+
+  @media (max-width: 950px) {
+    flex-wrap: wrap;
+    border: 1px solid #c1c7d0;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 6px;
+  }
+}
+
+.myDivider {
+  @media (max-width: 950px) {
+    width: 100%;
+    border-color: #e5ebf0 !important;
+    border-bottom-width: 1px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+.roleAndRemoveBox {
+  display: flex;
+
+  @media (max-width: 950px) {
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.roleBox {
+  text-align: right;
+  padding-right: 48px; // pr={6} → 6 * 8 = 48px
+
+  @media (max-width: 950px) {
+    width: 100%;
+    margin-top: 8px; // mt={1} → 1 * 8 = 8px
+  }
+}
+
+.removeBox {
+  text-align: right;
+  padding-right: 48px;
+  cursor: pointer;
+
+  @media (max-width: 950px) {
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+
+.nameAndEmailBox {
+  display: flex;
+
+  @media (max-width: 950px) {
+    display: block;
+  }
+}
+
+.nameBox {
+  min-width: 400px;
+  @media (max-width: 950px) {
+    margin-left: 6px !important;
+    min-width: unset;
+  }
+
+  @media (max-width: 1200px) {
+    min-width: 300px;
+  }
+
+  @media (max-width: 1100px) {
+    min-width: 200px;
+  }
+
+  @media (max-width: 1000px) {
+    min-width: 150px;
+  }
+}
+
+.indexRoot {
+  padding: 48px;
+}
+
+.indexHeadingBox {
+  margin-bottom: 24px;
+}
+
+.userManagementTypo {
+  font-size: 24px !important;
+  font-weight: 600 !important;
+}
+
+.emailTypo {
+  font-size: 14px !important;
+  color: #666d80 !important;
+  font-weight: 400 !important;
+}
+
+.userTypo {
+  font-size: 14px !important;
+  color: #0d0d12 !important;
+  font-weight: 400 !important;
+}
+
+.addBtn{
+  font-size: 14px !important;
+  font-weight: 600  !important;
+  border-color: #6B39F4 !important;
+  color: #6B39F4 !important;
+}

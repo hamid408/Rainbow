@@ -424,6 +424,11 @@
   @media (max-width: 400px) {
     font-size: 10px !important;
   }
+
+  @media(max-width: 600px){
+    margin-left: 4px !important;
+  }
+
 }
 
 .chatInputMarkBtn {
@@ -622,14 +627,16 @@
   align-items: center;
   gap: 16px;
 
-  @media (max-width: 7000px) {
-    margin-left: 150px;
-    margin-top: 18px;
+  @media (max-width: 737px) {
+    margin-left: 150px !important;
+    margin-top: 18px !important;
   }
 
   @media (max-width: 400px) {
     margin-left: 113px;
   }
+
+
 }
 
 .divider {

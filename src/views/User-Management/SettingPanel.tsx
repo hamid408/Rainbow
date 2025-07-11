@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import DisplayField from "./DisplayField";
+import styles from "./styles.module.scss";
 
 const SettingsPanel = () => {
   const handleCopy = (text: string) => {
@@ -9,7 +10,7 @@ const SettingsPanel = () => {
   };
 
   return (
-    <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}>
+    <Box className = {styles.settingPanelMainBox}>
       <Typography variant="h2" fontSize={24} fontWeight={600} mb={3}>
         Twilio Integration Settings
       </Typography>
