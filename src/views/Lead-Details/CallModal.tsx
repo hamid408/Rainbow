@@ -25,6 +25,8 @@ import { toast } from "react-toastify";
 import { useGetCurrentUserQuery } from "@/src/redux/services/users/usersApi";
 import styles from "./style.module.scss";
 
+let isGlobalCallActive = false;
+
 const style = {
   position: "absolute" as const,
   top: "50%",
@@ -70,9 +72,14 @@ export default function CallModal({
       null
     );
   const user = userData?.data?.[0];
-  console.log("user information", user.id);
   const handleBotCall = async () => {
+    if (isGlobalCallActive) {
+      toast.warning("A call is already in progress.");
+      return;
+    }
     try {
+      isGlobalCallActive = true;
+
       const res = await createBotCall({ lead_id: leadId }).unwrap();
       console.log("📞 Bot Call Started:", res);
       toast.success("Call initiated ✅");
@@ -187,22 +194,22 @@ export default function CallModal({
       aria-labelledby="twilio-call-modal"
       aria-describedby="twilio-call-description"
     >
-      <Box className = {styles.callModalBox}>
+      <Box className={styles.callModalBox}>
         {callStarted ? (
-          <Stack className = {styles.callingBox}>
+          <Stack className={styles.callingBox}>
             <Typography variant="h6" mb={3}>
               Ringing {phone}...
               {/* {callConnected ? "Connected" : `Ringing ${phone}...`} */}
             </Typography>
             <Box>
-              <PersonOutline className = {styles.callLogOutline}/>
+              <PersonOutline className={styles.callLogOutline} />
             </Box>
             <Stack className={styles.ringingStack}>
               <Button
                 variant="contained"
                 color="error"
                 onClick={handleEndCall}
-                className = {styles.ringingBtn}
+                className={styles.ringingBtn}
               >
                 <CallEnd />
               </Button>
@@ -210,7 +217,7 @@ export default function CallModal({
           </Stack>
         ) : (
           <>
-            <Typography variant="h6" className = {styles.callModalTypo}>
+            <Typography variant="h6" className={styles.callModalTypo}>
               Start a Twilio Call
             </Typography>
             <Stack spacing={4} mt={2}>
@@ -221,7 +228,7 @@ export default function CallModal({
                   onClick={handleCall}
                   disabled={isCalling}
                   startIcon={<CallRounded />}
-                  className = {styles.callModalSelfCall}
+                  className={styles.callModalSelfCall}
                 >
                   Self Call
                 </Button>
