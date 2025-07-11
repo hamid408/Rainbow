@@ -1,4 +1,3 @@
-
 "use client";
 import { Box, CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -49,30 +48,30 @@ const LeadDetails = ({ leadId }: { leadId: string }) => {
     lead.inquiry_type ? ` (${lead.inquiry_type})` : ""
   }`;
 
-
-
   return (
-    <Box 
-    className = {styles.indexMainBox}
-    >
+    <Box className={styles.indexMainBox}>
       <LeadHeader
         name={name}
         status={status}
         onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
       />
-      <Box 
-      className = {styles.indexSecondaryBox}
-      >
-        <Box 
-        className = {styles.indexLastBox}
-        >
+      <Box className={styles.indexSecondaryBox}>
+        <Box className={styles.indexLastBox}>
           <LeadChatSection
             refreshTrigger={refreshChat}
             leadId={leadId}
             userName={name}
           />
-          <CallLogsSection lead_id={leadId} />
-          <ChatInputBox data={data} />
+          <CallLogsSection
+            lead_id={leadId}
+            refreshTrigger={refreshChat}
+            onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
+          />
+          <ChatInputBox
+            data={data}
+            refreshTrigger={refreshChat}
+            onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
+          />
         </Box>
         <LeadDetailsSidebar lead={lead} setLead={setLead} />
       </Box>

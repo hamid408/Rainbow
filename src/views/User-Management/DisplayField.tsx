@@ -79,6 +79,7 @@ const DisplayField = ({
             // sx={{ maxWidth: "510px" }}
             // fullWidth
             width={"100%"}
+            placeholder={placeholder}
           />
         )}
 

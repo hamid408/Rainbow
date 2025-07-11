@@ -103,22 +103,7 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
       </Avatar>
     );
   };
-  // const isValidCallLogJson = (str: string) => {
-  //   try {
-  //     const parsed = JSON.parse(str);
-  //     const hasTranscript = !!parsed?.transcript;
-  //     const hasRecordingUrl = !!parsed?.recording_url;
-  //     const status = !!parsed?.call_status;
-  //     const invoiceMail = !!parsed?.in_voicemail;
-  //     const reason = !!parsed?.disconnection_reason;
-  //     return (
-  //       hasTranscript && hasRecordingUrl && status && invoiceMail && reason
-  //     );
-  //   } catch (e) {
-  //     console.warn("❌ Invalid JSON string:", str);
-  //     return false;
-  //   }
-  // };
+
   const isValidCallLogJson = (str: string) => {
     try {
       const parsed = JSON.parse(str);
@@ -139,48 +124,33 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
 
   return (
     <>
-      <Box
-        className={styles.leadChat}
-        // p={"40px 32px 32px 0"}
-        // sx={{
-        //   height: "400px",
-        //   overflowY: "auto",
-        // }}
-      >
+      <Box className={styles.leadChat}>
         <Stack gap={4}>
           {allMessages.map((msg: any, index: number) => {
-            // const time = extractTime(msg.created_at);
             const time = msg.created_at;
             const isAI = msg.is_bot === true;
-           
+
             const senderName = msg.sender_name || "Unknown";
 
             return (
-              <Box
-                key={index}
-                className={styles.leadChatMainBox}
-                // display={"flex"}
-                // alignItems={"start"}
-                // gap={2.5}
-                // flexDirection="row"
-              >
+              <Box key={index} className={styles.leadChatMainBox}>
                 {isAI ? (
-                <Image src={AvatarPic} alt="AI Avatar" width={60} height={60} />
+                  <Image
+                    src={AvatarPic}
+                    alt="AI Avatar"
+                    width={60}
+                    height={60}
+                  />
                 ) : (
                   renderUserAvatar(senderName)
-                  )}
-                {/* {renderUserAvatar(senderName)} */}
+                )}
                 <Stack spacing={1.5}>
                   <Box>
-                    <Box
-                      className={styles.leadChatFirstRow}
-                      // display={"flex"} alignItems={"center"} gap={1}
-                    >
+                    <Box className={styles.leadChatFirstRow}>
                       <Typography mb={0.5} variant="body1">
                         {senderName}
                       </Typography>
 
-                      {/* {msg.channel === "sms" ? <Typing /> : <Message />} */}
                       {msg.channel === "sms" ? (
                         <Typing />
                       ) : msg.channel === "call" ? (
@@ -192,10 +162,6 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                       <Typography
                         className={styles.leadChatDate}
                         variant="subtitle1"
-                        // mb={0.5}
-                        // fontWeight={400}
-                        // color="#666D80"
-                        // mt={0.5}
                       >
                         {time}
                       </Typography>

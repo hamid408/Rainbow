@@ -5,16 +5,36 @@ import { Ai } from "@/src/assests/icons";
 import CustomButton from "@/src/components/common/CustomButton";
 import {
   useChangeSuggestionMutation,
+  useGetConversationQuery,
   useGetSuggestionsQuery,
   useSendSmsMutation,
 } from "@/src/redux/services/conversation/conversationApi";
 import { toast } from "react-toastify";
 import styles from "./style.module.scss";
 
-const CallLogsSection = ({ lead_id }: any) => {
+const CallLogsSection = ({ lead_id, refreshTrigger, onRefreshClick }: any) => {
+  const [allMessages, setAllMessages] = useState<any[]>([]);
+
   const { data: SuggestionData, isLoading } = useGetSuggestionsQuery({
     lead_id,
   });
+  const latestOffset = useRef(0);
+
+  const { data, refetch } = useGetConversationQuery({
+    lead_ID: lead_id,
+    offset: latestOffset.current,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [refreshTrigger]);
+  useEffect(() => {
+    if (data?.data?.length) {
+      const newMessages = data.data;
+      setAllMessages((prev) => [...prev, ...newMessages]);
+      latestOffset.current += newMessages.length;
+    }
+  }, [data]);
   const [isEditing, setIsEditing] = useState(false);
   const [message, setMessage] = useState("");
   const originalMessage = useRef(message);
@@ -60,6 +80,7 @@ const CallLogsSection = ({ lead_id }: any) => {
         sms_content: message,
         suggestion_id: SuggestionData.suggestion?.id,
       }).unwrap();
+      onRefreshClick();
       toast.success("Suggestion Sent Successfully!!");
     } catch (err) {
       console.error("SMS Failed:", err);
@@ -82,15 +103,15 @@ const CallLogsSection = ({ lead_id }: any) => {
 
   return (
     <Box className={styles.leadCallLog}>
-      <Stack className = {styles.leadCallLogStack}>
+      <Stack className={styles.leadCallLogStack}>
         <Ai />
-        <Typography variant="body1" className = {styles.leadCallLogTypo}>
+        <Typography variant="body1" className={styles.leadCallLogTypo}>
           AI Draft & Suggestion Panel
         </Typography>
       </Stack>
 
       {!isEditing ? (
-        <Box className = {styles.leadCallLogMessageBox}>
+        <Box className={styles.leadCallLogMessageBox}>
           {!message ? (
             <Typography color="error">No Suggestion Found!</Typography>
           ) : (
@@ -98,16 +119,20 @@ const CallLogsSection = ({ lead_id }: any) => {
           )}
         </Box>
       ) : (
-        <textarea className={styles.leadCallLogEditTextfield}
+        <textarea
+          className={styles.leadCallLogEditTextfield}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
       )}
 
-      <Box className = {styles.leadCallLogInvitationButtons}>
+      <Box className={styles.leadCallLogInvitationButtons}>
         {!isEditing && (
-          <CustomButton variant="outlined" onClick={handleEditClick}
-          className={styles.leadCallLogEditMessage}>
+          <CustomButton
+            variant="outlined"
+            onClick={handleEditClick}
+            className={styles.leadCallLogEditMessage}
+          >
             Edit Message
           </CustomButton>
         )}
