@@ -8,6 +8,9 @@ import { useResetPasswordMutation } from "@/src/redux/services/auth/authApi";
 import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Cookies from "js-cookie";
+import Image from "next/image";
+import Logo from "@/src/assests/images/newlogo.jpg";
+
 const Page = () => {
   const router = useRouter();
   const [session, setSession] = useState("");
@@ -53,43 +56,6 @@ const Page = () => {
     }
   };
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setError("");
-
-  //   try {
-  //     setLoading(true);
-
-  //     const response = await fetch(
-  //       "https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/auth/changePass/reset",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           confirmation_code: confirmationCode,
-  //           new_password: newPassword,
-  //           email: email,
-  //         }),
-  //       }
-  //     );
-
-  //     const data = await response.json();
-
-  //     if (response.ok) {
-  //       sessionStorage.removeItem("email");
-  //       router.push("/sign-in");
-  //     } else {
-  //       setError(data?.message || "Failed to reset password.");
-  //     }
-  //   } catch (err) {
-  //     setError("Something went wrong. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   return (
     <Container
       maxWidth="sm"
@@ -115,7 +81,19 @@ const Page = () => {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h5" align="center" mb={2}>
+        <Box>
+          <Image
+            src={Logo}
+            alt="logo"
+            style={{
+              maxWidth: "470px",
+              width: "100%",
+              height: "auto",
+              marginBottom: "48px",
+            }}
+          />
+        </Box>
+        <Typography variant="h5" align="center" mb={2} fontSize={28}>
           Create Your New Password
         </Typography>
         <Typography variant="body2" align="center" color="gray" mb={3}>
