@@ -1,16 +1,45 @@
+"use client";
 import React, { useState } from "react";
-import { Box, Typography, IconButton, TextField } from "@mui/material";
-import { Copy } from "@/src/assests/icons";
+import {
+  Box,
+  Typography,
+  IconButton,
+  TextField,
+  Popper,
+  Paper,
+} from "@mui/material";
 import { Check } from "@mui/icons-material";
+import { Copy } from "@/src/assests/icons";
+import { DigitalClock } from "@mui/x-date-pickers";
+import CustomSelect from "@/src/components/common/CustomSelect"; // your custom select
+import dayjs from "dayjs";
+import CustomTextField from "@/src/components/common/CustomTextfield";
 
-const DisplayField = ({ label, value, showCopyIcon = false, onCopy }: any) => {
+const DisplayField = ({
+  label,
+  value,
+  type = "text",
+  options = [],
+  onChange,
+  showCopyIcon = false,
+  onCopy,
+  placeholder,
+  disabled,
+}: any) => {
   const [copied, setCopied] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleCopy = () => {
     if (onCopy) onCopy();
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const handleTimeClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const open = Boolean(anchorEl);
 
   return (
     <Box
@@ -20,26 +49,40 @@ const DisplayField = ({ label, value, showCopyIcon = false, onCopy }: any) => {
       my={1}
       justifyContent={"space-between"}
     >
-      <Box flex={1}>
-        <Typography fontSize={14} fontWeight={500}>
+      <Box flex={1} width={"100%"}>
+        <Typography
+          fontSize={16}
+          fontWeight={400}
+          width={"100%"}
+          color="#0D0D12"
+        >
           {label}
         </Typography>
       </Box>
 
-      <Box flex={1} display="flex" alignItems="center" >
-        <TextField
-          value={value}
-          fullWidth
-          size="small"
-          disabled
-          variant="outlined"
-          sx={{
-            maxWidth: "510px",
-          }}
-        />
-        {showCopyIcon && (
+      <Box flex={1} display="flex" alignItems="center">
+        {type === "select" ? (
+          <CustomSelect
+            value={value}
+            onChange={(e: any) => onChange(e.target.value)}
+            options={options}
+            placeholder={placeholder}
+          />
+        ) : (
+          <TextField
+            value={value}
+            fullWidth
+            onChange={(e) => onChange && onChange(e.target.value)}
+            size="small"
+            disabled={disabled}
+            variant="outlined"
+            sx={{ maxWidth: "510px" }}
+          />
+        )}
+
+        {showCopyIcon && type === "text" && (
           <IconButton onClick={handleCopy} sx={{ ml: 1 }}>
-            {copied ? <Check fontSize="small" sx={{borderColor:"blue"}}/> : <Copy fontSize="small" />}
+            {copied ? <Check fontSize="small" /> : <Copy fontSize="small" />}
           </IconButton>
         )}
       </Box>

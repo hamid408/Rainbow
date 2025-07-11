@@ -1,14 +1,17 @@
+"use client";
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import DisplayField from "./DisplayField";
 import styles from "./styles.module.scss";
 
-const SettingsPanel = () => {
+const SettingsPanel = ({ data }: any) => {
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    // alert("Copied to clipboard!");
   };
-
+  if (!data) return null;
+  console.log("data", data);
+  const settingData = data?.data || {};
+  console.log("settingData", settingData);
   return (
     <Box className = {styles.settingPanelMainBox}>
       <Typography variant="h2" fontSize={24} fontWeight={600} mb={3}>
@@ -17,22 +20,21 @@ const SettingsPanel = () => {
 
       <DisplayField
         label="Twilio Phone Number"
-        value="+123 456 0000"
+        value={settingData?.twilio_phone_num || "+123 456 0000"}
         showCopyIcon={true}
-        onCopy={() => handleCopy("+123 456 0000")}
+        onCopy={() => handleCopy(settingData?.twilio_phone_num)}
+        disabled
       />
+      <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
+
       <DisplayField
         label="Account SID"
-        value="Aadsadihdujasfh19283cq1m2189"
+        value={settingData.twilio_account_sid || "ACXXXXXXXXXXXXXXXXXXXXXXXXX"}
         showCopyIcon={true}
-        onCopy={() => handleCopy("Aadsadihdujasfh19283cq1m2189")}
+        onCopy={() => handleCopy(settingData.twilio_account_sid)}
+        disabled
       />
-      <DisplayField
-        label="Auth Token"
-        value="•••••••••••••••••••••••••••"
-        showCopyIcon={true}
-        onCopy={() => handleCopy("your_real_token_here")}
-      />
+      {/*  */}
     </Box>
   );
 };

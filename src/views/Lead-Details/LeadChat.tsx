@@ -29,7 +29,11 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [callLogModalOpen, setCallLogModalOpen] = useState(false);
   const [callLogData, setCallLogData] = useState<{
     transcript: string;
-    RecordingUrl: string;
+    recording_url: string;
+    call_status: string;
+    in_voicemail: boolean;
+    disconnection_reason: string;
+    conversation_status: string;
   } | null>(null);
 
   const handleOpenModal = (jsonString: string) => {
@@ -99,12 +103,34 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
       </Avatar>
     );
   };
+  // const isValidCallLogJson = (str: string) => {
+  //   try {
+  //     const parsed = JSON.parse(str);
+  //     const hasTranscript = !!parsed?.transcript;
+  //     const hasRecordingUrl = !!parsed?.recording_url;
+  //     const status = !!parsed?.call_status;
+  //     const invoiceMail = !!parsed?.in_voicemail;
+  //     const reason = !!parsed?.disconnection_reason;
+  //     return (
+  //       hasTranscript && hasRecordingUrl && status && invoiceMail && reason
+  //     );
+  //   } catch (e) {
+  //     console.warn("❌ Invalid JSON string:", str);
+  //     return false;
+  //   }
+  // };
   const isValidCallLogJson = (str: string) => {
     try {
       const parsed = JSON.parse(str);
-      const hasTranscript = !!parsed?.transcript;
-      const hasRecordingUrl = !!parsed?.RecordingUrl;
-      return hasTranscript && hasRecordingUrl;
+      return (
+        typeof parsed === "object" &&
+        (parsed.recording_url ||
+          parsed.transcript ||
+          parsed.call_status ||
+          parsed.disconnection_reason ||
+          parsed.in_voicemail ||
+          parsed.conversation_status)
+      );
     } catch (e) {
       console.warn("❌ Invalid JSON string:", str);
       return false;

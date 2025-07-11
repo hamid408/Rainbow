@@ -13,22 +13,25 @@ const filterItems = [
 const Header = ({
   searchQuery,
   setSearchQuery,
+  activeTab,
 }: {
   searchQuery: string;
   setSearchQuery: (val: string) => void;
+  activeTab: any;
 }) => {
   const [selectedValue, setSlectedValue] = useState<string>("");
 
   const handleSelect = (label: string | null) => {
     setSlectedValue(label ?? "dummy");
   };
+  // const dashboardLeads = activeTab === "All" ? "Dashboard" : activeTab;
   return (
     <Box className={styles.root}>
       <Box className={styles.secondaryBox}>
         <Box className={styles.row}>
-          <Typography variant="h1">Hot Leads</Typography>
+          <Typography variant="h1" ml={3}>Leads Dashboard</Typography>
           <Typography variant="caption" className={styles.priorityResponses}>
-            (Priority Responses)
+            {/* (Priority Responses) */}
           </Typography>
         </Box>
       </Box>

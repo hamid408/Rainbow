@@ -3,19 +3,7 @@ import Cookies from "js-cookie";
 import customBaseQuery from "../CustomBaseQuery";
 export const usersApi = createApi({
   reducerPath: "usersApi",
-  // baseQuery: fetchBaseQuery({
-  //   baseUrl: "https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/",
-  //   prepareHeaders: (headers) => {
-  //     // const token = sessionStorage.getItem("id_token");
-  //     const token = Cookies.get("id_token");
-
-  //     if (token) {
-  //       headers.set("Authorization", `Bearer ${token}`);
-  //     }
-  //     headers.set("Content-Type", "application/json");
-  //     return headers;
-  //   },
-  // }),
+  
   baseQuery: customBaseQuery,
 
   endpoints: (builder) => ({

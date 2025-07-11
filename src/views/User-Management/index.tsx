@@ -18,9 +18,13 @@ import { Add, DeleteOutline } from "@mui/icons-material";
 import SettingsPanel from "./SettingPanel";
 import {
   useDeactivateUserMutation,
+  useGetCurrentUserQuery,
   useGetUsersQuery,
 } from "@/src/redux/services/users/usersApi";
 import { toast } from "react-toastify";
+import AIOutreachSettings from "./AiOutreach";
+import { useGetOrganzationQuery } from "@/src/redux/services/organization/organizationApi";
+import TemplateSetting from "./TemplateSetting";
 import AdminDashboard from "./AdminDashboard";
 import styles from "./styles.module.scss";
 
@@ -33,6 +37,19 @@ const UserManagement = () => {
   const [selectedUserEmail, setSelectedUserEmail] = useState<string | null>(
     null
   );
+  const {
+    data: userData,
+    isLoading: userLoading,
+    error: userError,
+  } = useGetCurrentUserQuery();
+  const organizationsId = userData?.data?.[0].organizations_id;
+  // console.log("userData", userData);
+
+  const { data: organizationData, isLoading: isOrgLoading } =
+    useGetOrganzationQuery(
+      { organization_id: organizationsId },
+      { skip: !organizationsId }
+    );
 
   const {
     data: users,
@@ -53,7 +70,13 @@ const UserManagement = () => {
       console.error("Failed to deactivate user:", error);
     }
   };
-
+  if (isOrgLoading) {
+    return (
+      <Box sx={{ padding: "48px" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <Box className = {styles.indexRoot}>
       <Box className = {styles.indexHeadingBox}>
@@ -68,11 +91,20 @@ const UserManagement = () => {
           onTabChange={(label: any) => setActiveTab(label)}
         />
       </Box>
-
-      <SettingsPanel />
-
-      <Box className={styles.userManagementBox}>
-        <Typography variant="h6" gutterBottom className={styles.userManagementTypo}>
+      <Box mb={4}>
+        <SettingsPanel data={organizationData} />
+        <Divider />
+      </Box>
+      <Box mb={4}>
+        <AIOutreachSettings data={organizationData} editable organizationsId={organizationsId}/>
+        <Divider />
+      </Box>
+      <Box mb={4}>
+        <TemplateSetting />
+        <Divider />
+      </Box>
+      <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}>
+        <Typography variant="h6" gutterBottom fontSize={24} fontWeight={600}>
           User management
         </Typography>
         <Box sx={{ height: "350px", overflowY: "auto" }}>

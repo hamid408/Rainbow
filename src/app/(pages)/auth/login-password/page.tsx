@@ -8,6 +8,9 @@ import { useFirstLoginPasswordMutation } from "@/src/redux/services/auth/authApi
 import Cookies from "js-cookie";
 import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import Image from "next/image";
+import Logo from "@/src/assests/images/newlogo.jpg";
+
 const FirstLoginPassword = () => {
   const router = useRouter();
   const [session, setSession] = useState("");
@@ -67,10 +70,6 @@ const FirstLoginPassword = () => {
 
       const response = await firstLoginPassword(payload).unwrap();
 
-      // Success logic
-      // sessionStorage.removeItem("auth_session");
-      // sessionStorage.setItem("id_token", response.id_token);
-      // sessionStorage.setItem("auth_email", email);
       Cookies.remove("auth_session");
       Cookies.set("id_token", response.id_token);
       Cookies.set("auth_email", email);
@@ -81,53 +80,6 @@ const FirstLoginPassword = () => {
       setLoading(false);
     }
   };
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setError("");
-
-  //   if (!newPassword || !confirmPassword) {
-  //     setError("Both password fields are required.");
-  //     return;
-  //   }
-
-  //   if (newPassword !== confirmPassword) {
-  //     setError("Passwords do not match.");
-  //     return;
-  //   }
-
-  //   try {
-  //     setLoading(true);
-
-  //     const response = await fetch(
-  //       "https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/auth/changePass/firstLogIn",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           session: session,
-  //           new_password: newPassword,
-  //           email: email,
-  //         }),
-  //       }
-  //     );
-
-  //     const data = await response.json();
-
-  //     if (response.ok) {
-  //       sessionStorage.removeItem("auth_session");
-  //       router.push("/dashboard");
-  //     } else {
-  //       setError(data?.message || "Failed to reset password.");
-  //     }
-  //   } catch (err) {
-  //     setError("Something went wrong. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <Container
@@ -154,7 +106,19 @@ const FirstLoginPassword = () => {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h5" align="center" mb={2}>
+        <Box>
+          <Image
+            src={Logo}
+            alt="logo"
+            style={{
+              maxWidth: "470px",
+              width: "100%",
+              height: "auto",
+              marginBottom: "48px",
+            }}
+          />
+        </Box>
+        <Typography variant="h5" align="center" mb={3.1} fontSize={28}>
           Create Your New Password
         </Typography>
         <Typography variant="body2" align="center" color="gray" mb={3}>
@@ -162,22 +126,6 @@ const FirstLoginPassword = () => {
         </Typography>
 
         <Stack gap={2}>
-          {/* <CustomTextField
-            label="New Password"
-            type="password"
-            fullWidth
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="Write new password"
-          />
-          <CustomTextField
-            label="Confirm Password"
-            type="password"
-            fullWidth
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm new password"
-          /> */}
           <CustomTextField
             label="New Password"
             type={showPassword ? "text" : "password"}

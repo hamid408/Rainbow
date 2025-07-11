@@ -22,6 +22,7 @@ const Dashboard = () => {
   const ITEMS_PER_PAGE = 5;
   const offset = (page - 1) * ITEMS_PER_PAGE;
   const isAll = activeTab === "All";
+  const [allTags, setAllTags] = useState<string[]>([]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch] = useDebounce(searchQuery, 1000);
@@ -39,6 +40,7 @@ const Dashboard = () => {
         refetchOnMountOrArgChange: true,
       }
     );
+
   const pathname = usePathname();
 
   useEffect(() => {
@@ -63,6 +65,13 @@ const Dashboard = () => {
   const leads = data?.data || [];
   const totalCount = data?.total_records || 0;
 
+  useEffect(() => {
+    if (isAll && leads.length > 0) {
+      const tagSet = new Set(leads.map((lead: any) => lead.tag || "Untagged"));
+      setAllTags(["All", ...Array.from(tagSet)]);
+    }
+  }, [leads, isAll]);
+
   // const { data: allTagsData } = useGetLeadsQuery(
   //   { limit: 1000, offset: 0 },
   //   // { skip: !isAll }
@@ -83,7 +92,8 @@ const Dashboard = () => {
     return ["All", ...Array.from(tagSet)];
   }, [leads]);
 
-  const tabsData = tags.map((tag) => ({ label: String(tag) }));
+  // const tabsData = tags.map((tag) => ({ label: String(tag) }));
+  const tabsData = allTags.map((tag) => ({ label: String(tag) }));
 
   const handleTabChange = (label: string) => {
     setActiveTab(label);
@@ -96,7 +106,11 @@ const Dashboard = () => {
   }
   return (
     <Box padding="48px">
-      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Header
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        activeTab={activeTab}
+      />
       <Box
         borderRadius="12px"
         padding={1}

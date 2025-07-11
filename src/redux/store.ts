@@ -5,6 +5,7 @@ import authReducer from "./services/auth/authSlice";
 import { leadsapi } from "./services/leads/leadsApi";
 import { conversationApi } from "./services/conversation/conversationApi";
 import { twilioApi } from "./services/twilio/twilioApi";
+import { organizationApi } from "./services/organization/organizationApi";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     [leadsapi.reducerPath]: leadsapi.reducer,
     [conversationApi.reducerPath]: conversationApi.reducer,
     [twilioApi.reducerPath]: twilioApi.reducer,
+    [organizationApi.reducerPath]: organizationApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -21,6 +23,7 @@ export const store = configureStore({
       usersApi.middleware,
       leadsapi.middleware,
       conversationApi.middleware,
+      organizationApi.middleware,
       twilioApi.middleware
     ),
 });

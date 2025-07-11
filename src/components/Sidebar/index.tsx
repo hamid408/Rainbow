@@ -10,7 +10,7 @@ import {
   sidebarItems,
   sidebarItemsMobile,
 } from "./sidebarItem";
-import Logo from "../../assests/images/logo.png";
+import Logo from "../../assests/images/newlogo.jpg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Logout, Password, VerifiedUserOutlined } from "@mui/icons-material";
@@ -70,7 +70,7 @@ const Sidebar = () => {
   };
 
   const pathMap: Record<string, string> = {
-    "Hot Leads": "/dashboard",
+    "Dashboard": "/dashboard",
     "AI Outreach": "/ai-reach",
     "Tasks & Reminder": "/tasks",
     Analytics: "/analytics",
@@ -124,6 +124,10 @@ const Sidebar = () => {
               marginBottom: "48px",
               marginTop: "32px",
               cursor: "pointer",
+              width: "210px",
+              height: "auto",
+              border:"none",
+
             }}
             onClick={() => router.push("/dashboard")}
           />
