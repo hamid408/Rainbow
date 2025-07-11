@@ -37,6 +37,7 @@ import BigPause from "./BigPause.svg";
 import AssignAI from "./AssignAI.svg";
 import TakeOver from "./TakeOver.svg";
 import AfterTakeOver  from "./AfterTakeOver.svg";
+import Arrow from "./Arrow.svg";
 export {
   LeadsIcon,
   UserIcon,
@@ -77,4 +78,5 @@ export {
   AssignAI,
   TakeOver,
   AfterTakeOver,
+  Arrow,
 };
