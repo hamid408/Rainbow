@@ -151,9 +151,8 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
           {allMessages.map((msg: any, index: number) => {
             // const time = extractTime(msg.created_at);
             const time = msg.created_at;
-            const isAI = msg.sender_type === "user";
-            // const senderName = isAI ? "AI Assistant" : userName;
-            // const senderName = isAI ? "AI Assistant" : msg.sender_name;
+            const isAI = msg.is_bot === true;
+           
             const senderName = msg.sender_name || "Unknown";
 
             return (
@@ -165,12 +164,12 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                 // gap={2.5}
                 // flexDirection="row"
               >
-                {/* {isAI ? (
+                {isAI ? (
                 <Image src={AvatarPic} alt="AI Avatar" width={60} height={60} />
                 ) : (
-                  renderUserAvatar(userName)
-                  )} */}
-                {renderUserAvatar(senderName)}
+                  renderUserAvatar(senderName)
+                  )}
+                {/* {renderUserAvatar(senderName)} */}
                 <Stack spacing={1.5}>
                   <Box>
                     <Box

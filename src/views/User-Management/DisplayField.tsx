@@ -69,14 +69,16 @@ const DisplayField = ({
             placeholder={placeholder}
           />
         ) : (
-          <TextField
+          <CustomTextField
             value={value}
             fullWidth
             onChange={(e) => onChange && onChange(e.target.value)}
             size="small"
             disabled={disabled}
             variant="outlined"
-            sx={{ maxWidth: "510px" }}
+            // sx={{ maxWidth: "510px" }}
+            // fullWidth
+            width={"100%"}
           />
         )}
 

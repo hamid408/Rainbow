@@ -105,7 +105,7 @@ const UserManagement = () => {
       </Box>
       <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}>
         <Typography variant="h6" gutterBottom fontSize={24} fontWeight={600}>
-          User management
+          User Management
         </Typography>
         <Box sx={{ height: "350px", overflowY: "auto" }}>
           <Box mt={2}>
@@ -119,7 +119,7 @@ const UserManagement = () => {
                   <Box className={styles.userManagementRowBox}>
                     <Box className = {styles.nameAndEmailBox}>
                       <Box flex={1} className = {styles.nameBox}>
-                        <Typography fontWeight={600} fontSize={14}>
+                        <Typography fontWeight={400} fontSize={16}>
                           {user.name || user.first_name}
                         </Typography>
                       </Box>

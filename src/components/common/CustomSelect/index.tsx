@@ -142,15 +142,15 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           borderColor: error
             ? "rgba(212, 38, 32, 1)"
             : variant === "white"
-              ? "#FFFFFF"
-              : "rgba(0, 193, 212, 1)",
+            ? "#FFFFFF"
+            : "rgba(0, 193, 212, 1)",
         },
         "&:hover .MuiOutlinedInput-notchedOutline": {
           borderColor: error
             ? "rgba(212, 38, 32, 1)"
             : variant === "white"
-              ? "#FFFFFF"
-              : "rgba(0, 193, 212, 1)",
+            ? "#FFFFFF"
+            : "rgba(0, 193, 212, 1)",
         },
       }}
       required={required}
@@ -185,7 +185,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         sx={{
           width: "100%",
           height: height || "47px",
-          fontSize: "14px",
+          fontSize: "16px",
           color: value
             ? selectedVariant.textColor
             : selectedVariant.placeholderColor,
@@ -203,11 +203,12 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
               ? selectedVariant.textColor
               : selectedVariant.placeholderColor,
             fontWeight: value ? "500" : "400",
+            fontSize: "18px",
           },
           "& .MuiOutlinedInput-input": {
             display: "flex",
             alignItems: "center",
-            fontSize: "14px",
+            fontSize: "18px",
           },
           "& .MuiOutlinedInput-notchedOutline": {
             borderRadius: "6px",
@@ -247,7 +248,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
                   multiple
                     ? Array.isArray(value) &&
                         value.includes(String(option.value))
-                    : value === String(option.value),
+                    : value === String(option.value)
                 )}
               </span>
             )}
