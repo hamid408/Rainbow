@@ -38,6 +38,10 @@ import AssignAI from "./AssignAI.svg";
 import TakeOver from "./TakeOver.svg";
 import AfterTakeOver  from "./AfterTakeOver.svg";
 import Arrow from "./Arrow.svg";
+import EditPurple from "./EditPurple.svg";
+import ThumbsDown from "./ThumbsDown.svg";
+import ThumbsUp from "./ThumbsUp.svg";
+import ThreeDotsVertical from "./ThreeDotsVertical.svg";
 export {
   LeadsIcon,
   UserIcon,
@@ -79,4 +83,8 @@ export {
   TakeOver,
   AfterTakeOver,
   Arrow,
+  EditPurple,
+  ThumbsDown,
+  ThumbsUp,
+  ThreeDotsVertical,
 };

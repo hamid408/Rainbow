@@ -85,7 +85,9 @@ const UserManagement = () => {
         </Typography>
       </Box>
 
-      <Box className={styles.indexCustomTabBox}>
+      <AdminDashboard></AdminDashboard>
+
+      {/* <Box className={styles.indexCustomTabBox}>
         <CustomTabs
           tabs={tabItems}
           onTabChange={(label: any) => setActiveTab(label)}
@@ -102,12 +104,12 @@ const UserManagement = () => {
       <Box mb={4}>
         <TemplateSetting />
         <Divider />
-      </Box>
-      <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}>
-        <Typography variant="h6" gutterBottom fontSize={24} fontWeight={600}>
+      </Box> */}
+      {/* <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}> */}
+        {/* <Typography variant="h6" gutterBottom fontSize={24} fontWeight={600}>
           User management
-        </Typography>
-        <Box sx={{ height: "350px", overflowY: "auto" }}>
+        </Typography> */}
+        {/* <Box sx={{ height: "350px", overflowY: "auto" }}>
           <Box mt={2}>
             {isUsersLoading && <CircularProgress size={24} />}
             {isError && (
@@ -165,8 +167,8 @@ const UserManagement = () => {
             onClose={handleClose}
             refetchUsers={refetch}
           />
-        </Box>
-        <Box mt={2}>
+        </Box> */}
+        {/* <Box mt={2}>
           <CustomButton
             variant="outlined"
             color="primary"
@@ -182,10 +184,10 @@ const UserManagement = () => {
           >
             Add New Solo User
           </CustomButton>
-        </Box>
-      </Box>
+        </Box> */}
+      {/* </Box> */}
 
-      <Dialog
+      {/* <Dialog
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}
         PaperProps={{
@@ -245,7 +247,7 @@ const UserManagement = () => {
             {isDeactivating ? "Deactivating....." : "Deactivate"}
           </CustomButton>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </Box>
   );
 };

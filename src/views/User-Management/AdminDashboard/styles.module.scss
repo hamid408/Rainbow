@@ -52,3 +52,173 @@
   padding: 10px !important;
   border-radius: 12px !important;
 }
+
+.cardRoot{
+  // width: 512px  !important;
+  // height: 501px !important;
+  width: 100%;
+  max-width: 50%;
+  background-color: #ffffff !important;
+  border: 1px solid #c1c7d0 !important;
+  border-radius: 12px !important;
+  padding: 16px !important;       
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.cardHeadingBox{
+    display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.headingLeftBox{
+  display: flex;
+  align-items: center;
+}
+
+.redDot{
+    width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #df1c41;
+  margin-right: 12px;
+}
+
+.headingTypo{
+  font-size: 18px;
+  font-weight: 600;
+  color: #0D0D12;
+}
+
+.divider{
+  color: #C1C7D0;
+    margin-bottom: 8px !important;
+  margin-left: -15px !important;
+  margin-right: -15px !important;
+}
+
+.cardContentRootBox{
+    display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.leftContentBox{
+    display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.avatar{
+    background-color: #E5EFFF !important;
+  color: #0062FF !important;
+  width: 56px !important;
+  height: 56px !important;
+  margin-right: 12px !important; 
+  font-size: 20px !important;
+  font-weight: 600 !important;
+}
+
+.name{
+    font-weight: 600;
+  font-size: 18px;
+  color: #0D0D12;
+}
+
+.description{
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #36394A !important;
+}
+
+.messageBox{
+  display: flex;
+  align-items: center;
+  gap: 4px; // equivalent of gap={1} (1 * 4px)
+  font-size: 14px;
+  background-color: #F6F8FA;
+  padding: 8px 10px;
+  border-radius: 8px;
+  height: 36px;
+  width: 272px;
+}
+
+.textField{
+    font-size: 14px;
+  font-weight: 400;
+  color: #0D0D12;
+}
+
+.rightContentBox{
+  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeAgoTypo{
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #666D80 !important;
+  margin-right: 8px !important;
+}
+
+.roundIconBox{
+  padding: 8px 16px;
+  height: 40px;
+  width: 40px;
+  border: 1px solid #7A4DF5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrowIcon{
+   color: #7A4DF5;
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+}
+
+.thumbsUpDown{
+  display: flex;
+  gap: 8px;
+}
+
+.insideDivider{
+  margin-left: -15px !important;
+  margin-right: -15px !important;
+  color: #C1C7D0 !important;
+
+}
+
+.indexRoot{
+   display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.indexSecondary{
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+}
+
+.conversationBox{
+  display: flex;
+  flex: 1;
+  min-width: 350px;
+}
+
+// .indexMessageBox{
+//   display: flex !important;
+//   flex: 1 !important;
+//   min-width: 350px !important;
+//   margin-right: 17px !important;
+// }
