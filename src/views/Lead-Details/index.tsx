@@ -23,7 +23,7 @@ const LeadDetails = ({ leadId }: { leadId: string }) => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [leadId, refreshChat, refetch]);
 
   const isLoadingState =
     isLoading || isFetching || !data || !data.data?.length || !lead;

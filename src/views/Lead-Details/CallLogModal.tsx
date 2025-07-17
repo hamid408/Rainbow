@@ -75,6 +75,7 @@ import {
   Typography,
   Box,
   Link,
+  Divider,
 } from "@mui/material";
 import CustomButton from "@/src/components/common/CustomButton";
 
@@ -94,6 +95,53 @@ interface CallLogModalProps {
 const CallLogModal = ({ open, onClose, data }: CallLogModalProps) => {
   if (!data) return null;
 
+  const renderFormattedTranscript = () => {
+    if (!data?.transcript) return null;
+
+    const lines = data.transcript.trim().split("\n");
+
+    return (
+      <Box display="flex" flexDirection="column" gap={1} mt={1}>
+        {lines.map((line, idx) => {
+          const isUser = line.startsWith("User:");
+          const isAgent = line.startsWith("Agent:");
+          const message = line.replace(/^User:\s?|^Agent:\s?/, "");
+
+          return (
+            <Box
+              key={idx}
+              display="flex"
+              justifyContent={isUser ? "flex-end" : "flex-start"}
+            >
+              <Box
+                maxWidth="75%"
+                bgcolor={isUser ? "#e3f2fd" : "#f1f1f1"}
+                px={2}
+                py={1}
+                borderRadius={2}
+              >
+                <Typography
+                  variant="body2"
+                  fontWeight="bold"
+                  textAlign={isUser ? "right" : "left"}
+                  mb={0.5}
+                >
+                  {isUser ? "User" : "Agent"}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  textAlign={isUser ? "right" : "left"}
+                >
+                  {message}
+                </Typography>
+              </Box>
+            </Box>
+          );
+        })}
+      </Box>
+    );
+  };
+
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle
@@ -108,8 +156,7 @@ const CallLogModal = ({ open, onClose, data }: CallLogModalProps) => {
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{ fontWeight: 600,color: "text.primary" }}
-          
+          sx={{ fontWeight: 600, color: "text.primary" }}
         >
           Status:{" "}
           {data.call_status ? data.call_status : data.conversation_status}
@@ -137,9 +184,10 @@ const CallLogModal = ({ open, onClose, data }: CallLogModalProps) => {
           Transcript:
         </Typography>
         <Typography variant="body2" whiteSpace="pre-wrap">
-          {data.transcript}
+          {/* {data.transcript} */}
+          {renderFormattedTranscript()}
         </Typography>
-
+        <Divider sx={{margin:"16px"}}/>
         <Box mt={3}>
           <Typography variant="body2">
             <strong>Disconnection Reason:</strong>{" "}

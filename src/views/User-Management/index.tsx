@@ -27,6 +27,7 @@ import { useGetOrganzationQuery } from "@/src/redux/services/organization/organi
 import TemplateSetting from "./TemplateSetting";
 import AdminDashboard from "./AdminDashboard";
 import styles from "./styles.module.scss";
+import CSVUploader from "../Dashboard/CsvFile";
 
 const UserManagement = () => {
   const [open, setOpen] = useState(false);
@@ -78,13 +79,12 @@ const UserManagement = () => {
     );
   }
   return (
-    <Box className = {styles.indexRoot}>
-      <Box className = {styles.indexHeadingBox}>
+    <Box className={styles.indexRoot}>
+      <Box className={styles.indexHeadingBox}>
         <Typography variant="h1" className={styles.indexHeading}>
           Admin Oversight
         </Typography>
       </Box>
-
       <Box className={styles.indexCustomTabBox}>
         <CustomTabs
           tabs={tabItems}
@@ -96,7 +96,11 @@ const UserManagement = () => {
         <Divider />
       </Box>
       <Box mb={4}>
-        <AIOutreachSettings data={organizationData} editable organizationsId={organizationsId}/>
+        <AIOutreachSettings
+          data={organizationData}
+          editable
+          organizationsId={organizationsId}
+        />
         <Divider />
       </Box>
       <Box mb={4}>
@@ -117,8 +121,8 @@ const UserManagement = () => {
               users.data.map((user: any, index: number) => (
                 <Box key={index}>
                   <Box className={styles.userManagementRowBox}>
-                    <Box className = {styles.nameAndEmailBox}>
-                      <Box flex={1} className = {styles.nameBox}>
+                    <Box className={styles.nameAndEmailBox}>
+                      <Box flex={1} className={styles.nameBox}>
                         <Typography fontWeight={400} fontSize={16}>
                           {user.name || user.first_name}
                         </Typography>
@@ -172,7 +176,7 @@ const UserManagement = () => {
             color="primary"
             onClick={handleOpen}
             startIcon={<Add />}
-            className = {styles.addBtn}
+            className={styles.addBtn}
             // sx={{
             //   fontSize: 14,
             //   fontWeight: "600",
