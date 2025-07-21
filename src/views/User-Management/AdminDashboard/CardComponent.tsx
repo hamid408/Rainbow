@@ -9,26 +9,51 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import NorthEastIcon from "@mui/icons-material/NorthEast";
-import React from "react";
+import React, { useState } from "react";
 import { CardData } from "./data";
 import styles from "./styles.module.scss";
-import { EditPurple, ThumbsDown, ThumbsUp } from "@/src/assests/icons";
+import { Ai, EditPurple, ThumbsDown, ThumbsUp } from "@/src/assests/icons";
 import { Dialog } from "@mui/material";
-import CardsRow from "./CardsRow";
+import LeadDetails from "../../Lead-Details";
+import CloseIcon from "@mui/icons-material/Close";
+import CustomTextField from "@/src/components/common/CustomTextfield";
+import CustomButton from "@/src/components/common/CustomButton";
 
 interface Props {
   type: "conversation" | "message";
   data: CardData[];
 }
 
-const CardComponent: React.FC<Props> = ({ type, data }) => {
-  const [editableIndex, setEditableIndex] = React.useState<number | null>(null);
-  const [localData, setLocalData] = React.useState<CardData[]>(data);
+const CardComponent: React.FC<Props> = ({ data }) => {
+  const [editableIndex, setEditableIndex] = useState<number | null>(null);
+  const [localData, setLocalData] = useState<CardData[]>(data);
+
+  const [editDialogOpen, setEditDialogOpen] = React.useState(false);
+  const [currentEditIndex, setCurrentEditIndex] = React.useState<number | null>(
+    null
+  );
+  const [editMessageValue, setEditMessageValue] = React.useState("");
 
   const handleEditClick = (index: number) => {
-    setEditableIndex(index);
+    const item = localData[index];
+    if (item.type === "message") {
+      setCurrentEditIndex(index);
+      setEditMessageValue(item.message);
+      setEditDialogOpen(true);
+    }
+  };
+
+  const handleSaveChanges = () => {
+    if (currentEditIndex !== null) {
+      const updatedData = [...localData];
+      const currentItem = updatedData[currentEditIndex];
+      if (currentItem.type === "message") {
+        currentItem.message = editMessageValue;
+        setLocalData(updatedData);
+      }
+      setEditDialogOpen(false);
+    }
   };
 
   const handleInputChange = (
@@ -45,8 +70,6 @@ const CardComponent: React.FC<Props> = ({ type, data }) => {
   };
 
   const [openPopup, setOpenPopup] = React.useState(false);
-  const handleOpen = () => setOpenPopup(true);
-  const handleClose = () => setOpenPopup(false);
 
   return (
     <>
@@ -59,8 +82,8 @@ const CardComponent: React.FC<Props> = ({ type, data }) => {
                 <Avatar className={styles.avatar} src={item.avatarUrl}>
                   {item.avatarInitials}
                 </Avatar>
-                <Box>
-                  <Typography className={styles.name}>{item.name}</Typography>
+                <Box sx={{ marginLeft: "-6px" }}>
+                  <Typography variant="body1">{item.name}</Typography>
 
                   {item.type === "conversation" && (
                     <Typography className={styles.description}>
@@ -75,13 +98,17 @@ const CardComponent: React.FC<Props> = ({ type, data }) => {
                           disableUnderline: true,
                           readOnly: editableIndex !== index,
                           sx: {
-                            fontSize: "14px",
-                            fontWeight: 400,
+                            fontSize: "14px !important",
+                            fontWeight: "400 !important",
                             color: "text.primary",
                           },
                         }}
                         variant="standard"
-                        value={item.message}
+                        value={
+                          item.message.length > 30
+                            ? `${item.message.slice(0, 25)}...`
+                            : item.message
+                        }
                         onChange={(e) => handleInputChange(e, index)}
                         fullWidth
                       />
@@ -104,7 +131,7 @@ const CardComponent: React.FC<Props> = ({ type, data }) => {
                   </Typography>
                   <Box
                     className={styles.roundIconBox}
-                    onClick={handleOpen}
+                    onClick={() => setOpenPopup(true)}
                     sx={{ cursor: "pointer" }}
                   >
                     <NorthEastIcon className={styles.arrowIcon} />
@@ -112,16 +139,35 @@ const CardComponent: React.FC<Props> = ({ type, data }) => {
 
                   <Dialog
                     open={openPopup}
-                    onClose={handleClose}
-                    maxWidth="sm"
+                    onClose={() => setOpenPopup(false)}
+                    maxWidth="lg"
                     fullWidth
-                    hideBackdrop
+                    PaperProps={{
+                      className: styles.dialogPaper,
+                    }}
+                    BackdropProps={{
+                      className: styles.dialogBackdrop,
+                    }}
                   >
-                    {/* <CardsRow onClose={handleClose} /> */}
+                    <Box sx={{ position: "relative", p: 2 }}>
+                      <IconButton
+                        onClick={() => setOpenPopup(false)}
+                        className={styles.closeIconButton}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+
+                      <Box className={styles.leadDetailsSmallText}>
+                        <LeadDetails
+                          leadId="50b5897c-eb12-4e2b-897d-d91c5cbdd3b5"
+                          hideBackButton={true}
+                        />
+                      </Box>
+                    </Box>
                   </Dialog>
                 </Box>
               ) : (
-                <Box display="flex" gap={0.5} ml={2.5}>
+                <Box className={styles.likeDislikeBox}>
                   <IconButton size="small">
                     <ThumbsDown />
                   </IconButton>
@@ -132,13 +178,71 @@ const CardComponent: React.FC<Props> = ({ type, data }) => {
               )}
             </Box>
 
-            {/* Divider between entries (except after last) */}
-            {index !== localData.length - 1 && (
-              <Divider className={styles.insideDivider} />
-            )}
+            {/* <Box className={styles.dividerContainer}> */}
+              {/* Divider between entries (except after last) */}
+              {index !== localData.length - 1 && (
+                <Divider className={styles.insideDivider} />
+              )}
+            {/* </Box> */}
           </React.Fragment>
         ))}
       </CardContent>
+
+      <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            p: 2,
+          },
+        }}
+      >
+        {/* Header with title and close icon */}
+        <Box className={styles.editPopUpBox}>
+          <Typography className={styles.editMessageTypo}>
+            Edit Message
+          </Typography>
+          <IconButton onClick={() => setEditDialogOpen(false)}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <Divider className={styles.editPopUpDivider} />
+
+        {/* AI Suggested Box */}
+        <Box className={styles.aiSuggestedBox}>
+          <Box className={styles.textBox}>
+            {/* Replace with your thunder icon */}
+            <Ai />
+            <Typography className={styles.messageTypo}>
+              AI Suggested Message
+            </Typography>
+          </Box>
+
+          <CustomTextField
+            value={editMessageValue}
+            onChange={(e) => setEditMessageValue(e.target.value)}
+            fullWidth
+            multiline
+            minRows={1}
+            variant="outlined"
+          />
+        </Box>
+
+        {/* Save Button */}
+        <Box className={styles.saveBtn}>
+          <CustomButton
+            onClick={handleSaveChanges}
+            variant="contained"
+            background="#6B39F4"
+          >
+            Save Changes
+          </CustomButton>
+        </Box>
+      </Dialog>
     </>
   );
 };

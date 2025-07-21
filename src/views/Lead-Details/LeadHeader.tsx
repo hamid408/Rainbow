@@ -23,8 +23,9 @@ interface LeadHeaderProps {
   status: string;
   onRefreshClick: () => void;
   onEditClick: () => void;
+  hideBackButton?: boolean;
 }
-const LeadHeader = ({ name, status, onRefreshClick, onEditClick }: LeadHeaderProps) => {
+const LeadHeader = ({ name, status, onRefreshClick, onEditClick, hideBackButton }: LeadHeaderProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -47,10 +48,13 @@ const LeadHeader = ({ name, status, onRefreshClick, onEditClick }: LeadHeaderPro
     <>
       <Box className={styles.leadHeaderRoot}>
         <Box className={styles.leadHeaderSecondRoot}>
-          <Box className={styles.leadHeaderFirstRow}>
-            <Back onClick={handleRouteBack} />
-            {/* <Back onClick={() => router.back()} /> */}
+          {!hideBackButton && (
+            <Box className={styles.leadHeaderFirstRow}>
+            {/* <Back onClick={handleRouteBack} /> */}
+            <Back onClick={() => router.back()} />
           </Box>
+          )}
+          
           <Avatar
             className={styles.leadHeaderAvatar}
             // sx={{

@@ -42,6 +42,7 @@ import EditPurple from "./EditPurple.svg";
 import ThumbsDown from "./ThumbsDown.svg";
 import ThumbsUp from "./ThumbsUp.svg";
 import ThreeDotsVertical from "./ThreeDotsVertical.svg";
+import LargeUrgent from "./LargeUrgent.svg";
 export {
   LeadsIcon,
   UserIcon,
@@ -87,4 +88,5 @@ export {
   ThumbsDown,
   ThumbsUp,
   ThreeDotsVertical,
+  LargeUrgent,
 };

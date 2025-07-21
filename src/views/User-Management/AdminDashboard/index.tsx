@@ -23,7 +23,7 @@ const AdminDashboard = () => {
       <CardsRow />
 
       {/* Left Card */}
-      <Box sx={{ display: "flex", gap: "16px" }}>
+      <Box className = {styles.bothCards}>
         <Box className={styles.cardRoot}>
           <Box className={styles.cardHeadingBox}>
             <Box className={styles.headingLeftBox}>
@@ -34,7 +34,8 @@ const AdminDashboard = () => {
             </Box>
 
             <IconButton size="small">
-              <ThreeDotsVertical></ThreeDotsVertical>
+              {/* <ThreeDotsVertical></ThreeDotsVertical> */}
+              <ThreeDotsVertical/>
             </IconButton>
           </Box>
 
@@ -55,13 +56,13 @@ const AdminDashboard = () => {
             </Box>
 
             <IconButton size="small">
-              <ThreeDotsVertical></ThreeDotsVertical>
+              <ThreeDotsVertical/>
             </IconButton>
           </Box>
 
           <Divider className={styles.divider} />
 
-          <Box flex={1} minWidth={350} display="flex" marginRight={17}>
+          <Box flex={1} minWidth={350} display="flex">
             <CardComponent type="message" data={messageData} />
           </Box>
         </Box>

@@ -10,7 +10,7 @@ import styles from "./style.module.scss";
 import { Box, CircularProgress, Drawer } from "@mui/material";
 
 
-const LeadDetails = ({ leadId }: { leadId: string }) => {
+const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideBackButton?: boolean; }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [refreshChat, setRefreshChat] = useState(0);
   const { data, isLoading, error, isFetching, refetch } =
@@ -57,6 +57,7 @@ const LeadDetails = ({ leadId }: { leadId: string }) => {
         status={status}
         onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
         onEditClick={() => setIsDrawerOpen(true)}
+        hideBackButton = {hideBackButton}
       />
       <Box className={styles.indexSecondaryBox}>
         <Box className={styles.indexLastBox}>
