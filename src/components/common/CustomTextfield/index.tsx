@@ -2,7 +2,7 @@
 import React, { forwardRef } from "react";
 import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import styles from "./index.module.scss";
-import { CustomTextFieldProps } from "@/src/Types/CustomTextFieldProps";
+import { CustomTextFieldProps } from "@/src/types/CustomTextFieldProps";
 
 const CustomTextField: React.FC<CustomTextFieldProps> = forwardRef(
   (
@@ -29,7 +29,11 @@ const CustomTextField: React.FC<CustomTextFieldProps> = forwardRef(
   ) => {
     return (
       <Box sx={{ width: "100%", marginTop: "-4px" }}>
-        <Typography variant="subtitle1" sx={{ marginBottom: "6px" }} fontWeight={600}>
+        <Typography
+          variant="subtitle1"
+          sx={{ marginBottom: "6px" }}
+          fontWeight={600}
+        >
           {label}
         </Typography>
         <TextField

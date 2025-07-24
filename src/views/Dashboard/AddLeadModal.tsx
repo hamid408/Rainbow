@@ -95,15 +95,40 @@ const AddLeadModal = ({
       toast.error("Failed to create lead");
     }
   };
+  // const handleBulkSubmit = async (dataArray: any[]) => {
+  //   try {
+  //     await createLead(dataArray).unwrap();
+  //     toast.success("Bulk leads uploaded successfully!");
+  //     onClose();
+  //     refetchLeads();
+  //   } catch (error) {
+  //     console.error("Bulk lead upload failed:", error);
+  //     toast.error("Failed to upload bulk leads.");
+  //   }
+  // };
   const handleBulkSubmit = async (dataArray: any[]) => {
+    const chunkSize = 25;
+
+    const delay = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
+
+    const chunks = [];
+    for (let i = 0; i < dataArray.length; i += chunkSize) {
+      chunks.push(dataArray.slice(i, i + chunkSize));
+    }
+
     try {
-      await createLead(dataArray).unwrap(); 
-      toast.success("Bulk leads uploaded successfully!");
+      for (let i = 0; i < chunks.length; i++) {
+        await createLead(chunks[i]).unwrap();
+        toast.success(`Uploaded batch ${i + 1} of ${chunks.length}`);
+        await delay(200);
+      }
+      toast.success("All leads uploaded successfully!");
       onClose();
       refetchLeads();
     } catch (error) {
       console.error("Bulk lead upload failed:", error);
-      toast.error("Failed to upload bulk leads.");
+      toast.error("Failed to upload some or all leads.");
     }
   };
 
@@ -131,7 +156,7 @@ const AddLeadModal = ({
         <CloseRounded onClick={onClose} sx={{ cursor: "pointer" }} />
       </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent sx={{ p: "22px 28px" }}>
+        <DialogContent sx={{ p: "22px 28px", minHeight: "450px" }}>
           {activeTab === "Bulk Upload" ? (
             <Box display="flex" flexDirection="column" gap={2} mt={-2}>
               <Typography variant="h3" fontWeight={600} sx={{ mb: 4 }}>

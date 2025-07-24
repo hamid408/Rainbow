@@ -24,7 +24,12 @@ import {
 import { useResolvedLeadMutation } from "@/src/redux/services/leads/leadsApi";
 import styles from "./style.module.scss";
 
-const ChatInputBox = ({ data, refreshTrigger, onRefreshClick }: any) => {
+const ChatInputBox = ({
+  data,
+  refreshTrigger,
+  onRefreshClick,
+  refetchSuggestion,
+}: any) => {
   const latestOffset = useRef(0);
   const lead = data?.data?.[0];
   const leadId = lead?.lead_id;
@@ -64,8 +69,9 @@ const ChatInputBox = ({ data, refreshTrigger, onRefreshClick }: any) => {
         lead_id: leadId,
         sms_content: message,
       }).unwrap();
-      toast.success("Suggestion Sent Successfully!");
+      toast.success("Message Sent Successfully!");
       onRefreshClick();
+      await refetchSuggestion();
       setMessage("");
     } catch (err) {
       console.error("SMS Failed:", err);

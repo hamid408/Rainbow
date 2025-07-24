@@ -9,11 +9,9 @@ const SettingsPanel = ({ data }: any) => {
     navigator.clipboard.writeText(text);
   };
   if (!data) return null;
-  console.log("data", data);
   const settingData = data?.data || {};
-  console.log("settingData", settingData);
   return (
-    <Box className = {styles.settingPanelMainBox}>
+    <Box className={styles.settingPanelMainBox}>
       <Typography variant="h2" fontSize={24} fontWeight={600} mb={3}>
         Twilio Integration Settings
       </Typography>

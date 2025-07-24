@@ -31,9 +31,9 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
     router.push(`/dashboard?page=${page}`);
   };
   const keyword = status?.split(" ")[0]?.toLowerCase();
-  console.log("stats", keyword);
   const initials = getInitials(name);
-  const handleRefreshClick = () => {
+  const handleRefreshClick = (e: any) => {
+    e.preventDefault();
     setLoading(true);
     setTimeout(() => {
       onRefreshClick();
@@ -63,6 +63,7 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
 
         <Box className={styles.refreshBtn}>
           <CustomButton
+            type="button"
             variant="contained"
             onClick={handleRefreshClick}
             startIcon={

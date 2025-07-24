@@ -151,6 +151,7 @@ const CSVUploader = ({
                           handleCellChange(e.target.value, rowIdx, colIdx)
                         }
                         error={errors[rowIdx]?.[colIdx]}
+                    
                         helperText={errors[rowIdx]?.[colIdx] ? "Required" : ""}
                         fullWidth
                       />
