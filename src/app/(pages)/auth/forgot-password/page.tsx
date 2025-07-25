@@ -92,7 +92,7 @@ export default function ForgotPassword() {
             label="Email"
             fullWidth
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: any) => setEmail(e.target.value)}
             placeholder="Enter your email"
           />
 
