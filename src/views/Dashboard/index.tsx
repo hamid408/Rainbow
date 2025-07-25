@@ -2,18 +2,17 @@
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import LeadCard from "./LeadCard";
-import CustomTabs from "@/src/components/common/CustomTabs";
-import Header from "@/src/views/Dashboard/Header";
-import CustomButton from "@/src/components/common/CustomButton";
+import CustomTabs from "@/components/common/CustomTabs";
+import Header from "@/views/Dashboard/Header";
+import CustomButton from "@/components/common/CustomButton";
 import AddLeadModal from "./AddLeadModal";
-import { useGetLeadsQuery } from "@/src/redux/services/leads/leadsApi";
+import { useGetLeadsQuery } from "@/redux/services/leads/leadsApi";
 import { useDebounce } from "use-debounce";
-import CustomPagination from "@/src/components/common/CustomPagination";
+import CustomPagination from "@/components/common/CustomPagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
 import Cookies from "js-cookie";
-import DragDropWrapper from "@/src/components/common/Drag-Drop";
-import DragDropBoard from "@/src/components/common/Drag-Drop";
+
 const Dashboard = () => {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("All");

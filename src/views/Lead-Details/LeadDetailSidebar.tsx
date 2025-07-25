@@ -18,13 +18,13 @@ import {
   SmallMail,
   SmallPhone,
   Urgent,
-} from "@/src/assests/icons";
+} from "@/assests/icons";
 import {
   useGetLeadsEnumsQuery,
   useUpdateLeadMutation,
-} from "@/src/redux/services/leads/leadsApi";
+} from "@/redux/services/leads/leadsApi";
 import { toast } from "react-toastify";
-import CustomSelect from "@/src/components/common/CustomSelect";
+import CustomSelect from "@/components/common/CustomSelect";
 import styles from "./style.module.scss";
 
 // const LeadDetailsSidebar = ({ data }: any) => {
@@ -162,7 +162,7 @@ const LeadDetailsSidebar = ({
           {isEditing ? (
             <CustomSelect
               value={inquiryType}
-              onChange={(e) => setInquiryType(e.target.value)}
+              onChange={(e:any) => setInquiryType(e.target.value)}
               options={inquiryTypeOptions}
               placeholder="Select inquiry type"
             />
@@ -181,7 +181,7 @@ const LeadDetailsSidebar = ({
             <CustomSelect
               // label="Select Status"
               value={inquiryStatus}
-              onChange={(e) => setInquiryStatus(e.target.value)}
+              onChange={(e:any) => setInquiryStatus(e.target.value)}
               options={inquiryStatusOptions}
               placeholder="Select status"
             />
@@ -211,7 +211,7 @@ const LeadDetailsSidebar = ({
             <CustomSelect
               // label="Select Tag"
               value={tag}
-              onChange={(e) => setTag(e.target.value)}
+              onChange={(e:any) => setTag(e.target.value)}
               options={tagOptions}
               placeholder="Select tag"
             />
@@ -247,7 +247,7 @@ const LeadDetailsSidebar = ({
             fullWidth
             disabled={!isEditing}
             value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            onChange={(e:any) => setNotes(e.target.value)}
             placeholder="Add a note"
             sx={{
               // "& .MuiOutlinedInput-root": {

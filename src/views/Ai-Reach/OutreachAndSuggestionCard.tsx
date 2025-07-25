@@ -18,7 +18,7 @@ import {
   Message,
   MessageGrey,
   TickMark,
-} from "@/src/assests/icons";
+} from "@/assests/icons";
 import { Edit } from "@mui/icons-material";
 // import CustomTextField from "@/components/common/CustomTextfield";
 import styles from "./style.module.scss";

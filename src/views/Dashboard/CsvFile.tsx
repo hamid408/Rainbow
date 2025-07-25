@@ -13,8 +13,8 @@ import {
   Paper,
   
 } from "@mui/material";
-import CustomButton from "@/src/components/common/CustomButton";
-import CustomTextField from "@/src/components/common/CustomTextfield";
+import CustomButton from "@/components/common/CustomButton";
+import CustomTextField from "@/components/common/CustomTextfield";
 
 const CSVUploader = ({
   onBulkSubmit,

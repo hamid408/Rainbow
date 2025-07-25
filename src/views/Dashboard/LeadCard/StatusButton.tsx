@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
-import { Meeting } from '@/src/assests/icons';
+import { Meeting } from '@/assests/icons';
 import styles from "./style.module.scss";
 
 interface StatusButtonProps {
