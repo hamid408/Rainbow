@@ -123,7 +123,7 @@ export default function SignIn() {
             label="Email"
             fullWidth
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e:any) => setEmail(e.target.value)}
             placeholder="Enter your email"
             // fontSize="1rem"
           />
@@ -133,7 +133,7 @@ export default function SignIn() {
             type={showPassword ? "text" : "password"}
             fullWidth
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e:any) => setPassword(e.target.value)}
             placeholder="Enter your password"
             InputProps={{
               endAdornment: (
