@@ -13,11 +13,10 @@ import Avatar from "@mui/material/Avatar";
 import styles from "./index.module.scss";
 import DropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { removeColorColon } from "@/src/utils/removeColon";
-import { CustomSelectProps, OptionType } from "../../../types/SelectProps";
 
 const colorHexRegex = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/;
 
-const variants = {
+const variants:any = {
   black: {
     borderColor: "default",
     textColor: "#344054",
@@ -38,7 +37,7 @@ const variants = {
   },
 };
 
-const CustomSelect: React.FC<CustomSelectProps> = ({
+const CustomSelect: React.FC<any> = ({
   variant = "black",
   label,
   value,
@@ -115,12 +114,12 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       }
       return selected
         .map((val) => {
-          const option = options.find((o) => o.value === val);
+          const option = options.find((o:any) => o.value === val);
           return option ? removeColorColon(option.label) : "";
         })
         .join(", ");
     } else if (typeof selected === "string" || typeof selected === "number") {
-      const option = options.find((o) => o.value === selected);
+      const option = options.find((o:any) => o.value === selected);
       return option ? removeColorColon(option.label) : placeholder;
     } else {
       return <span style={{ color: "#98A2B3" }}>{placeholder}</span>;
@@ -232,7 +231,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         <MenuItem disabled value="">
           {placeholder}
         </MenuItem>
-        {options?.map((option: OptionType, index: number) => (
+        {options?.map((option: any, index: number) => (
           <MenuItem
             key={`${option.value}-${index}`}
             value={option.value}
