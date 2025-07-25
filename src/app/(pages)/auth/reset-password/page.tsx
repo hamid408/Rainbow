@@ -131,7 +131,7 @@ const Page = () => {
             label="Confirmation Code"
             fullWidth
             value={confirmationCode}
-            onChange={(e) => setConfirmationCode(e.target.value)}
+            onChange={(e:any) => setConfirmationCode(e.target.value)}
             placeholder="Enter confirmation code"
           />
         </Stack>
