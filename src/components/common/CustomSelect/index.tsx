@@ -12,7 +12,7 @@ import Favorite from "@mui/icons-material/Favorite";
 import Avatar from "@mui/material/Avatar";
 import styles from "./index.module.scss";
 import DropDownIcon from "@mui/icons-material/ArrowDropDown";
-import { CustomSelectProps, OptionType } from "@/src/types/SelectProps";
+import { CustomSelectProps, OptionType } from "@/src/Types/SelectProps";
 import { removeColorColon } from "@/src/utils/removeColon";
 
 const colorHexRegex = /#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})\b/;
