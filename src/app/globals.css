@@ -46,3 +46,28 @@ body {
   /* overflow-x: hidden; */
   overflow: "auto";
 }
+.ag-theme-material .ag-header {
+  background-color: #ededf0 !important;
+  height: 48px !important;
+  display: flex;
+  align-items: center;
+  /* border-radius: 12px; */
+}
+.ag-theme-material .ag-header-cell {
+  background-color: #ededf0 !important;
+  height: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-top: 8px;
+  border-radius: 12px;
+}
+.ag-root-wrapper {
+  /* border-bottom-left-radius: 12px !important;
+  border-bottom-right-radius: 12px !important; */
+  outline: none;
+  border: 2px solid #e2e8f0;
+  background: #f9fafb;
+  border-radius: 12px !important;
+}

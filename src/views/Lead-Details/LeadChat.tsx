@@ -19,31 +19,28 @@ import styles from "./style.module.scss";
 const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
   const latestOffset = useRef(0);
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
   const { data, isLoading, refetch } = useGetConversationQuery({
     lead_ID: leadId,
     offset: latestOffset.current,
   });
+
   const [hasMounted, setHasMounted] = useState(false);
 
   const [callLogModalOpen, setCallLogModalOpen] = useState(false);
   const [callLogData, setCallLogData] = useState<{
     transcript: string;
-    recording_url: string;
+    presigned_url: string;
     call_status: string;
     in_voicemail: boolean;
     disconnection_reason: string;
     conversation_status: string;
+    provider_event_id?: string;
   } | null>(null);
-
-  const handleOpenModal = (jsonString: string) => {
-    try {
-      const parsed = JSON.parse(jsonString);
-      setCallLogData(parsed);
-      setCallLogModalOpen(true);
-    } catch (e) {
-      console.error("Failed to parse call log JSON", e);
-    }
+  const handleOpenModal = (eventId: string) => {
+    setCallLogData({ provider_event_id: eventId } as any);
+    setCallLogModalOpen(true);
   };
 
   const handleCloseModal = () => {
@@ -104,24 +101,6 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
     );
   };
 
-  const isValidCallLogJson = (str: string) => {
-    try {
-      const parsed = JSON.parse(str);
-      return (
-        typeof parsed === "object" &&
-        (parsed.recording_url ||
-          parsed.transcript ||
-          parsed.call_status ||
-          parsed.disconnection_reason ||
-          parsed.in_voicemail ||
-          parsed.conversation_status)
-      );
-    } catch (e) {
-      console.warn("❌ Invalid JSON string:", str);
-      return false;
-    }
-  };
-
   return (
     <>
       <Box className={styles.leadChat}>
@@ -165,21 +144,16 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                       >
                         {time}
                       </Typography>
-                      {msg.channel === "call" &&
-                        isValidCallLogJson(msg.provider_metadata) && (
-                          <>
-                            <CustomButton
-                              variant="outlined"
-                              size="small"
-                              padding="2px 4px"
-                              onClick={() =>
-                                handleOpenModal(msg.provider_metadata)
-                              }
-                            >
-                              Call logs
-                            </CustomButton>
-                          </>
-                        )}
+                      {msg.channel === "call" && (
+                        <CustomButton
+                          variant="outlined"
+                          size="small"
+                          padding="2px 4px"
+                          onClick={() => handleOpenModal(msg.provider_event_id)}
+                        >
+                          Call logs
+                        </CustomButton>
+                      )}
                     </Box>
                     <Typography variant="body2" color="#0D0D12">
                       {msg.content}
@@ -193,7 +167,7 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
         <CallLogModal
           open={callLogModalOpen}
           onClose={handleCloseModal}
-          data={callLogData}
+          provider_event_id={callLogData?.provider_event_id || null}
         />
       </Box>
     </>

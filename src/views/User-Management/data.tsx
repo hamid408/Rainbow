@@ -1,7 +1,7 @@
 export const tabItems = [
   // { label: "Admin Dashboard" },
   { label: "Settings & Configuration" },
-  // { label: "Audit Logs" },
+  { label: "Agent Configuration" },
 ];
 export const users = [
   { name: "Kerina Wang", email: "kewang@mail.com", role: "Owner" },

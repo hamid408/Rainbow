@@ -35,7 +35,7 @@ const CustomTabs: React.FC<CustomMuiTabsProps> = ({
   };
 
   return (
-    <Box className = {styles.rootBox}>
+    <Box className={styles.rootBox}>
       <Tabs
         value={value}
         onChange={handleChange}
@@ -50,8 +50,19 @@ const CustomTabs: React.FC<CustomMuiTabsProps> = ({
             borderRadius: "8px",
             fontSize: 16,
             color: "#0D0D12",
-            px: 2,
+            paddingLeft: "0px !important",
+            paddingRight: "24px !important",
             py: 1,
+            marginRight: 0,
+          },
+          "& .MuiButtonBase-root-MuiTab-root": {
+            minHeight: "80px",
+          },
+          "& .MuiTabs-indicator": {
+            height: "3px",
+            borderRadius: "2px",
+            marginLeft: "12px",
+            width: "140%",
           },
           "& .Mui-selected": {
             color: activeColor,

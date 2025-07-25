@@ -12,10 +12,19 @@ import {
 import { toast } from "react-toastify";
 import styles from "./style.module.scss";
 
-const CallLogsSection = ({ lead_id, refreshTrigger, onRefreshClick }: any) => {
+const CallLogsSection = ({
+  lead_id,
+  refreshTrigger,
+  onRefreshClick,
+  refetchSuggestion,
+}: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
 
-  const { data: SuggestionData, isLoading } = useGetSuggestionsQuery({
+  const {
+    data: SuggestionData,
+    isLoading,
+    // refetch: refetchSuggestion,
+  } = useGetSuggestionsQuery({
     lead_id,
   });
   const latestOffset = useRef(0);
@@ -81,6 +90,8 @@ const CallLogsSection = ({ lead_id, refreshTrigger, onRefreshClick }: any) => {
         suggestion_id: SuggestionData.suggestion?.id,
       }).unwrap();
       onRefreshClick();
+
+      await refetchSuggestion();
       toast.success("Suggestion Sent Successfully!!");
     } catch (err) {
       console.error("SMS Failed:", err);
@@ -146,20 +157,18 @@ const CallLogsSection = ({ lead_id, refreshTrigger, onRefreshClick }: any) => {
               onClick={ChangeSuggestionMessage}
               disabled={isSaving}
             >
-              {isSaving ? "Saving..." : "Save"}
+              {isSaving ? "Saving..." : "Save.."}
             </CustomButton>
           </>
         )}
         {!isEditing && (
           <CustomButton
             variant="contained"
-            // background="#6B39F4"
-            // fontWeight="600px"
             onClick={SendNowMessage}
             disabled={isSending}
             className={styles.leadCallLogSendNow}
           >
-            {isSending ? "Sending..." : "Send Now"}
+            {isSending ? "Sending...." : "Send Now"}
           </CustomButton>
         )}
       </Box>

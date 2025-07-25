@@ -28,10 +28,7 @@ const AIOutreachSettings = ({
   const [fromTime, setFromTime] = useState("08:00");
   const [toTime, setToTime] = useState("20:00");
   const [timeZone, setTimeZone] = useState(aiData.time_zone || "");
-  const [transferType, setTransferType] = useState(aiData.transfer_type || "");
-  const [transferNumber, setTransferNumber] = useState(
-    aiData.transfer_number || ""
-  );
+ 
 
   const [updateOrganization, { isLoading: isUpdating }] =
     useUpdateOrganizationMutation();
@@ -67,7 +64,6 @@ const AIOutreachSettings = ({
         organization_id: organizationsId,
         organization_time_zone: timeZone,
         organization_preferred_calling_window: [fromTimeValue, toTimeValue],
-        transfer_number: transferNumber,
       }).unwrap();
 
       toast.success("Organization settings updated successfully!");
@@ -144,24 +140,7 @@ const AIOutreachSettings = ({
 
       <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
 
-      <DisplayField
-        label="Transfer Type"
-        value={transferType}
-        onChange={editable ? setTransferType : undefined}
-        placeholder="Select transfer type"
-        disabled={true}
-      />
-
-      <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
-
-      <DisplayField
-        label="Transfer Number"
-        value={transferNumber}
-        onChange={editable ? setTransferNumber : undefined}
-        placeholder="Select number"
-        disabled={!editable}
-      />
-
+    
       {editable && (
         <Box mt={3} display="flex" justifyContent="flex-end">
           <CustomButton
