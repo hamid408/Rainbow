@@ -162,7 +162,7 @@ const LeadDetailsSidebar = ({
           {isEditing ? (
             <CustomSelect
               value={inquiryType}
-              onChange={(e) => setInquiryType(e.target.value)}
+              onChange={(e:any) => setInquiryType(e.target.value)}
               options={inquiryTypeOptions}
               placeholder="Select inquiry type"
             />
@@ -181,7 +181,7 @@ const LeadDetailsSidebar = ({
             <CustomSelect
               // label="Select Status"
               value={inquiryStatus}
-              onChange={(e) => setInquiryStatus(e.target.value)}
+              onChange={(e:any) => setInquiryStatus(e.target.value)}
               options={inquiryStatusOptions}
               placeholder="Select status"
             />
@@ -211,7 +211,7 @@ const LeadDetailsSidebar = ({
             <CustomSelect
               // label="Select Tag"
               value={tag}
-              onChange={(e) => setTag(e.target.value)}
+              onChange={(e:any) => setTag(e.target.value)}
               options={tagOptions}
               placeholder="Select tag"
             />
