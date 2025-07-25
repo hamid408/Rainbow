@@ -12,18 +12,18 @@ import {
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import AddNewUserModal from "./AddUserModal";
 import { tabItems } from "./data";
-import CustomButton from "@/src/components/common/CustomButton";
-import CustomTabs from "@/src/components/common/CustomTabs";
+import CustomButton from "@/components/common/CustomButton";
+import CustomTabs from "@/components/common/CustomTabs";
 import { Add, DeleteOutline } from "@mui/icons-material";
 import SettingsPanel from "./SettingPanel";
 import {
   useDeactivateUserMutation,
   useGetCurrentUserQuery,
   useGetUsersQuery,
-} from "@/src/redux/services/users/usersApi";
+} from "@/redux/services/users/usersApi";
 import { toast } from "react-toastify";
 import AIOutreachSettings from "./AiOutreach";
-import { useGetOrganzationQuery } from "@/src/redux/services/organization/organizationApi";
+import { useGetOrganzationQuery } from "@/redux/services/organization/organizationApi";
 import TemplateSetting from "./TemplateSetting";
 import AdminDashboard from "./AdminDashboard";
 import styles from "./styles.module.scss";

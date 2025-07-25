@@ -13,11 +13,11 @@ import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import CustomTextField from "@/src/components/common/CustomTextfield";
-import CustomButton from "@/src/components/common/CustomButton";
-import { useSignInMutation } from "@/src/redux/services/auth/authApi";
-import { setCredentials } from "@/src/redux/services/auth/authSlice";
-import Logo from "@/src/assests/images/newlogo.jpg";
+import CustomTextField from "@/components/common/CustomTextfield";
+import CustomButton from "@/components/common/CustomButton";
+import { useSignInMutation } from "@/redux/services/auth/authApi";
+import { setCredentials } from "@/redux/services/auth/authSlice";
+import Logo from "@/assests/images/newlogo.jpg";
 import Link from "next/link";
 import Image from "next/image";
 export default function SignIn() {

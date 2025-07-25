@@ -9,7 +9,7 @@ import {
   Typography,
   CircularProgress,
 } from "@mui/material";
-import { initTwilioDevice } from "@/src/utils/Twilio";
+import { initTwilioDevice } from "@/utils/Twilio";
 import {
   Call,
   CallEnd,
@@ -20,9 +20,9 @@ import {
   PersonOutline,
   VerifiedUserSharp,
 } from "@mui/icons-material";
-import { useCreateBotCallMutation } from "@/src/redux/services/twilio/twilioApi";
+import { useCreateBotCallMutation } from "@/redux/services/twilio/twilioApi";
 import { toast } from "react-toastify";
-import { useGetCurrentUserQuery } from "@/src/redux/services/users/usersApi";
+import { useGetCurrentUserQuery } from "@/redux/services/users/usersApi";
 import styles from "./style.module.scss";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 

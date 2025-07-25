@@ -15,8 +15,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import { useState } from "react";
-import { TakeOver } from "@/src/assests/icons";
-import CustomSelect from "@/src/components/common/CustomSelect";
+import { TakeOver } from "@/assests/icons";
+import CustomSelect from "@/components/common/CustomSelect";
 import styles from "./style.module.scss";
 
 interface TakeOverDialogProps {

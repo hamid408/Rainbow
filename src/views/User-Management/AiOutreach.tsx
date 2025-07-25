@@ -4,9 +4,9 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Divider } from "@mui/material";
 import DisplayField from "./DisplayField";
-import TimeSelector from "@/src/utils/TimeSelector";
-import CustomButton from "@/src/components/common/CustomButton";
-import { useUpdateOrganizationMutation } from "@/src/redux/services/organization/organizationApi";
+import TimeSelector from "@/utils/TimeSelector";
+import CustomButton from "@/components/common/CustomButton";
+import { useUpdateOrganizationMutation } from "@/redux/services/organization/organizationApi";
 import { toast } from "react-toastify";
 
 const AIOutreachSettings = ({

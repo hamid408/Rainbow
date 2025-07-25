@@ -2,7 +2,7 @@
 import { useMemo } from "react";
 import { ICellRendererParams } from "ag-grid-community";
 import { Box, Button, Typography, Avatar } from "@mui/material";
-import CustomButton from "@/src/components/common/CustomButton";
+import CustomButton from "@/components/common/CustomButton";
 
 const StatusCell = ({ value }: { value: string }) => {
   const styles = {

@@ -11,8 +11,8 @@ import {
   Divider,
   CircularProgress,
 } from "@mui/material";
-import CustomButton from "@/src/components/common/CustomButton";
-import { useGetCallLogsQuery } from "@/src/redux/services/twilio/twilioApi";
+import CustomButton from "@/components/common/CustomButton";
+import { useGetCallLogsQuery } from "@/redux/services/twilio/twilioApi";
 import { useEffect, useState } from "react";
 
 interface CallLogModalProps {

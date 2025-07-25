@@ -8,12 +8,12 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import AvatarPic from "../../assests/images/Avatars.png";
-import { useGetConversationQuery } from "@/src/redux/services/conversation/conversationApi";
+import { useGetConversationQuery } from "@/redux/services/conversation/conversationApi";
 import { useEffect, useRef, useState } from "react";
-import { getInitials } from "@/src/utils/GetInitials";
-import { Message, Typing } from "@/src/assests/icons";
+import { getInitials } from "@/utils/GetInitials";
+import { Message, Typing } from "@/assests/icons";
 import { CallEnd } from "@mui/icons-material";
-import CustomButton from "@/src/components/common/CustomButton";
+import CustomButton from "@/components/common/CustomButton";
 import CallLogModal from "./CallLogModal";
 import styles from "./style.module.scss";
 const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {

@@ -1,4 +1,4 @@
-import CustomTabs from "@/src/components/common/CustomTabs";
+import CustomTabs from "@/components/common/CustomTabs";
 import { Box } from "@mui/material";
 import React, { useState } from "react";
 import { tabItems } from "./data";

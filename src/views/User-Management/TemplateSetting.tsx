@@ -1,7 +1,7 @@
 import { Box, Divider, Typography } from "@mui/material";
 import { useState } from "react";
 import DisplayField from "./DisplayField";
-import TimeSelector from "@/src/utils/TimeSelector";
+import TimeSelector from "@/utils/TimeSelector";
 
 const TemplateSetting = () => {
   const [frequency, setFrequency] = useState("Casual");

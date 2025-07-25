@@ -1,4 +1,4 @@
-import AiReach from "@/src/views/Ai-Reach";
+import AiReach from "@/views/Ai-Reach";
 import React from "react";
 
 const page = () => {

@@ -14,14 +14,14 @@ import { Email } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-import CustomButton from "@/src/components/common/CustomButton";
-import { Mark, SmallPhone } from "@/src/assests/icons";
+import CustomButton from "@/components/common/CustomButton";
+import { Mark, SmallPhone } from "@/assests/icons";
 import CallModal from "./CallModal";
 import {
   useGetConversationQuery,
   useSendSmsMutation,
-} from "@/src/redux/services/conversation/conversationApi";
-import { useResolvedLeadMutation } from "@/src/redux/services/leads/leadsApi";
+} from "@/redux/services/conversation/conversationApi";
+import { useResolvedLeadMutation } from "@/redux/services/leads/leadsApi";
 import styles from "./style.module.scss";
 
 const ChatInputBox = ({
