@@ -88,7 +88,9 @@ const UserManagement = () => {
           Admin Oversight
         </Typography>
       </Box>
-      <Box className={styles.indexCustomTabBox}>
+      <AdminDashboard></AdminDashboard>
+
+      {/* <Box className={styles.indexCustomTabBox}>
         <CustomTabs
           tabs={tabItems}
           onTabChange={(label: any) => setActiveTab(label)}
@@ -184,8 +186,8 @@ const UserManagement = () => {
                 onClose={handleClose}
                 refetchUsers={refetch}
               />
-            </Box>
-            <Box mt={2}>
+            </Box> */}
+            {/* <Box mt={2}>
               <CustomButton
                 variant="outlined"
                 color="primary"
@@ -201,12 +203,12 @@ const UserManagement = () => {
               >
                 Add New Solo User
               </CustomButton>
-            </Box>
-          </Box>
-        </>
-      )}
+            </Box> */}
+          {/* </Box> */}
+        {/* </> */}
+      {/* )} */}
 
-      <Dialog
+      {/* <Dialog
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}
         PaperProps={{
@@ -266,7 +268,7 @@ const UserManagement = () => {
             {isDeactivating ? "Deactivating....." : "Deactivate"}
           </CustomButton>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </Box>
   );
 };

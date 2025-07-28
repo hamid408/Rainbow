@@ -9,6 +9,7 @@ import {
   Divider,
   Avatar,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -16,12 +17,15 @@ import { Refresh } from "@mui/icons-material";
 import { getInitials } from "@/src/utils/GetInitials";
 import CustomButton from "@/src/components/common/CustomButton";
 import styles from "./style.module.scss";
+import { Edit } from "@mui/icons-material";
 interface LeadHeaderProps {
   name: string;
   status: string;
   onRefreshClick: () => void;
+  onEditClick: () => void;
+  hideBackButton?: boolean;
 }
-const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
+const LeadHeader = ({ name, status, onRefreshClick, onEditClick, hideBackButton }: LeadHeaderProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -44,11 +48,28 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
     <>
       <Box className={styles.leadHeaderRoot}>
         <Box className={styles.leadHeaderSecondRoot}>
-          <Box className={styles.leadHeaderFirstRow}>
-            <Back onClick={handleRouteBack} />
-            {/* <Back onClick={() => router.back()} /> */}
+          {!hideBackButton && (
+            <Box className={styles.leadHeaderFirstRow}>
+            {/* <Back onClick={handleRouteBack} /> */}
+            <Back onClick={() => router.back()} />
           </Box>
-          <Avatar className={styles.leadHeaderAvatar}>{initials || "U"}</Avatar>
+          )}
+          
+          <Avatar
+            className={styles.leadHeaderAvatar}
+            // sx={{
+            //   bgcolor: "#D9EFFF",
+            //   height: "60px",
+            //   width: "60px",
+            //   color: "#0062FF",
+
+            //   fontWeight: "600",
+            //   fontSize: "24px",
+            //   mb: 2,
+            // }}
+          >
+            {initials || "U"}
+          </Avatar>
           <Stack gap={1}>
             <Typography className={styles.leadHeaderName}>{name}</Typography>
 
@@ -61,43 +82,30 @@ const LeadHeader = ({ name, status, onRefreshClick }: LeadHeaderProps) => {
           </Stack>
         </Box>
 
-        <Box className={styles.refreshBtn}>
-          <CustomButton
-            type="button"
-            variant="contained"
-            onClick={handleRefreshClick}
-            startIcon={
-              loading ? (
-                <CircularProgress size={20} sx={{ color: "#fff" }} />
-              ) : (
-                <Refresh sx={{ cursor: "pointer" }} />
-              )
-            }
-          >
-            Refresh
-          </CustomButton>
-
-          {/* <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              borderRadius: "8px",
-              padding: "6px 10px",
-              background: "#ECEFF3",
-              color: "#36394A",
-            }}
-          >
-            <Call />
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              sx={{ cursor: "pointer" }}
+        <Box className = {styles.refreshEditBtn}>
+          <Box className={styles.refreshBtn}>
+            <CustomButton
+              variant="contained"
+              onClick={handleRefreshClick}
+              startIcon={
+                loading ? (
+                  <CircularProgress size={20} sx={{ color: "#fff" }} />
+                ) : (
+                  <Refresh sx={{ cursor: "pointer" }} />
+                )
+              }
             >
-              Call logs
-            </Typography>
-          </Box> */}
+              Refresh
+            </CustomButton>
+          </Box>
+
+          <Box className={styles.editSlider}>
+            <IconButton onClick={onEditClick}>
+              <Edit />
+            </IconButton>
+          </Box>
         </Box>
+
       </Box>
       <Divider className={styles.leadHeaderSlider} />
     </>
