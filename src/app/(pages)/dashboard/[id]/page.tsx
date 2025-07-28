@@ -1,4 +1,4 @@
-import LeadDetails from "@/views/Lead-Details";
+import LeadDetails from "@/src/views/Lead-Details";
 
 // type Props = {
 //   params: {

@@ -6,7 +6,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import PauseIcon from "@mui/icons-material/Pause";
 
 import { ContactData } from "./data";
-import { AfterTakeOver, AssignAI, Pause } from "@/assests/icons";
+import { AfterTakeOver, AssignAI, Pause } from "@/src/assests/icons";
 import { Height } from "@mui/icons-material";
 import styles from "./style.module.scss";
 import PauseAIDialog from "./PauseAIDialog";

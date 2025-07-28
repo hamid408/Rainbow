@@ -2,14 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { Box, Container, Typography, Link, Stack } from "@mui/material";
 import { useRouter } from "next/navigation";
-import CustomTextField from "@/components/common/CustomTextfield";
-import CustomButton from "@/components/common/CustomButton";
-import { useFirstLoginPasswordMutation } from "@/redux/services/auth/authApi";
+import CustomTextField from "@/src/components/common/CustomTextfield";
+import CustomButton from "@/src/components/common/CustomButton";
+import { useFirstLoginPasswordMutation } from "@/src/redux/services/auth/authApi";
 import Cookies from "js-cookie";
 import { IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Image from "next/image";
-import Logo from "@/assests/images/newlogo.jpg";
+import Logo from "@/src/assests/images/newlogo.jpg";
 
 const FirstLoginPassword = () => {
   const router = useRouter();

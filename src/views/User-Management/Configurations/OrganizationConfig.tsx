@@ -1,8 +1,8 @@
 import { Box, Divider } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import DisplayField from "../DisplayField";
-import { useUpdateOrganizationMutation } from "@/redux/services/organization/organizationApi";
-import CustomButton from "@/components/common/CustomButton";
+import { useUpdateOrganizationMutation } from "@/src/redux/services/organization/organizationApi";
+import CustomButton from "@/src/components/common/CustomButton";
 import { toast } from "react-toastify";
 
 const OrganizationConfig = ({ organizationData, editable }: any) => {

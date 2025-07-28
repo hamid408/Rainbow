@@ -1,7 +1,7 @@
 
 import "./globals.css";
 import { Box, ThemeProvider } from "@mui/material";
-import theme from "@/theme";
+import theme from "@/src/theme";
 import AppLayout from "./AppLayout";
 
 export const metadata = {

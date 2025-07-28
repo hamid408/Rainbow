@@ -1,6 +1,6 @@
 import { Stack, IconButton } from "@mui/material";
  
-import { Phone, Typing } from "@/assests/icons";
+import { Phone, Typing } from "@/src/assests/icons";
  
 const iconStyle = {
   border: "1px solid #7A4DF5",

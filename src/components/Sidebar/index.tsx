@@ -14,8 +14,8 @@ import Logo from "../../assests/images/newlogo.jpg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Logout, Password, VerifiedUserOutlined } from "@mui/icons-material";
-import { useLogOutMutation } from "@/redux/services/auth/authApi";
-// import { UserIcon } from "@/assests/icons";
+import { useLogOutMutation } from "@/src/redux/services/auth/authApi";
+// import { UserIcon } from "@/src/assests/icons";
 
 const Sidebar = () => {
   const [activeButton, setActiveButton] = useState("admin");

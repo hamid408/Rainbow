@@ -9,21 +9,21 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
-import CustomButton from "@/components/common/CustomButton";
+import CustomButton from "@/src/components/common/CustomButton";
 import { useForm } from "react-hook-form";
 import { inquiryStatuses, inquiryTypes, tags } from "./data";
-import CustomTextField from "@/components/common/CustomTextfield";
+import CustomTextField from "@/src/components/common/CustomTextfield";
 import { CloseRounded } from "@mui/icons-material";
-import CustomSelect from "@/components/common/CustomSelect";
+import CustomSelect from "@/src/components/common/CustomSelect";
 import { Controller } from "react-hook-form";
 import {
   useCreateLeadMutation,
   useGetLeadsEnumsQuery,
-} from "@/redux/services/leads/leadsApi";
+} from "@/src/redux/services/leads/leadsApi";
 import { toast } from "react-toastify";
 import { useEffect, useMemo, useState } from "react";
 import CSVUploader from "./CsvFile";
-import CustomTabs from "@/components/common/CustomTabs";
+import CustomTabs from "@/src/components/common/CustomTabs";
 
 const AddLeadModal = ({
   open,

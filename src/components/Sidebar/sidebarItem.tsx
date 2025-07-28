@@ -5,7 +5,7 @@ import {
   LeadsIcon,
   Tasks,
   UserIcon,
-} from "@/assests/icons";
+} from "@/src/assests/icons";
 export const sidebarButtons = [
   { label: "Admin User", id: "admin" },
   { label: "Solo User", id: "solo" },

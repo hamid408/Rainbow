@@ -9,8 +9,8 @@ import {
   Button,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import CustomButton from "@/components/common/CustomButton";
-import { useSendSmsMutation } from "@/redux/services/conversation/conversationApi";
+import CustomButton from "@/src/components/common/CustomButton";
+import { useSendSmsMutation } from "@/src/redux/services/conversation/conversationApi";
 import { toast } from "react-toastify";
 
 const modalStyle = {

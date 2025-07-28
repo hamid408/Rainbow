@@ -1,10 +1,10 @@
-import AgGridTable from "@/components/ag-grid";
+import AgGridTable from "@/src/components/ag-grid";
 import React, { useRef, useState } from "react";
-import useLeadColumns from "@/hooks/Ag-Grid/useLeadColumn";
-import { leadsRows } from "@/constants/Grid-Table/RowData";
-import { leadsColumn } from "@/constants/Grid-Table/ColDefs";
+import useLeadColumns from "@/src/hooks/Ag-Grid/useLeadColumn";
+import { leadsRows } from "@/src/constants/Grid-Table/RowData";
+import { leadsColumn } from "@/src/constants/Grid-Table/ColDefs";
 import { Box, Typography } from "@mui/material";
-import CustomButton from "@/components/common/CustomButton";
+import CustomButton from "@/src/components/common/CustomButton";
 
 const Badge = () => {
   const leadCol = useLeadColumns(leadsColumn);

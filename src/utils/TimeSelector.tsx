@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Box, Popper, Paper, Typography, TextFieldProps } from "@mui/material";
 import { DigitalClock } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import CustomTextField from "@/components/common/CustomTextfield";
+import CustomTextField from "@/src/components/common/CustomTextfield";
 
 type TimeSelectorProps = {
   label?: string;

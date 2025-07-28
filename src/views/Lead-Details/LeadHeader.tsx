@@ -1,5 +1,5 @@
 "use client";
-import { Back, Call, Cold, Urgent } from "@/assests/icons";
+import { Back, Call, Cold, Urgent } from "@/src/assests/icons";
 import {
   Box,
   Typography,
@@ -13,8 +13,8 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Refresh } from "@mui/icons-material";
-import { getInitials } from "@/utils/GetInitials";
-import CustomButton from "@/components/common/CustomButton";
+import { getInitials } from "@/src/utils/GetInitials";
+import CustomButton from "@/src/components/common/CustomButton";
 import styles from "./style.module.scss";
 interface LeadHeaderProps {
   name: string;

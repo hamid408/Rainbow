@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
-import { BigPause } from "@/assests/icons";
-// import CustomButton from "@/components/common/CustomButton";
+import { BigPause } from "@/src/assests/icons";
+// import CustomButton from "@/src/components/common/CustomButton";
 import styles from "./style.module.scss";
 
 interface PauseAIDialogProps {

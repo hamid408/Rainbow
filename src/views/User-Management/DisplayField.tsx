@@ -9,11 +9,11 @@ import {
   Paper,
 } from "@mui/material";
 import { Check } from "@mui/icons-material";
-import { Copy } from "@/assests/icons";
+import { Copy } from "@/src/assests/icons";
 import { DigitalClock } from "@mui/x-date-pickers";
-import CustomSelect from "@/components/common/CustomSelect"; // your custom select
+import CustomSelect from "@/src/components/common/CustomSelect"; // your custom select
 import dayjs from "dayjs";
-import CustomTextField from "@/components/common/CustomTextfield";
+import CustomTextField from "@/src/components/common/CustomTextfield";
 
 const DisplayField = ({
   label,

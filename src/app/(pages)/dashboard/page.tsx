@@ -1,5 +1,5 @@
 // import { Suspense } from "react";
-// import Dashboard from "@/src/views/Dashboard";
+// import Dashboard from "@/src/src/views/Dashboard";
 
 // export default function Page() {
 //   return (
@@ -12,7 +12,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import Dashboard from "@/views/Dashboard";
+import Dashboard from "@/src/views/Dashboard";
 
 export default async function Page() {
   const cookieStore = await cookies(); // ✅ Await because it's returning a Promise

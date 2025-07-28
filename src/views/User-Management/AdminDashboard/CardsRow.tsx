@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Arrow, Urgent } from "@/assests/icons";
+import { Arrow, Urgent } from "@/src/assests/icons";
 import styles from "./styles.module.scss";
 
 export default function CardsRow() {

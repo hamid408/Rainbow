@@ -10,11 +10,11 @@ import {
   Stack,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import Logo from "@/assests/images/newlogo.jpg";
+import Logo from "@/src/assests/images/newlogo.jpg";
 
-import CustomTextField from "@/components/common/CustomTextfield";
-import CustomButton from "@/components/common/CustomButton";
-import { useForgotPasswordMutation } from "@/redux/services/auth/authApi";
+import CustomTextField from "@/src/components/common/CustomTextfield";
+import CustomButton from "@/src/components/common/CustomButton";
+import { useForgotPasswordMutation } from "@/src/redux/services/auth/authApi";
 import Cookies from "js-cookie";
 import Image from "next/image";
 export default function ForgotPassword() {

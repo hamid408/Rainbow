@@ -1,14 +1,14 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography, Stack, CircularProgress } from "@mui/material";
-import { Ai } from "@/assests/icons";
-import CustomButton from "@/components/common/CustomButton";
+import { Ai } from "@/src/assests/icons";
+import CustomButton from "@/src/components/common/CustomButton";
 import {
   useChangeSuggestionMutation,
   useGetConversationQuery,
   useGetSuggestionsQuery,
   useSendSmsMutation,
-} from "@/redux/services/conversation/conversationApi";
+} from "@/src/redux/services/conversation/conversationApi";
 import { toast } from "react-toastify";
 import styles from "./style.module.scss";
 
