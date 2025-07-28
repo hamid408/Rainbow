@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { Box, CircularProgress, Drawer } from "@mui/material";
+import React, { useCallback, useEffect, useState } from "react";
 import LeadHeader from "./LeadHeader";
 import LeadChatSection from "./LeadChat";
 import CallLogsSection from "./LeadCallLog";
@@ -7,8 +8,8 @@ import LeadDetailsSidebar from "./LeadDetailSidebar";
 import ChatInputBox from "./ChatInputBox";
 import { useGetLeadByIdQuery } from "@/src/redux/services/leads/leadsApi";
 import styles from "./style.module.scss";
-import { Box, CircularProgress, Drawer } from "@mui/material";
 
+import { useGetSuggestionsQuery } from "@/src/redux/services/conversation/conversationApi";
 
 const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideBackButton?: boolean; }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -16,15 +17,20 @@ const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideB
   const { data, isLoading, error, isFetching, refetch } =
     useGetLeadByIdQuery(leadId);
   const [lead, setLead] = useState<any>(null);
-
+  const { data: suggestionData, refetch: refetchSuggestion } =
+    useGetSuggestionsQuery({ lead_id: leadId });
   useEffect(() => {
     if (data?.data?.[0]) {
       setLead(data.data[0]);
     }
   }, [data]);
 
-  useEffect(() => {
-    refetch();
+  // useEffect(() => {
+  //   refetch();
+  // }, [leadId, refreshChat, refetch]);
+
+  const handleRefreshClick = useCallback(() => {
+    setRefreshChat((prev) => prev + 1);
   }, []);
 
   const isLoadingState =
@@ -55,9 +61,10 @@ const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideB
       <LeadHeader
         name={name}
         status={status}
-        onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
+        // onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
         onEditClick={() => setIsDrawerOpen(true)}
         hideBackButton = {hideBackButton}
+        onRefreshClick={handleRefreshClick}
       />
       <Box className={styles.indexSecondaryBox}>
         <Box className={styles.indexLastBox}>
@@ -66,8 +73,18 @@ const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideB
             leadId={leadId}
             userName={name}
           />
-          <CallLogsSection lead_id={leadId} />
-          <ChatInputBox data={data} />
+          <CallLogsSection
+            lead_id={leadId}
+            refreshTrigger={refreshChat}
+            onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
+            refetchSuggestion={refetchSuggestion}
+          />
+          <ChatInputBox
+            data={data}
+            refreshTrigger={refreshChat}
+            onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
+            refetchSuggestion={refetchSuggestion}
+          />
         </Box>
         {/* <LeadDetailsSidebar lead={lead} setLead={setLead} /> */}
 

@@ -24,6 +24,7 @@ import { useCreateBotCallMutation } from "@/src/redux/services/twilio/twilioApi"
 import { toast } from "react-toastify";
 import { useGetCurrentUserQuery } from "@/src/redux/services/users/usersApi";
 import styles from "./style.module.scss";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const style = {
   position: "absolute" as const,
@@ -70,16 +71,62 @@ export default function CallModal({
       null
     );
   const user = userData?.data?.[0];
-  console.log("user information", user.id);
+  // const handleBotCall = async () => {
+  //   try {
+  //     const res = await createBotCall({ lead_id: leadId }).unwrap();
+  //     console.log("📞 Bot Call Started:", res);
+  //     toast.success(res.message || "Call Successfully Initiated");
+  //     onClose();
+  //   } catch (err) {
+  //     console.error("❌ Bot Call Failed:", err);
+  //     toast.error(" Bot Call Failed ");
+  //     onClose();
+  //   }
+  // };
+
+  function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryError {
+    return typeof error === "object" && error !== null && "status" in error;
+  }
+
   const handleBotCall = async () => {
     try {
-      const res = await createBotCall({ lead_id: leadId }).unwrap();
-      console.log("📞 Bot Call Started:", res);
-      toast.success("Call initiated ✅");
+      const response = await createBotCall({ lead_id: leadId });
+
+      // 🛑 If it's an error (RTK format)
+      if ("error" in response) {
+        const error = response.error;
+
+        if (isFetchBaseQueryError(error)) {
+          const status = error.status;
+          const message = (error.data as any)?.message;
+
+          if (status === 501) {
+            toast.warning(message || "Call already in progress.");
+            onClose();
+          } else if (status === 404) {
+            toast.error(message || "Lead not found.");
+            onClose();
+          } else {
+            toast.error(
+              `Error ${status || "unknown"}: ${message || "Call failed."}`
+            );
+            onClose();
+          }
+        } else {
+          toast.error("Unexpected client-side error.");
+        }
+
+        return;
+      }
+
+      // ✅ Success path
+      const message = response?.data?.message || "Call successfully initiated.";
+
+      toast.success(message);
       onClose();
     } catch (err) {
-      console.error("❌ Bot Call Failed:", err);
-      toast.error(" Bot Call Failed ");
+      console.error("Unexpected JS error:", err);
+      toast.error("Something went wrong while initiating the call.");
       onClose();
     }
   };
@@ -187,22 +234,22 @@ export default function CallModal({
       aria-labelledby="twilio-call-modal"
       aria-describedby="twilio-call-description"
     >
-      <Box className = {styles.callModalBox}>
+      <Box className={styles.callModalBox}>
         {callStarted ? (
-          <Stack className = {styles.callingBox}>
+          <Stack className={styles.callingBox}>
             <Typography variant="h6" mb={3}>
               Ringing {phone}...
               {/* {callConnected ? "Connected" : `Ringing ${phone}...`} */}
             </Typography>
             <Box>
-              <PersonOutline className = {styles.callLogOutline}/>
+              <PersonOutline className={styles.callLogOutline} />
             </Box>
             <Stack className={styles.ringingStack}>
               <Button
                 variant="contained"
                 color="error"
                 onClick={handleEndCall}
-                className = {styles.ringingBtn}
+                className={styles.ringingBtn}
               >
                 <CallEnd />
               </Button>
@@ -210,7 +257,7 @@ export default function CallModal({
           </Stack>
         ) : (
           <>
-            <Typography variant="h6" className = {styles.callModalTypo}>
+            <Typography variant="h6" className={styles.callModalTypo}>
               Start a Twilio Call
             </Typography>
             <Stack spacing={4} mt={2}>
@@ -221,7 +268,7 @@ export default function CallModal({
                   onClick={handleCall}
                   disabled={isCalling}
                   startIcon={<CallRounded />}
-                  className = {styles.callModalSelfCall}
+                  className={styles.callModalSelfCall}
                 >
                   Self Call
                 </Button>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   TextField,
@@ -15,19 +15,48 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 import CustomButton from "@/src/components/common/CustomButton";
-import { AssignTask, Mark, SmallPhone } from "@/src/assests/icons";
+import { Mark, SmallPhone } from "@/src/assests/icons";
 import CallModal from "./CallModal";
-import { useSendSmsMutation } from "@/src/redux/services/conversation/conversationApi";
+import {
+  useGetConversationQuery,
+  useSendSmsMutation,
+} from "@/src/redux/services/conversation/conversationApi";
 import { useResolvedLeadMutation } from "@/src/redux/services/leads/leadsApi";
 import styles from "./style.module.scss";
 
-const ChatInputBox = ({ data }: any) => {
+const ChatInputBox = ({
+  data,
+  refreshTrigger,
+  onRefreshClick,
+  refetchSuggestion,
+}: any) => {
+  const latestOffset = useRef(0);
+  const lead = data?.data?.[0];
+  const leadId = lead?.lead_id;
+
+  const [allMessages, setAllMessages] = useState<any[]>([]);
+
+  const { data: consData, refetch } = useGetConversationQuery({
+    lead_ID: leadId,
+    offset: latestOffset.current,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [refreshTrigger]);
+  useEffect(() => {
+    if (consData?.data?.length) {
+      const newMessages = consData.data;
+      setAllMessages((prev) => [...prev, ...newMessages]);
+      latestOffset.current += newMessages.length;
+    }
+  }, [consData]);
   const [message, setMessage] = useState("");
   const [isCallOpen, setIsCallOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  const lead = data?.data?.[0];
-  const leadId = lead?.lead_id;
+  // const lead = data?.data?.[0];
+  // const leadId = lead?.lead_id;
   const phone = lead?.phone;
 
   const router = useRouter();
@@ -40,7 +69,9 @@ const ChatInputBox = ({ data }: any) => {
         lead_id: leadId,
         sms_content: message,
       }).unwrap();
-      toast.success("Suggestion Sent Successfully!");
+      toast.success("Message Sent Successfully!");
+      onRefreshClick();
+      await refetchSuggestion();
       setMessage("");
     } catch (err) {
       console.error("SMS Failed:", err);
@@ -137,23 +168,22 @@ const ChatInputBox = ({ data }: any) => {
         </Box>
 
         <Divider
-         className={styles.divider}
+          className={styles.divider}
           sx={{
             my: 2, // vertical margin
             borderColor: "#ccc", // optional
             width: "108%",
           }}
-        >
-        </Divider>
+        ></Divider>
 
-        <div className = {styles.sendBtn} >
+        <div className={styles.sendBtn}>
           <CustomButton
             className={styles.chatInputSendButton}
             variant="contained"
             startIcon={<SendIcon />}
             fontWeight="600"
             onClick={handleSendMessage}
-            disabled={isSending}
+            disabled={isSending || message.trim() === ""}
             sx={{
               "@media(max-width: 900px)": {
                 marginTop: "55px",

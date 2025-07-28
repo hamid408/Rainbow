@@ -131,7 +131,7 @@ const FirstLoginPassword = () => {
             type={showPassword ? "text" : "password"}
             fullWidth
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={(e:any) => setNewPassword(e.target.value)}
             placeholder="Write new password"
             InputProps={{
               endAdornment: (
@@ -149,7 +149,7 @@ const FirstLoginPassword = () => {
             type={showConfirmPassword ? "text" : "password"}
             fullWidth
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e:any) => setConfirmPassword(e.target.value)}
             placeholder="Confirm new password"
             InputProps={{
               endAdornment: (

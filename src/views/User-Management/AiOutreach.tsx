@@ -1,80 +1,4 @@
-// "use client";
-// import { Box, Divider, Typography } from "@mui/material";
-// import { useState } from "react";
-// import DisplayField from "./DisplayField";
-// import TimeSelector from "@/src/utils/TimeSelector";
 
-// const AIOutreachSettings = ({ data }: any) => {
-//   const [frequency, setFrequency] = useState("once");
-//   const [fromTime, setFromTime] = useState("08:00");
-//   const [toTime, setToTime] = useState("20:00");
-
-//   const frequencyOptions = [
-//     { label: "1", value: "once" },
-//     { label: "2", value: "twice" },
-//     { label: "3", value: "thrice" },
-//   ];
-//   if (!data) return null;
-//   const aiData = data?.data || {};
-
-//   return (
-//     <Box p={4} bgcolor="#fff" borderRadius={2}>
-//       <Typography variant="h2" fontSize={24} fontWeight={600} mb={3}>
-//         AI Outreach Cadence Settings
-//       </Typography>
-
-//       <DisplayField
-//         label="Frequently AI should attempt contacts"
-//         value={frequency}
-//         onChange={setFrequency}
-//         options={frequencyOptions}
-//         type="select"
-//         placeholder="Select frequency"
-//       />
-
-//       <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
-//       <Box display="flex" gap={2} width="100%" justifyContent={"space-between"}>
-//         <Typography
-//           fontSize={16}
-//           fontWeight={400}
-//           width={"100%"}
-//           color="#0D0D12"
-//         >
-//           Set hours to call to respect funeral home
-//         </Typography>
-
-//         <Box display="flex" gap={2} width="100%">
-//           <TimeSelector value={aiData} onChange={setFromTime} />
-//           <TimeSelector label="To" value={toTime} onChange={setToTime} />
-//         </Box>
-//       </Box>
-//       <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
-
-//       <DisplayField
-//         label="Time Zone"
-//         value={aiData.time_zone || "America/New_York"}
-//         // type="select"
-//         placeholder="Select time zone"
-//       />
-//       <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
-//       <DisplayField
-//         label="Transfer Type"
-//         value={aiData.transfer_type || "Call"}
-//         placeholder="Select transfer type"
-//       />
-//       <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
-//       <DisplayField
-//         label="Transfer Number"
-//         value={aiData.transfer_number || "+1234567890"}
-
-//         placeholder="Select number"
-//       />
-//       {/* <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} /> */}
-//     </Box>
-//   );
-// };
-
-// export default AIOutreachSettings;
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -92,22 +16,19 @@ const AIOutreachSettings = ({
 }: any) => {
   const aiData = data?.data || {};
 
-  const parseMinutesToTime = (minutes: number) => {
-    const h = Math.floor(minutes / 60)
+  const convert24HourNumberToTimeString = (num: number): string => {
+    const hours = Math.floor(num / 100)
       .toString()
       .padStart(2, "0");
-    const m = (minutes % 60).toString().padStart(2, "0");
-    return `${h}:${m}`;
+    const minutes = (num % 100).toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
   };
 
   const [frequency, setFrequency] = useState("once");
   const [fromTime, setFromTime] = useState("08:00");
   const [toTime, setToTime] = useState("20:00");
   const [timeZone, setTimeZone] = useState(aiData.time_zone || "");
-  const [transferType, setTransferType] = useState(aiData.transfer_type || "");
-  const [transferNumber, setTransferNumber] = useState(
-    aiData.transfer_number || ""
-  );
+ 
 
   const [updateOrganization, { isLoading: isUpdating }] =
     useUpdateOrganizationMutation();
@@ -116,8 +37,8 @@ const AIOutreachSettings = ({
     if (aiData?.preferred_calling_window) {
       try {
         const [from, to] = JSON.parse(aiData.preferred_calling_window);
-        setFromTime(parseMinutesToTime(from));
-        setToTime(parseMinutesToTime(to));
+        setFromTime(convert24HourNumberToTimeString(from));
+        setToTime(convert24HourNumberToTimeString(to));
       } catch (e) {
         console.warn("Invalid preferred_calling_window format");
       }
@@ -129,33 +50,20 @@ const AIOutreachSettings = ({
     { label: "2", value: "twice" },
     { label: "3", value: "thrice" },
   ];
-  const convertToMinutes = (timeStr: string): number => {
+  const convertTo24HourNumber = (timeStr: string): number => {
     const [hours, minutes] = timeStr.split(":").map(Number);
-    return hours * 60 + minutes;
+    return hours * 100 + minutes;
   };
 
-  const fromTimeInMinutes = convertToMinutes(fromTime);
-  const toTimeInMinutes = convertToMinutes(toTime);
-  const handleSave = async () => {
-    const payload = {
-      organization_id: organizationsId,
-      organization_time_zone: timeZone, // Corrected casing
-      // transfer_type: transferType,
-      // transfer_number: transferNumber,
-      organization_preferred_calling_window: `[${fromTimeInMinutes}, ${toTimeInMinutes}]`,
-    };
+  const fromTimeValue = convertTo24HourNumber(fromTime);
+  const toTimeValue = convertTo24HourNumber(toTime);
 
+  const handleSave = async () => {
     try {
       await updateOrganization({
         organization_id: organizationsId,
-        body: {
-          organization_id: organizationsId, // required by API
-          organization_time_zone: timeZone,
-          organization_preferred_calling_window: [
-            fromTimeInMinutes,
-            toTimeInMinutes,
-          ],
-        },
+        organization_time_zone: timeZone,
+        organization_preferred_calling_window: [fromTimeValue, toTimeValue],
       }).unwrap();
 
       toast.success("Organization settings updated successfully!");
@@ -232,30 +140,13 @@ const AIOutreachSettings = ({
 
       <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
 
-      <DisplayField
-        label="Transfer Type"
-        value={transferType}
-        onChange={editable ? setTransferType : undefined}
-        placeholder="Select transfer type"
-        disabled={!editable}
-      />
-
-      <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
-
-      <DisplayField
-        label="Transfer Number"
-        value={transferNumber}
-        onChange={editable ? setTransferNumber : undefined}
-        placeholder="Select number"
-        disabled={!editable}
-      />
-
+    
       {editable && (
         <Box mt={3} display="flex" justifyContent="flex-end">
           <CustomButton
             onClick={handleSave}
             variant="contained"
-            disabled={isUpdating}
+            disabled={editable ? isUpdating : true}
           >
             {isUpdating ? "Saving..." : "Save Settings"}
           </CustomButton>

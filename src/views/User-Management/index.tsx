@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -27,23 +27,26 @@ import { useGetOrganzationQuery } from "@/src/redux/services/organization/organi
 import TemplateSetting from "./TemplateSetting";
 import AdminDashboard from "./AdminDashboard";
 import styles from "./styles.module.scss";
+import CSVUploader from "../Dashboard/CsvFile";
+import AgentConfiguration from "./Configurations";
+import DisplayField from "./DisplayField";
 
 const UserManagement = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [activeTab, setActiveTab] = useState("Admin Dashboard");
+  const [activeTab, setActiveTab] = useState("Settings & Configuration");
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedUserEmail, setSelectedUserEmail] = useState<string | null>(
     null
   );
+
   const {
     data: userData,
     isLoading: userLoading,
     error: userError,
   } = useGetCurrentUserQuery();
   const organizationsId = userData?.data?.[0].organizations_id;
-  // console.log("userData", userData);
 
   const { data: organizationData, isLoading: isOrgLoading } =
     useGetOrganzationQuery(
@@ -70,21 +73,21 @@ const UserManagement = () => {
       console.error("Failed to deactivate user:", error);
     }
   };
-  if (isOrgLoading) {
+  if (isOrgLoading || userLoading) {
     return (
       <Box sx={{ padding: "48px" }}>
         <CircularProgress />
       </Box>
     );
   }
+
   return (
-    <Box className = {styles.indexRoot}>
-      <Box className = {styles.indexHeadingBox}>
+    <Box className={styles.indexRoot}>
+      <Box className={styles.indexHeadingBox}>
         <Typography variant="h1" className={styles.indexHeading}>
           Admin Oversight
         </Typography>
       </Box>
-
       <AdminDashboard></AdminDashboard>
 
       {/* <Box className={styles.indexCustomTabBox}>
@@ -93,99 +96,117 @@ const UserManagement = () => {
           onTabChange={(label: any) => setActiveTab(label)}
         />
       </Box>
-      <Box mb={4}>
-        <SettingsPanel data={organizationData} />
-        <Divider />
+      <Box>
+        {activeTab === "Agent Configuration" && (
+          <>
+            <AgentConfiguration data={organizationData} editable/>
+          </>
+        )}
       </Box>
-      <Box mb={4}>
-        <AIOutreachSettings data={organizationData} editable organizationsId={organizationsId}/>
-        <Divider />
-      </Box>
-      <Box mb={4}>
-        <TemplateSetting />
-        <Divider />
-      </Box> */}
-      {/* <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1}> */}
-        {/* <Typography variant="h6" gutterBottom fontSize={24} fontWeight={600}>
-          User management
-        </Typography> */}
-        {/* <Box sx={{ height: "350px", overflowY: "auto" }}>
-          <Box mt={2}>
-            {isUsersLoading && <CircularProgress size={24} />}
-            {isError && (
-              <Typography color="error">Failed to load users.</Typography>
-            )}
-            {users?.data?.length > 0 &&
-              users.data.map((user: any, index: number) => (
-                <Box key={index}>
-                  <Box className={styles.userManagementRowBox}>
-                    <Box className = {styles.nameAndEmailBox}>
-                      <Box flex={1} className = {styles.nameBox}>
-                        <Typography fontWeight={600} fontSize={14}>
-                          {user.name || user.first_name}
-                        </Typography>
-                      </Box>
-
-                      <Box className={styles.userManagementEmailBox}>
-                        <MailOutlineIcon
-                          fontSize="small"
-                          sx={{ color: "#888" }}
-                        />
-                        <Typography className={styles.emailTypo}>
-                          {user.email}
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Divider className={styles.myDivider}></Divider>
-
-                    <Box className={styles.roleAndRemoveBox}>
-                      <Box className={styles.roleBox}>
-                        <Typography className={styles.userTypo}>
-                          {user.role || "—"}
-                        </Typography>
-                      </Box>
-
-                      <Box
-                        className={styles.removeBox}
-                        onClick={() => {
-                          setSelectedUserEmail(user.email);
-                          setConfirmOpen(true);
-                        }}
-                      >
-                        <DeleteOutline />
-                      </Box>
-                    </Box>
-                  </Box>
-                  {index !== users.length - 1 && <Divider />}
-                </Box>
-              ))}
+      {activeTab === "Settings & Configuration" && (
+        <>
+          <Box mb={4}>
+            <SettingsPanel data={organizationData} />
+            <Divider />
           </Box>
+          <Box mb={4}>
+            <AIOutreachSettings
+              data={organizationData}
+              editable
+              organizationsId={organizationsId}
+            />
+            <Divider />
+          </Box>
+          <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
 
-          <AddNewUserModal
-            open={open}
-            onClose={handleClose}
-            refetchUsers={refetch}
-          />
-        </Box> */}
-        {/* <Box mt={2}>
-          <CustomButton
-            variant="outlined"
-            color="primary"
-            onClick={handleOpen}
-            startIcon={<Add />}
-            className = {styles.addBtn}
-            // sx={{
-            //   fontSize: 14,
-            //   fontWeight: "600",
-            //   borderColor: "#6B39F4",
-            //   color: "#6B39F4",
-            // }}
-          >
-            Add New Solo User
-          </CustomButton>
-        </Box> */}
-      {/* </Box> */}
+          <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1} mt={2}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              fontSize={24}
+              fontWeight={600}
+            >
+              User Management
+            </Typography>
+            <Box sx={{ height: "350px", overflowY: "auto" }}>
+              <Box mt={2}>
+                {isUsersLoading && <CircularProgress size={24} />}
+                {isError && (
+                  <Typography color="error">Failed to load users.</Typography>
+                )}
+                {users?.data?.length > 0 &&
+                  users.data.map((user: any, index: number) => (
+                    <Box key={index}>
+                      <Box className={styles.userManagementRowBox}>
+                        <Box className={styles.nameAndEmailBox}>
+                          <Box flex={1} className={styles.nameBox}>
+                            <Typography fontWeight={400} fontSize={16}>
+                              {user.name || user.first_name}
+                            </Typography>
+                          </Box>
+
+                          <Box className={styles.userManagementEmailBox}>
+                            <MailOutlineIcon
+                              fontSize="small"
+                              sx={{ color: "#888" }}
+                            />
+                            <Typography className={styles.emailTypo}>
+                              {user.email}
+                            </Typography>
+                          </Box>
+                        </Box>
+
+                        <Divider className={styles.myDivider}></Divider>
+
+                        <Box className={styles.roleAndRemoveBox}>
+                          <Box className={styles.roleBox}>
+                            <Typography className={styles.userTypo}>
+                              {user.role || "—"}
+                            </Typography>
+                          </Box>
+
+                          <Box
+                            className={styles.removeBox}
+                            onClick={() => {
+                              setSelectedUserEmail(user.email);
+                              setConfirmOpen(true);
+                            }}
+                          >
+                            <DeleteOutline />
+                          </Box>
+                        </Box>
+                      </Box>
+                      {index !== users.length - 1 && <Divider />}
+                    </Box>
+                  ))}
+              </Box>
+
+              <AddNewUserModal
+                open={open}
+                onClose={handleClose}
+                refetchUsers={refetch}
+              />
+            </Box> */}
+            {/* <Box mt={2}>
+              <CustomButton
+                variant="outlined"
+                color="primary"
+                onClick={handleOpen}
+                startIcon={<Add />}
+                className={styles.addBtn}
+                // sx={{
+                //   fontSize: 14,
+                //   fontWeight: "600",
+                //   borderColor: "#6B39F4",
+                //   color: "#6B39F4",
+                // }}
+              >
+                Add New Solo User
+              </CustomButton>
+            </Box> */}
+          {/* </Box> */}
+        {/* </> */}
+      {/* )} */}
 
       {/* <Dialog
         open={confirmOpen}

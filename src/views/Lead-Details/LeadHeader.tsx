@@ -35,9 +35,9 @@ const LeadHeader = ({ name, status, onRefreshClick, onEditClick, hideBackButton 
     router.push(`/dashboard?page=${page}`);
   };
   const keyword = status?.split(" ")[0]?.toLowerCase();
-  console.log("stats", keyword);
   const initials = getInitials(name);
-  const handleRefreshClick = () => {
+  const handleRefreshClick = (e: any) => {
+    e.preventDefault();
     setLoading(true);
     setTimeout(() => {
       onRefreshClick();
@@ -77,7 +77,7 @@ const LeadHeader = ({ name, status, onRefreshClick, onEditClick, hideBackButton 
               className={styles.leadHeaderChip}
               label={status}
               size="small"
-              icon={<Urgent />}
+              icon={keyword === "hot" ? <Urgent /> : <Cold />}
             />
           </Stack>
         </Box>

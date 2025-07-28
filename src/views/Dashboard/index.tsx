@@ -12,6 +12,7 @@ import CustomPagination from "@/src/components/common/CustomPagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
 import Cookies from "js-cookie";
+
 const Dashboard = () => {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("All");
@@ -72,27 +73,11 @@ const Dashboard = () => {
     }
   }, [leads, isAll]);
 
-  // const { data: allTagsData } = useGetLeadsQuery(
-  //   { limit: 1000, offset: 0 },
-  //   // { skip: !isAll }
-  //   { skip: false }
-  // );
-
-  // const allTagsLeads = allTagsData?.data || [];
-
-  // const tags = useMemo(() => {
-  //   const tagSet = new Set(
-  //     allTagsLeads.map((lead: any) => lead.tag || "Untagged")
-  //   );
-  //   return ["All", ...Array.from(tagSet)];
-  // }, [allTagsLeads]);
-
   const tags = useMemo(() => {
     const tagSet = new Set(leads.map((lead: any) => lead.tag || "Untagged"));
     return ["All", ...Array.from(tagSet)];
   }, [leads]);
 
-  // const tabsData = tags.map((tag) => ({ label: String(tag) }));
   const tabsData = allTags.map((tag) => ({ label: String(tag) }));
 
   const handleTabChange = (label: string) => {
@@ -111,6 +96,9 @@ const Dashboard = () => {
         setSearchQuery={setSearchQuery}
         activeTab={activeTab}
       />
+      {/* check drag n drop functionality */}
+      {/* <DragDropBoard /> */}
+
       <Box
         borderRadius="12px"
         padding={1}

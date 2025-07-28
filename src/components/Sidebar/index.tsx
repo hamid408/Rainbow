@@ -15,7 +15,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Logout, Password, VerifiedUserOutlined } from "@mui/icons-material";
 import { useLogOutMutation } from "@/src/redux/services/auth/authApi";
-// import { UserIcon } from "@/assests/icons";
+// import { UserIcon } from "@/src/assests/icons";
 
 const Sidebar = () => {
   const [activeButton, setActiveButton] = useState("admin");
@@ -70,7 +70,7 @@ const Sidebar = () => {
   };
 
   const pathMap: Record<string, string> = {
-    "Dashboard": "/dashboard",
+    Dashboard: "/dashboard",
     "AI Outreach": "/ai-reach",
     "Tasks & Reminder": "/tasks",
     Analytics: "/analytics",
@@ -126,8 +126,7 @@ const Sidebar = () => {
               cursor: "pointer",
               width: "210px",
               height: "auto",
-              border:"none",
-
+              border: "none",
             }}
             onClick={() => router.push("/dashboard")}
           />
@@ -169,7 +168,7 @@ const Sidebar = () => {
           display={"flex"}
           flexDirection={"column"}
           justifyContent={"space-between"}
-          height={"65%"}
+          height={"90vh"}
         >
           <Box className={styles.itemsList}>
             {sidebarItems.map(({ label, icon: Icon, disabled }: any) => (
@@ -179,16 +178,12 @@ const Sidebar = () => {
                   activeSidebarItem === label ? styles.active : ""
                 }`}
                 onClick={() => {
-                  // setActiveSidebarItem(label);
-                  // if (pathMap[label]) {
-                  //   router.push(pathMap[label]);
-                  // }
+                
                   if (!disabled && pathMap[label]) {
                     setActiveSidebarItem(label);
                     router.push(pathMap[label]);
                   }
                 }}
-                // sx={{ cursor: "pointer" }}
                 sx={{
                   cursor: disabled ? "not-allowed" : "pointer",
                   opacity: disabled ? 0.5 : 1,
@@ -299,7 +294,7 @@ const Sidebar = () => {
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-              
+
               fontWeight:
                 activeTab === label.toLowerCase().replace(/\s+/g, "-")
                   ? 600

@@ -20,7 +20,7 @@ import {
   TickMark,
 } from "@/src/assests/icons";
 import { Edit } from "@mui/icons-material";
-// import CustomTextField from "@/components/common/CustomTextfield";
+// import CustomTextField from "@/src/components/common/CustomTextfield";
 import styles from "./style.module.scss";
 
 interface OutreachAndSuggestionCardProps {

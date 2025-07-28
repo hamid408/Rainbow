@@ -10,10 +10,13 @@ import {
   Stack,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
+import Logo from "@/src/assests/images/newlogo.jpg";
+
 import CustomTextField from "@/src/components/common/CustomTextfield";
 import CustomButton from "@/src/components/common/CustomButton";
 import { useForgotPasswordMutation } from "@/src/redux/services/auth/authApi";
 import Cookies from "js-cookie";
+import Image from "next/image";
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
 
@@ -29,23 +32,8 @@ export default function ForgotPassword() {
     e.preventDefault();
     setMessage("");
     try {
-      // const response = await fetch(
-      //   "https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/auth/forgotPass",
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({
-      //       email,
-      //     }),
-      //   }
-      // );
-
-      // const data = await response.json();
       const response = await forgotPassword({ email }).unwrap();
 
-      // sessionStorage.setItem("email", email);
       Cookies.set("email", email);
       setSeverity("success");
       setMessage("Code Sent to your email");
@@ -55,30 +43,6 @@ export default function ForgotPassword() {
       setMessage("Something went wrong. Please try again.");
     }
   };
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setMessage("");
-  //   // setLoading(true);
-
-  //   try {
-  //     const response = await forgotPassword({ email }).unwrap();
-  //     setSeverity("success");
-  //     setMessage(response?.message || "Reset link sent to your email");
-
-  //     // Store email in sessionStorage for later use
-  //     sessionStorage.setItem("email", email);
-
-  //     // Redirect to login-password screen
-  //     setTimeout(() => {
-  //       router.push("/login-password");
-  //     }, 1000); // slight delay for UX
-  //   } catch (err: any) {
-  //     setSeverity("error");
-  //     setMessage(err?.data?.message || "Something went wrong");
-  //   } finally {
-  //     // setLoading(false);
-  //   }
-  // };
 
   return (
     <Container
@@ -105,7 +69,19 @@ export default function ForgotPassword() {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h5" align="center" mb={2}>
+        <Box>
+          <Image
+            src={Logo}
+            alt="logo"
+            style={{
+              maxWidth: "470px",
+              width: "100%",
+              height: "auto",
+              marginBottom: "48px",
+            }}
+          />
+        </Box>
+        <Typography variant="h5" align="center" mb={2} fontSize={28}>
           Forgot Password
         </Typography>
         <Typography variant="body2" align="center" color="gray" mb={3}>
@@ -116,7 +92,7 @@ export default function ForgotPassword() {
             label="Email"
             fullWidth
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: any) => setEmail(e.target.value)}
             placeholder="Enter your email"
           />
 

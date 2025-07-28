@@ -29,7 +29,11 @@ const CustomTextField: React.FC<CustomTextFieldProps> = forwardRef(
   ) => {
     return (
       <Box sx={{ width: "100%", marginTop: "-4px" }}>
-        <Typography variant="subtitle1" sx={{ marginBottom: "6px" }} fontWeight={600}>
+        <Typography
+          variant="subtitle1"
+          sx={{ marginBottom: "6px" }}
+          fontWeight={600}
+        >
           {label}
         </Typography>
         <TextField
