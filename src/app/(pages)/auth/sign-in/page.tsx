@@ -17,7 +17,7 @@ import CustomTextField from "@/src/components/common/CustomTextfield";
 import CustomButton from "@/src/components/common/CustomButton";
 import { useSignInMutation } from "@/src/redux/services/auth/authApi";
 import { setCredentials } from "@/src/redux/services/auth/authSlice";
-import Logo from "@/assests/images/newlogo.jpg";
+import Logo from "@/src/assests/images/newlogo.jpg";
 import Link from "next/link";
 import Image from "next/image";
 export default function SignIn() {
@@ -123,7 +123,7 @@ export default function SignIn() {
             label="Email"
             fullWidth
             value={email}
-            onChange={(e:any) => setEmail(e.target.value)}
+            onChange={(e: any) => setEmail(e.target.value)}
             placeholder="Enter your email"
             // fontSize="1rem"
           />
@@ -133,7 +133,7 @@ export default function SignIn() {
             type={showPassword ? "text" : "password"}
             fullWidth
             value={password}
-            onChange={(e:any) => setPassword(e.target.value)}
+            onChange={(e: any) => setPassword(e.target.value)}
             placeholder="Enter your password"
             InputProps={{
               endAdornment: (
