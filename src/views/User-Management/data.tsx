@@ -1,5 +1,5 @@
 export const tabItems = [
-  // { label: "Admin Dashboard" },
+  { label: "Admin Dashboard" },
   { label: "Settings & Configuration" },
   { label: "Agent Configuration" },
 ];

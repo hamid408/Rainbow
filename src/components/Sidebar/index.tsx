@@ -191,7 +191,7 @@ const Sidebar = () => {
               >
                 <Icon />
                 <Typography
-                  variant="body1"
+                  // variant="body1"
                   sx={{
                     marginLeft: 1,
                     color: activeSidebarItem === label ? "#7A4DF5" : "#0D0D12",

@@ -6,24 +6,19 @@ import { conversationData, messageData } from "./data";
 import CardsRow from "./CardsRow";
 import styles from "./styles.module.scss";
 import { ThreeDotsVertical } from "@/src/assests/icons";
-import {
-  Avatar,
-  Card,
-  CardContent,
-  Divider,
-  IconButton,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Divider, IconButton, Typography } from "@mui/material";
+import useUserManagementColumns from "@/src/hooks/Ag-Grid/useUserManagementColumn";
+import { userColumn } from "@/src/constants/Grid-Table/ColDefs";
+import AgGridTable from "@/src/components/ag-grid";
+import { usersRows } from "@/src/constants/Grid-Table/RowData";
 
 const AdminDashboard = () => {
+  const userCol = useUserManagementColumns(userColumn);
   return (
     <Box className={styles.indexRoot}>
-      {/* Top row */}
       <CardsRow />
 
-      {/* Left Card */}
-      <Box className = {styles.bothCards}>
+      <Box className={styles.bothCards}>
         <Box className={styles.cardRoot}>
           <Box className={styles.cardHeadingBox}>
             <Box className={styles.headingLeftBox}>
@@ -34,8 +29,7 @@ const AdminDashboard = () => {
             </Box>
 
             <IconButton size="small">
-              {/* <ThreeDotsVertical></ThreeDotsVertical> */}
-              <ThreeDotsVertical/>
+              <ThreeDotsVertical />
             </IconButton>
           </Box>
 
@@ -46,17 +40,16 @@ const AdminDashboard = () => {
           </Box>
         </Box>
 
-        {/* Right Card */}
         <Box className={styles.cardRoot}>
           <Box className={styles.cardHeadingBox}>
             <Box className={styles.headingLeftBox}>
-              <Typography className={styles.headingTypo}>
+              <Typography className={styles.headingTypo} variant="body1" fontSize={18} fontWeight={600}>
                 Quality Control Tools
               </Typography>
             </Box>
 
             <IconButton size="small">
-              <ThreeDotsVertical/>
+              <ThreeDotsVertical />
             </IconButton>
           </Box>
 
@@ -66,6 +59,31 @@ const AdminDashboard = () => {
             <CardComponent type="message" data={messageData} />
           </Box>
         </Box>
+      </Box>
+      <Box sx={{ borderRadius: "12px", border: "1px solid #C1C7D0" }}>
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <Typography
+            variant="body2"
+            color="#0D0D12"
+            fontWeight={600}
+            m={2.4}
+            fontSize={18}
+          >
+            User Performance View
+          </Typography>
+          <Box pr={3.4} sx={{ cursor: "pointer" }}>
+            <ThreeDotsVertical />
+          </Box>
+        </Box>
+        <AgGridTable
+          rowData={usersRows}
+          columnDefs={userCol}
+          domLayout="autoHeight"
+        />
       </Box>
     </Box>
   );

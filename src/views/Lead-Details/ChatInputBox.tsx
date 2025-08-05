@@ -175,6 +175,7 @@ const ChatInputBox = ({
             width: "108%",
           }}
         ></Divider>
+        
 
         <div className={styles.sendBtn}>
           <CustomButton

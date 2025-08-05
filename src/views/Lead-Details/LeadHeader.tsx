@@ -1,9 +1,8 @@
 "use client";
-import { Back, Call, Cold, Urgent } from "@/src/assests/icons";
+import { Back, Cold, Urgent } from "@/src/assests/icons";
 import {
   Box,
   Typography,
-  Button,
   Chip,
   Stack,
   Divider,
@@ -25,15 +24,22 @@ interface LeadHeaderProps {
   onEditClick: () => void;
   hideBackButton?: boolean;
 }
-const LeadHeader = ({ name, status, onRefreshClick, onEditClick, hideBackButton }: LeadHeaderProps) => {
+const LeadHeader = ({
+  name,
+  status,
+  onRefreshClick,
+  onEditClick,
+  hideBackButton,
+}: LeadHeaderProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-
   const searchParams = useSearchParams();
+
   const handleRouteBack = () => {
     const page = searchParams.get("page") || "1";
     router.push(`/dashboard?page=${page}`);
   };
+
   const keyword = status?.split(" ")[0]?.toLowerCase();
   const initials = getInitials(name);
   const handleRefreshClick = (e: any) => {
@@ -50,11 +56,11 @@ const LeadHeader = ({ name, status, onRefreshClick, onEditClick, hideBackButton 
         <Box className={styles.leadHeaderSecondRoot}>
           {!hideBackButton && (
             <Box className={styles.leadHeaderFirstRow}>
-            {/* <Back onClick={handleRouteBack} /> */}
-            <Back onClick={() => router.back()} />
-          </Box>
+              {/* <Back onClick={handleRouteBack} /> */}
+              <Back onClick={() => router.back()} />
+            </Box>
           )}
-          
+
           <Avatar
             className={styles.leadHeaderAvatar}
             // sx={{
@@ -82,7 +88,7 @@ const LeadHeader = ({ name, status, onRefreshClick, onEditClick, hideBackButton 
           </Stack>
         </Box>
 
-        <Box className = {styles.refreshEditBtn}>
+        <Box className={styles.refreshEditBtn}>
           <Box className={styles.refreshBtn}>
             <CustomButton
               variant="contained"
@@ -100,12 +106,11 @@ const LeadHeader = ({ name, status, onRefreshClick, onEditClick, hideBackButton 
           </Box>
 
           <Box className={styles.editSlider}>
-            <IconButton onClick={onEditClick}>
+            <IconButton onClick={onEditClick} sx={{ color: "#0057b7" }}>
               <Edit />
             </IconButton>
           </Box>
         </Box>
-
       </Box>
       <Divider className={styles.leadHeaderSlider} />
     </>
@@ -113,3 +118,8 @@ const LeadHeader = ({ name, status, onRefreshClick, onEditClick, hideBackButton 
 };
 
 export default LeadHeader;
+
+
+
+
+

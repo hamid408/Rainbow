@@ -31,7 +31,12 @@
   gap: 16px;
   align-items: center;
 }
-
+.shortText {
+  display: none;
+  @media (max-width: 980px) {
+    display: inline;
+  }
+}
 .priorityResponses {
   font-weight: 400 !important;
   font-size: 18px;
@@ -58,5 +63,13 @@
 
   @media (min-width: 900px) {
     margin-left: -35px;
+  }
+}
+.searchBox {
+  display: flex;
+  align-items: center !important;
+  @media (max-width: 400px) {
+    margin-inline: -34px;
+    width: 130%;
   }
 }

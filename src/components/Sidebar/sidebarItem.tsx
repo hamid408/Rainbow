@@ -15,7 +15,7 @@ export const sidebarItems = [
   { label: "Dashboard", icon: LeadsIcon },
   // { label: "AI Outreach", icon: Aireach },
   // { label: "Tasks & Reminder", icon: Tasks },
-  { label: "AI Outreach", icon: Aireach, disabled: true },
+  { label: "AI Outreach", icon: Aireach },
   { label: "Tasks & Reminder", icon: Tasks, disabled: true },
   { label: "Analytics", icon: Analytics, disabled: true },
   { label: "Admin Oversight", icon: UserIcon },

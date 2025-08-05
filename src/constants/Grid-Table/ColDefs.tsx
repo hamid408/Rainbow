@@ -11,3 +11,11 @@ export const campaignsColumn = [
   { field: "campagin_name" },
   { field: "performance" },
 ];
+export const userColumn = [
+  { field: "user_name" },
+  { field: "email" },
+  { field: "inquiry_type" },
+  { field: "avg_response_time" },
+  { field: "task_overdue" },
+  { field: "actions" },
+];

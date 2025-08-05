@@ -30,6 +30,7 @@ const AgGridTable: React.FC<any> = ({
   rowClassRules,
   className,
   noTopBorder,
+
   ...gridProps
 }) => {
   const rowSelectionMemo = useMemo<
@@ -69,7 +70,8 @@ const AgGridTable: React.FC<any> = ({
             paginationPageSize={
               !enablePagination ? paginationPageSize : undefined
             }
-            domLayout="normal"
+            // domLayout="normal"
+            domLayout={gridProps.domLayout || "normal"}
             rowHeight={rowHeight}
             onRowClicked={onRowClicked}
             suppressPaginationPanel={true}

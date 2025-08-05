@@ -77,7 +77,6 @@ const CardComponent: React.FC<Props> = ({ data }) => {
         {localData.map((item, index) => (
           <React.Fragment key={index}>
             <Box className={styles.cardContentRootBox}>
-              {/* Left Side: Avatar + Name + Description/Message */}
               <Box className={styles.leftContentBox}>
                 <Avatar className={styles.avatar} src={item.avatarUrl}>
                   {item.avatarInitials}
@@ -179,10 +178,10 @@ const CardComponent: React.FC<Props> = ({ data }) => {
             </Box>
 
             {/* <Box className={styles.dividerContainer}> */}
-              {/* Divider between entries (except after last) */}
-              {index !== localData.length - 1 && (
-                <Divider className={styles.insideDivider} />
-              )}
+            {/* Divider between entries (except after last) */}
+            {index !== localData.length - 1 && (
+              <Divider className={styles.insideDivider} />
+            )}
             {/* </Box> */}
           </React.Fragment>
         ))}

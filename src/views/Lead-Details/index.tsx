@@ -8,10 +8,15 @@ import LeadDetailsSidebar from "./LeadDetailSidebar";
 import ChatInputBox from "./ChatInputBox";
 import { useGetLeadByIdQuery } from "@/src/redux/services/leads/leadsApi";
 import styles from "./style.module.scss";
-
 import { useGetSuggestionsQuery } from "@/src/redux/services/conversation/conversationApi";
 
-const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideBackButton?: boolean; }) => {
+const LeadDetails = ({
+  leadId,
+  hideBackButton = false,
+}: {
+  leadId: string;
+  hideBackButton?: boolean;
+}) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [refreshChat, setRefreshChat] = useState(0);
   const { data, isLoading, error, isFetching, refetch } =
@@ -24,10 +29,6 @@ const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideB
       setLead(data.data[0]);
     }
   }, [data]);
-
-  // useEffect(() => {
-  //   refetch();
-  // }, [leadId, refreshChat, refetch]);
 
   const handleRefreshClick = useCallback(() => {
     setRefreshChat((prev) => prev + 1);
@@ -61,9 +62,8 @@ const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideB
       <LeadHeader
         name={name}
         status={status}
-        // onRefreshClick={() => setRefreshChat((prev) => prev + 1)}
         onEditClick={() => setIsDrawerOpen(true)}
-        hideBackButton = {hideBackButton}
+        hideBackButton={hideBackButton}
         onRefreshClick={handleRefreshClick}
       />
       <Box className={styles.indexSecondaryBox}>
@@ -86,7 +86,8 @@ const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideB
             refetchSuggestion={refetchSuggestion}
           />
         </Box>
-        {/* <LeadDetailsSidebar lead={lead} setLead={setLead} /> */}
+
+        {/*<LeadDetailsSidebar lead={lead} setLead={setLead} />*/}
 
         {/* Desktop Sidebar */}
         <Box
@@ -94,7 +95,7 @@ const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideB
             // display: { xs: "none", md: "block" },
             "@media(max-width: 1000px)": {
               display: "none",
-            }
+            },
           }}
         >
           <LeadDetailsSidebar lead={lead} setLead={setLead} />
@@ -126,7 +127,7 @@ const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideB
 
               "@media(max-width: 300px)": {
                 maxWidth: "150px",
-              }
+              },
             },
           }}
         >
@@ -135,6 +136,8 @@ const LeadDetails = ({ leadId, hideBackButton = false }: { leadId: string; hideB
       </Box>
     </Box>
   );
+
+
 };
 
 export default LeadDetails;

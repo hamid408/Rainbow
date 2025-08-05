@@ -34,7 +34,7 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
     <Box className={styles.contactProgressRoot}>
       {/* Contact Info */}
       <Box className={styles.contactBox}>
-        <Avatar
+        {/* <Avatar
           className={`${styles.avatarBox} ${
             contact.id >= 85
               ? styles.green
@@ -44,14 +44,16 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
           }`}
         >
           {contact.id}
-        </Avatar>
+        </Avatar> */}
 
         <Stack spacing={0.2}>
-          <Typography 
-          className={styles.title}
-          >{contact.title}</Typography>
+          <Typography className={styles.title}>{contact.title}</Typography>
 
-          <Typography variant="body2" color="text.secondary" className={styles.subTitle}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            className={styles.subTitle}
+          >
             {contact.subtitle}
           </Typography>
         </Stack>
@@ -76,7 +78,7 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
       </Box>
 
       {/* Buttons */}
-      <Box className={styles.buttonBox}>
+      {/* <Box className={styles.buttonBox}>
         {!isAIPaused ? (
           <Button
             variant="outlined"
@@ -131,7 +133,7 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
             setTakeOverOpen(false);
           }}
         />
-      </Box>
+      </Box> */}
     </Box>
   );
 };

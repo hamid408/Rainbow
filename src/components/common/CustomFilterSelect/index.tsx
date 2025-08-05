@@ -6,7 +6,6 @@ import {
   Typography,
   Select,
   InputBase,
-  capitalize,
 } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import { Filter } from "@/src/assests/icons";

@@ -35,7 +35,7 @@ const UserManagement = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [activeTab, setActiveTab] = useState("Settings & Configuration");
+  const [activeTab, setActiveTab] = useState("Admin Dashboard");
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedUserEmail, setSelectedUserEmail] = useState<string | null>(
     null
@@ -82,194 +82,199 @@ const UserManagement = () => {
   }
 
   return (
-    <Box className={styles.indexRoot}>
-      <Box className={styles.indexHeadingBox}>
-        <Typography variant="h1" className={styles.indexHeading}>
-          Admin Oversight
-        </Typography>
-      </Box>
-      <AdminDashboard></AdminDashboard>
+    <>
+      <Box className={styles.indexRoot}>
+        <Box className={styles.indexHeadingBox}>
+          <Typography variant="h1" className={styles.indexHeading}>
+            Admin Oversight
+          </Typography>
+        </Box>
+        <Box marginBlock={4}>{/* <AdminDashboard/> */}</Box>
 
-      {/* <Box className={styles.indexCustomTabBox}>
-        <CustomTabs
-          tabs={tabItems}
-          onTabChange={(label: any) => setActiveTab(label)}
-        />
-      </Box>
-      <Box>
-        {activeTab === "Agent Configuration" && (
+        <Box className={styles.indexCustomTabBox}>
+          <CustomTabs
+            tabs={tabItems}
+            onTabChange={(label: any) => setActiveTab(label)}
+          />
+        </Box>
+        <Box>
+          {activeTab === "Agent Configuration" && (
+            <Box mt={3}>
+              <AgentConfiguration data={organizationData} editable />
+            </Box>
+          )}
+        </Box>
+        {activeTab === "Settings & Configuration" && (
           <>
-            <AgentConfiguration data={organizationData} editable/>
-          </>
-        )}
-      </Box>
-      {activeTab === "Settings & Configuration" && (
-        <>
-          <Box mb={4}>
-            <SettingsPanel data={organizationData} />
-            <Divider />
-          </Box>
-          <Box mb={4}>
-            <AIOutreachSettings
-              data={organizationData}
-              editable
-              organizationsId={organizationsId}
+            <Box mb={4} mt={3}>
+              <SettingsPanel data={organizationData} />
+              <Divider />
+            </Box>
+            <Box mb={4}>
+              <AIOutreachSettings
+                data={organizationData}
+                editable
+                organizationsId={organizationsId}
+              />
+              <Divider />
+            </Box>
+            <Divider
+              sx={{ border: "1px solid #eceff3", marginBlock: "16px" }}
             />
-            <Divider />
-          </Box>
-          <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
 
-          <Box p={4} bgcolor="#fff" borderRadius={2} boxShadow={1} mt={2}>
-            <Typography
-              variant="h6"
-              gutterBottom
-              fontSize={24}
-              fontWeight={600}
+            <Box
+              p={4}
+              bgcolor="#fff"
+              borderRadius={2}
+              boxShadow={1}
+              mt={2}
+              className={styles.UserDetails}
             >
-              User Management
-            </Typography>
-            <Box sx={{ height: "350px", overflowY: "auto" }}>
-              <Box mt={2}>
-                {isUsersLoading && <CircularProgress size={24} />}
-                {isError && (
-                  <Typography color="error">Failed to load users.</Typography>
-                )}
-                {users?.data?.length > 0 &&
-                  users.data.map((user: any, index: number) => (
-                    <Box key={index}>
-                      <Box className={styles.userManagementRowBox}>
-                        <Box className={styles.nameAndEmailBox}>
-                          <Box flex={1} className={styles.nameBox}>
-                            <Typography fontWeight={400} fontSize={16}>
-                              {user.name || user.first_name}
-                            </Typography>
+              <Typography
+                variant="h6"
+                gutterBottom
+                fontSize={24}
+                fontWeight={600}
+              >
+                User Management
+              </Typography>
+              <Box sx={{ height: "350px", overflowY: "auto" }}>
+                <Box mt={2}>
+                  {isUsersLoading && <CircularProgress size={24} />}
+                  {isError && (
+                    <Typography color="error">Failed to load users.</Typography>
+                  )}
+                  {users?.data?.length > 0 &&
+                    users.data.map((user: any, index: number) => (
+                      <Box key={index}>
+                        <Box className={styles.userManagementRowBox}>
+                          <Box className={styles.nameAndEmailBox}>
+                            <Box flex={1} className={styles.nameBox}>
+                              <Typography fontWeight={400} fontSize={16}>
+                                {user.name || user.first_name}
+                              </Typography>
+                            </Box>
+                            <Box className={styles.userManagementEmailBox}>
+                              <MailOutlineIcon
+                                fontSize="small"
+                                sx={{ color: "#888" }}
+                              />
+                              <Typography className={styles.emailTypo}>
+                                {user.email}
+                              </Typography>
+                            </Box>
                           </Box>
-
-                          <Box className={styles.userManagementEmailBox}>
-                            <MailOutlineIcon
-                              fontSize="small"
-                              sx={{ color: "#888" }}
-                            />
-                            <Typography className={styles.emailTypo}>
-                              {user.email}
-                            </Typography>
+                          <Divider className={styles.myDivider}></Divider>
+                          <Box className={styles.roleAndRemoveBox}>
+                            <Box className={styles.roleBox}>
+                              <Typography className={styles.userTypo}>
+                                {user.role || "—"}
+                              </Typography>
+                            </Box>
+                            <Box
+                              className={styles.removeBox}
+                              onClick={() => {
+                                setSelectedUserEmail(user.email);
+                                setConfirmOpen(true);
+                              }}
+                            >
+                              <DeleteOutline />
+                            </Box>
                           </Box>
                         </Box>
-
-                        <Divider className={styles.myDivider}></Divider>
-
-                        <Box className={styles.roleAndRemoveBox}>
-                          <Box className={styles.roleBox}>
-                            <Typography className={styles.userTypo}>
-                              {user.role || "—"}
-                            </Typography>
-                          </Box>
-
-                          <Box
-                            className={styles.removeBox}
-                            onClick={() => {
-                              setSelectedUserEmail(user.email);
-                              setConfirmOpen(true);
-                            }}
-                          >
-                            <DeleteOutline />
-                          </Box>
-                        </Box>
+                        {index !== users.length - 1 && <Divider />}
                       </Box>
-                      {index !== users.length - 1 && <Divider />}
-                    </Box>
-                  ))}
+                    ))}
+                </Box>
+                <AddNewUserModal
+                  open={open}
+                  onClose={handleClose}
+                  refetchUsers={refetch}
+                />
               </Box>
 
-              <AddNewUserModal
-                open={open}
-                onClose={handleClose}
-                refetchUsers={refetch}
-              />
-            </Box> */}
-            {/* <Box mt={2}>
-              <CustomButton
-                variant="outlined"
-                color="primary"
-                onClick={handleOpen}
-                startIcon={<Add />}
-                className={styles.addBtn}
-                // sx={{
-                //   fontSize: 14,
-                //   fontWeight: "600",
-                //   borderColor: "#6B39F4",
-                //   color: "#6B39F4",
-                // }}
-              >
-                Add New Solo User
-              </CustomButton>
-            </Box> */}
-          {/* </Box> */}
-        {/* </> */}
-      {/* )} */}
-
-      {/* <Dialog
-        open={confirmOpen}
-        onClose={() => setConfirmOpen(false)}
-        PaperProps={{
-          sx: {
-            padding: "14px 10px",
-          },
-        }}
-      >
-        <DialogTitle
-          sx={{
-            fontSize: "18px",
-            fontWeight: 500,
-            paddingBottom: 0,
+              <Box mt={2}>
+                <CustomButton
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleOpen}
+                  startIcon={<Add />}
+                  className={styles.addBtn}
+                >
+                  Add New Solo User
+                </CustomButton>
+              </Box>
+            </Box>
+          </>
+        )}
+        <Dialog
+          open={confirmOpen}
+          onClose={() => setConfirmOpen(false)}
+          PaperProps={{
+            sx: {
+              padding: "14px 10px",
+            },
           }}
         >
-          <Typography variant="h6" fontWeight={600} mb={2}>
-            Are you sure you want to deactivate this user?
-          </Typography>
-        </DialogTitle>
-
-        <DialogActions
-          sx={{
-            mt: 5,
-            display: "flex",
-            justifyContent: "flex-end",
-            gap: 1.5,
-            paddingTop: 0,
-          }}
-        >
-          <CustomButton
-            onClick={() => {
-              setConfirmOpen(false);
-              setSelectedUserEmail(null);
+          <DialogTitle
+            sx={{
+              fontSize: "18px",
+              fontWeight: 500,
+              paddingBottom: 0,
             }}
-            variant="outlined"
           >
-            Cancel
-          </CustomButton>
-          <CustomButton
-            onClick={async () => {
-              if (selectedUserEmail) {
-                await handleDeactivate(selectedUserEmail);
+            <Typography variant="h6" fontWeight={600} mb={2}>
+              Are you sure you want to deactivate this user?
+            </Typography>
+          </DialogTitle>
+
+          <DialogActions
+            sx={{
+              mt: 5,
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: 1.5,
+              paddingTop: 0,
+            }}
+          >
+            <CustomButton
+              onClick={() => {
                 setConfirmOpen(false);
                 setSelectedUserEmail(null);
-              }
-            }}
-            variant="contained"
-            background="red"
-            disabled={isDeactivating}
-            sx={{
-              minWidth: 120,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {isDeactivating ? "Deactivating....." : "Deactivate"}
-          </CustomButton>
-        </DialogActions>
-      </Dialog> */}
-    </Box>
+              }}
+              variant="outlined"
+            >
+              Cancel
+            </CustomButton>
+            <CustomButton
+              onClick={async () => {
+                if (selectedUserEmail) {
+                  await handleDeactivate(selectedUserEmail);
+                  setConfirmOpen(false);
+                  setSelectedUserEmail(null);
+                }
+              }}
+              variant="contained"
+              background="red"
+              disabled={isDeactivating}
+              sx={{
+                minWidth: 120,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {isDeactivating ? "Deactivating....." : "Deactivate"}
+            </CustomButton>
+          </DialogActions>
+        </Dialog>
+        {activeTab === "Admin Dashboard" && (
+          <Box mt={3}>
+            <AdminDashboard />
+          </Box>
+        )}
+      </Box>
+    </>
   );
 };
 
