@@ -104,6 +104,7 @@ const UserManagement = () => {
             </Box>
           )}
         </Box>
+       
         {activeTab === "Settings & Configuration" && (
           <>
             <Box mb={4} mt={3}>
@@ -139,11 +140,14 @@ const UserManagement = () => {
                 User Management
               </Typography>
               <Box sx={{ height: "350px", overflowY: "auto" }}>
+
                 <Box mt={2}>
+                
                   {isUsersLoading && <CircularProgress size={24} />}
                   {isError && (
                     <Typography color="error">Failed to load users.</Typography>
                   )}
+
                   {users?.data?.length > 0 &&
                     users.data.map((user: any, index: number) => (
                       <Box key={index}>
@@ -210,10 +214,12 @@ const UserManagement = () => {
         <Dialog
           open={confirmOpen}
           onClose={() => setConfirmOpen(false)}
+          
           PaperProps={{
             sx: {
               padding: "14px 10px",
             },
+            
           }}
         >
           <DialogTitle

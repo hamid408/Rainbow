@@ -29,7 +29,6 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
   const [takeOverOpen, setTakeOverOpen] = useState(false);
   const [takeOver, setTakeOver] = useState(false);
   const [selectedReason, setSelectedReason] = useState("");
-
   return (
     <Box className={styles.contactProgressRoot}>
       {/* Contact Info */}
@@ -47,14 +46,14 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
         </Avatar> */}
 
         <Stack spacing={0.2}>
-          <Typography className={styles.title}>{contact.title}</Typography>
+          <Typography className={styles.title}>{contact.name}</Typography>
 
           <Typography
             variant="body2"
             color="text.secondary"
             className={styles.subTitle}
           >
-            {contact.subtitle}
+            {contact.inquiry_type}
           </Typography>
         </Stack>
       </Box>
@@ -66,11 +65,11 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
         </Typography>
 
         <Box className={styles.progressbar}>
-          {Array.from({ length: totalSteps }).map((_, index) => (
+          {Array.from({ length: totalSteps || 5 }).map((_, index) => (
             <Box
               key={index}
               className={`${styles.progressBarStep} ${
-                index < completedSteps ? styles.active : ""
+                index < completedSteps ? styles.active : "0"
               }`}
             />
           ))}
@@ -78,13 +77,14 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
       </Box>
 
       {/* Buttons */}
-      {/* <Box className={styles.buttonBox}>
+      <Box className={styles.buttonBox}>
         {!isAIPaused ? (
           <Button
             variant="outlined"
             startIcon={<Pause />}
             className={styles.pauseButton}
-            onClick={() => setPauseDialogOpen(true)}
+            // onClick={() => setPauseDialogOpen(true)}
+            // disabled
           >
             Pause
           </Button>
@@ -101,21 +101,20 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
 
         {!takeOver ? (
           <Button
-          variant="contained"
-          className={styles.takeOverButton}
-          onClick={() => setTakeOverOpen(true)}
-        >
-          Take Over
-        </Button>
+            variant="contained"
+            className={styles.takeOverButton}
+            // onClick={() => setTakeOverOpen(true)}
+          >
+            Take Over
+          </Button>
         ) : (
           <AfterTakeOver></AfterTakeOver>
         )}
-        
 
         <PauseAIDialog
           open={pauseDialogOpen}
           onClose={() => setPauseDialogOpen(false)}
-          leadName={contact.title}
+          leadName={contact.name}
           onPauseConfirm={() => {
             setIsAIPaused(true);
             setPauseDialogOpen(false);
@@ -127,15 +126,19 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
           onClose={() => setTakeOverOpen(false)}
           selectedReason={selectedReason}
           onReasonChange={(reason) => setSelectedReason(reason)}
-          
           onConfirm={() => {
             setTakeOver(true);
             setTakeOverOpen(false);
           }}
         />
-      </Box> */}
+      </Box>
     </Box>
   );
 };
 
 export default ContactProgressCard;
+// No fear
+// Meditation
+// Physical strength
+// Diet
+// { }

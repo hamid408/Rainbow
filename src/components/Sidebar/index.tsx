@@ -12,10 +12,9 @@ import {
 } from "./sidebarItem";
 import Logo from "../../assests/images/newlogo.jpg";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Logout, Password, VerifiedUserOutlined } from "@mui/icons-material";
 import { useLogOutMutation } from "@/src/redux/services/auth/authApi";
-// import { UserIcon } from "@/src/assests/icons";
 
 const Sidebar = () => {
   const [activeButton, setActiveButton] = useState("admin");
@@ -29,38 +28,21 @@ const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("hot-leads");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const pathname = usePathname();
 
-  // const handleLogOut = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const token = sessionStorage.getItem("id_token");
-  //     await logOut({ token }).unwrap();
-  //     Cookies.remove("id_token");
-  //     sessionStorage.clear();
-
-  //     setLoggedOut(true);
-
-  //     router.replace("/auth/sign-in");
-  //   } catch (error: any) {
-  //     setLoading(false);
-  //     alert(error?.data?.message || "Logout failed.");
-  //   }
-  // };
   const handleLogOut = async () => {
     setLoading(true);
     try {
-      const token = Cookies.get("id_token"); // Read from cookie
+      const token = Cookies.get("id_token");
       if (!token) throw new Error("Token missing.");
 
       await logOut({ token }).unwrap();
 
       Cookies.remove("id_token");
-      // sessionStorage.clear(); // just in case
       setLoggedOut(true);
       router.replace("/auth/sign-in");
     } catch (error: any) {
       setLoading(false);
-      // alert(error?.data?.message || "Logout failed.");
     }
   };
 
@@ -174,11 +156,11 @@ const Sidebar = () => {
             {sidebarItems.map(({ label, icon: Icon, disabled }: any) => (
               <Box
                 key={label}
+                
                 className={`${styles.sidebarItem} ${
-                  activeSidebarItem === label ? styles.active : ""
+                  pathname === pathMap[label] ? styles.active : ""
                 }`}
                 onClick={() => {
-                
                   if (!disabled && pathMap[label]) {
                     setActiveSidebarItem(label);
                     router.push(pathMap[label]);
@@ -191,11 +173,12 @@ const Sidebar = () => {
               >
                 <Icon />
                 <Typography
-                  // variant="body1"
                   sx={{
                     marginLeft: 1,
-                    color: activeSidebarItem === label ? "#7A4DF5" : "#0D0D12",
-                    fontWeight: activeSidebarItem === label ? 600 : 400,
+                    
+                    color: pathname === pathMap[label] ? "#7A4DF5" : "#0D0D12",
+                    fontWeight: pathname === pathMap[label] ? 600 : 400,
+
                     fontSize: "18px",
                   }}
                 >

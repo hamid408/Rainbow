@@ -24,8 +24,8 @@ import { Edit } from "@mui/icons-material";
 import styles from "./style.module.scss";
 
 interface OutreachAndSuggestionCardProps {
-  status1: string;
-  status2: string;
+  status1: { channel: string; message: string } | null;
+  status2: { channel: string; message: string } | null;
   suggestedMessage: string;
 }
 
@@ -55,17 +55,19 @@ const OutreachAndSuggestionCard: React.FC<OutreachAndSuggestionCardProps> = ({
         </Typography>
 
         <Box className={styles.statusesBox}>
+         
           <Stack className={styles.statusesStack}>
-            <MailGrey />
+            {status1?.channel === "Email" ? <MailGrey /> : <MessageGrey />}
             <Typography variant="caption" className={styles.statusColor}>
-              {status1}
+              {status1?.message || "No last action"}
             </Typography>
           </Stack>
 
+       
           <Stack className={styles.statusesStack}>
-            <MessageGrey />
+            {status2?.channel === "Email" ? <MailGrey /> : <MessageGrey />}
             <Typography variant="caption" className={styles.statusColor}>
-              {status2}
+              {status2?.message || "No next action"}
             </Typography>
           </Stack>
         </Box>

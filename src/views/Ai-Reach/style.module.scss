@@ -237,6 +237,7 @@
   padding: 0 10px !important;
   font-weight: 600 !important;
   min-width: 0 !important;
+  cursor: pointer !important;
 
   &:hover {
     background-color: #5e1a8e !important;
@@ -589,5 +590,10 @@
 
   .ag-row-hover {
     background-color: #f6fff7 !important;
+  }
+}
+.paginationBox {
+  @media (max-width: 600px) {
+    margin-bottom: -40px !important;
   }
 }
