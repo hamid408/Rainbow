@@ -1,103 +1,67 @@
 "use client";
-import * as React from "react";
-import { Box, Tabs, Tab } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button } from "@mui/material";
 import styles from "./index.module.scss";
 
 export interface TabItem {
   label: string;
-  // content: React.ReactNode;
   icon?: React.ReactNode;
 }
 
-export interface CustomMuiTabsProps {
+export interface CustomTabsProps {
   tabs: TabItem[];
   activeColor?: string;
   onTabChange?: (label: string) => void;
 }
 
-function a11yProps(index: number) {
-  return {
-    id: `custom-tab-${index}`,
-    "aria-controls": `custom-tabpanel-${index}`,
-  };
-}
-
-const CustomTabs: React.FC<CustomMuiTabsProps> = ({
+const CustomTabs: React.FC<CustomTabsProps> = ({
   tabs,
   activeColor = "#8647F5",
   onTabChange,
 }) => {
-  const [value, setValue] = React.useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-    onTabChange?.(tabs[newValue].label);
+  const handleTabClick = (index: number) => {
+    setActiveIndex(index);
+    onTabChange?.(tabs[index].label);
   };
 
   return (
-    <Box className={styles.rootBox}>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="custom tabs"
-        TabIndicatorProps={{
-          style: { backgroundColor: activeColor },
-        }}
-        sx={{
-          "& .MuiTab-root": {
-            textTransform: "none",
-            fontWeight: 400,
-            borderRadius: "8px",
-            fontSize: 16,
-            color: "#0D0D12",
-            paddingLeft: "0px !important",
-            paddingRight: "24px !important",
-            py: 1,
-            marginRight: 0,
-          },
-          "& .MuiButtonBase-root-MuiTab-root": {
-            minHeight: "80px",
-          },
-          "& .MuiTabs-indicator": {
-            height: "3px",
-            borderRadius: "2px",
-            marginLeft: "12px",
-            width: "140%",
-          },
-          "& .Mui-selected": {
-            color: activeColor,
-            fontSize: "16px",
-            fontWeight: "600",
-          },
-          "@media (max-width: 600px)": {
-            "& .Mui-selected": {
-              backgroundColor: "#F8F5FF",
-              border: "none",
-              padding: "0px",
-              borderRadius: "0px",
-            },
-          },
-        }}
-      >
+    <Box className={styles.customTabWrapper}>
+      <Box display="flex" gap={2} pb={1}>
         {tabs.map((tab, index) => (
-          <Tab
+          <Button
             key={index}
-            label={tab.label}
-            iconPosition="start"
-            {...a11yProps(index)}
-          />
-        ))}
-      </Tabs>
-
-      <Box sx={{ mt: 2 }}>
-        {tabs.map((tab, index) => (
-          <div
-            key={index}
-            role="tabpanel"
-            hidden={value !== index}
-            id={`custom-tabpanel-${index}`}
-            aria-labelledby={`custom-tab-${index}`}
-          ></div>
+            onClick={() => handleTabClick(index)}
+            startIcon={tab.icon}
+            // disableRipple
+            sx={{
+              textTransform: "none",
+              fontWeight: activeIndex === index ? 600 : 400,
+              fontSize: 16,
+              color: activeIndex === index ? activeColor : "#0D0D12",
+              borderBottom: "3px solid",
+              borderColor: activeIndex === index ? activeColor : "transparent",
+              borderRadius: 0,
+              paddingBottom: "6px",
+              minWidth: "100px",
+              backgroundColor: "transparent",
+              "&:hover": {
+                color: activeColor,
+                // borderColor: activeColor,
+                // backgroundColor: "transparent",
+                fontWeight: "600",
+              },
+              "&:focus": {
+                color: activeColor,
+              },
+              "&:active": {
+                color: activeColor,
+              },
+            }}
+          >
+            {tab.label}
+          </Button>
         ))}
       </Box>
     </Box>

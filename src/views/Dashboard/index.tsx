@@ -121,14 +121,14 @@ const Dashboard = () => {
             width={"100%"}
             className={styles.leftSpace}
           >
-            <CustomButton
-              variant="contained"
-              onClick={() => setOpenModal(true)}
-            >
-              {/* Add New Lead */}
-              <span className={styles.fullText}>Add New Lead</span>
-              <span className={styles.shortText}>Add Lead</span>
-            </CustomButton>
+            <Box className={styles.fullText}>
+              <CustomButton
+                variant="contained"
+                onClick={() => setOpenModal(true)}
+              >
+                Add New Lead
+              </CustomButton>
+            </Box>
           </Box>
         </Box>
 

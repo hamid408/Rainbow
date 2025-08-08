@@ -8,7 +8,7 @@ import TimeSelector from "@/src/utils/TimeSelector";
 import CustomButton from "@/src/components/common/CustomButton";
 import { useUpdateOrganizationMutation } from "@/src/redux/services/organization/organizationApi";
 import { toast } from "react-toastify";
-
+import styles from "./styles.module.scss"
 const AIOutreachSettings = ({
   data,
   editable = false,
@@ -74,7 +74,7 @@ const AIOutreachSettings = ({
   };
 
   return (
-    <Box p={4} bgcolor="#fff" borderRadius={2}>
+    <Box p={4} bgcolor="#fff" borderRadius={2} className={styles.AiOutreachMain}>
       <Typography variant="h2" fontSize={24} fontWeight={600} mb={3}>
         AI Outreach Cadence Settings
       </Typography>

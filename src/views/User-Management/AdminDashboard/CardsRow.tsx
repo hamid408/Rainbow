@@ -71,7 +71,7 @@ export default function CardsRow() {
             <CustomButton
               variant="outlined"
               size="small"
-              endIcon={<Arrow></Arrow>}
+              endIcon={<Arrow></Arrow>} 
               className={styles.cardsRowBtn}
               onClick={handleOpenModal}
             >

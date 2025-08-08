@@ -38,17 +38,17 @@
 
 .fullText{
     display: none;
-    @media(min-width: 750px){
+    @media(min-width: 980px){
         display: inline;
     }
 }
 
-.shortText{
-    display: none;
-    @media(max-width: 750px){
-        display: inline;
-    }
-}
+// .shortText{
+//     display: none;
+//     @media(max-width: 980px){
+//         display: inline;
+//     }
+// }
 
 .paginationBox{
     @media(max-width: 600px){
