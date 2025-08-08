@@ -52,7 +52,7 @@ const AvatarCell = ({ value }: { value: string }) => {
 
 const ActionCell = (params: ICellRendererParams) => {
   return (
-    <Box sx={{ borderRadius: "60px", border: "1px solid #7A4DF5",padding:"10px 16px",cursor:"pointer" }}>
+    <Box sx={{ borderRadius: "60px", border: "1px solid #7A4DF5",padding:"10px 8px",cursor:"pointer",maxWidth:"64px" }}>
       <button style={{ border: "none", outline: "none",cursor:"pointer",color:"blue" }}>View</button>
     </Box>
   );
