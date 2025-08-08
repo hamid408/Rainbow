@@ -32,10 +32,14 @@ export default function CardsRow() {
       {/* First Card */}
       <Card className={styles.cardRowCard}>
         <CardContent>
-          <Typography variant="body2" color="#666D80" className={styles.cardTitle}>
+          <Typography
+            variant="body2"
+            color="#666D80"
+            className={styles.cardTitle}
+          >
             Active Outreach
           </Typography>
-          <Typography variant="h3"  mt={3} className = {styles.cardNumber1}>
+          <Typography variant="h3" mt={3} className={styles.cardNumber1}>
             350
           </Typography>
         </CardContent>
@@ -45,33 +49,47 @@ export default function CardsRow() {
       <Card className={styles.cardRowCard}>
         <CardContent>
           <Stack className={styles.secondCardLeadStack}>
-            <Urgent/>
-            <Typography variant="body2" color="#666D80" className={styles.cardTitle}
-            sx={{"@media(max-width: 350px)" : {
-              display: "none",
-            }}}
+            <Urgent />
+            <Typography
+              variant="body2"
+              color="#666D80"
+              className={styles.cardTitle}
+              sx={{
+                "@media(max-width: 350px)": {
+                  display: "none",
+                },
+              }}
             >
               Hot Leads Awaiting User Follow Up
             </Typography>
 
-            <Typography variant="body2" color="#666D80" className={styles.cardTitle}
-            sx={{display: "none",
-              "@media(max-width: 350px)": {
-              display: "block",
-            }}}
+            <Typography
+              variant="body2"
+              color="#666D80"
+              className={styles.cardTitle}
+              sx={{
+                display: "none",
+                "@media(max-width: 350px)": {
+                  display: "block",
+                },
+              }}
             >
               Leads Awaiting
             </Typography>
           </Stack>
 
           <Stack className={styles.secondCardNumStack}>
-            <Typography variant="h3" color="#DF1C41" className={styles.cardNumber2}>
+            <Typography
+              variant="h3"
+              color="#DF1C41"
+              className={styles.cardNumber2}
+            >
               75.0%
             </Typography>
             <CustomButton
               variant="outlined"
               size="small"
-              endIcon={<Arrow></Arrow>} 
+              endIcon={<Arrow></Arrow>}
               className={styles.cardsRowBtn}
               onClick={handleOpenModal}
             >
@@ -84,10 +102,19 @@ export default function CardsRow() {
       {/* Third Card */}
       <Card className={styles.cardRowCard}>
         <CardContent>
-          <Typography variant="body2" color="#666D80" className={styles.cardTitle}>
+          <Typography
+            variant="body2"
+            color="#666D80"
+            className={styles.cardTitle}
+          >
             Alerts Conversations
           </Typography>
-          <Typography variant="h3" color="#7a4df5"  mt={3} className={styles.cardNumber3}>
+          <Typography
+            variant="h3"
+            color="#7a4df5"
+            mt={3}
+            className={styles.cardNumber3}
+          >
             75.0%
           </Typography>
         </CardContent>
@@ -104,7 +131,7 @@ export default function CardsRow() {
         {/* Header */}
         <Box className={styles.hotLeadsDialogHeader}>
           <Box className={styles.titleSection}>
-            <LargeUrgent/>
+            <LargeUrgent />
             <Typography className={styles.redText}>Hot Leads</Typography>
             <Typography className={styles.blackText}>
               &nbsp;awaiting user Follow-up
