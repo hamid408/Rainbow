@@ -116,6 +116,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = forwardRef(
               color: "#344054",
               lineHeight: "1.4375em",
               fontFamily: "Mulish, sans-serif",
+              height: "8px !important",
             },
 
             "& .MuiFormHelperText-root": {

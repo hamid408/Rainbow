@@ -1,8 +1,8 @@
 // AdminDashboard.tsx
-import { Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import React from "react";
 import CardComponent from "./CardComponent";
-import { conversationData, messageData } from "./data";
+import userData, { conversationData, messageData } from "./data";
 import CardsRow from "./CardsRow";
 import styles from "./styles.module.scss";
 import { ThreeDotsVertical } from "@/src/assests/icons";
@@ -11,6 +11,7 @@ import useUserManagementColumns from "@/src/hooks/Ag-Grid/useUserManagementColum
 import { userColumn } from "@/src/constants/Grid-Table/ColDefs";
 import AgGridTable from "@/src/components/ag-grid";
 import { usersRows } from "@/src/constants/Grid-Table/RowData";
+import UserPerformanceCard from "./userPerformanceCard";
 
 const AdminDashboard = () => {
   const userCol = useUserManagementColumns(userColumn);
@@ -67,7 +68,7 @@ const AdminDashboard = () => {
           alignItems={"center"}
         >
           <Typography
-            variant="body2"
+            // variant="body1"
             color="#0D0D12"
             fontWeight={600}
             m={2.4}
@@ -79,11 +80,30 @@ const AdminDashboard = () => {
             <ThreeDotsVertical />
           </Box>
         </Box>
+        <Box sx={{display:{md:"block",xs:"none"}}}>
+
         <AgGridTable
           rowData={usersRows}
           columnDefs={userCol}
           domLayout="autoHeight"
-        />
+          />
+          </Box>
+          <Box>
+         
+
+
+    <Box sx={{display:{xs:"block",md:"none"}}} paddingInline={2.5}>
+      
+
+        {userData.map((user, index) => (
+          <UserPerformanceCard key={index} user={user} />
+        ))}
+    </Box>
+ 
+
+
+
+          </Box>
       </Box>
     </Box>
   );
