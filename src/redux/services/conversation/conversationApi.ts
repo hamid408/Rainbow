@@ -46,6 +46,7 @@ export const conversationApi = createApi({
 export const {
   useGetConversationQuery,
   useGetSuggestionsQuery,
+  useLazyGetSuggestionsQuery,
   useSendSmsMutation,
   useChangeSuggestionMutation,
 } = conversationApi;

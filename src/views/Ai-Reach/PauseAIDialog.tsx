@@ -18,16 +18,26 @@ interface PauseAIDialogProps {
   onClose: () => void;
   leadName: string;
   onPauseConfirm: () => void;
+  campaginStatus: string;
 }
 
-const PauseAIDialog = ({ open, onClose, leadName, onPauseConfirm }: PauseAIDialogProps) => {
+const PauseAIDialog = ({
+  open,
+  onClose,
+  leadName,
+  onPauseConfirm,
+  campaginStatus,
+}: PauseAIDialogProps) => {
   return (
-    
-    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth
-    PaperProps={{
-      className: styles.pauseDialogBox,
-  }}
-  >
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="xs"
+      fullWidth
+      PaperProps={{
+        className: styles.pauseDialogBox,
+      }}
+    >
       <IconButton onClick={onClose} className={styles.dialogCrossIcon}>
         <CloseIcon />
       </IconButton>
@@ -37,16 +47,23 @@ const PauseAIDialog = ({ open, onClose, leadName, onPauseConfirm }: PauseAIDialo
         <BigPause></BigPause>
 
         <Typography className={styles.dialogHeading}>
-          Do you want to pause AI?
+          Do you want to {campaginStatus === "IN_PROGRESS" ? "Resume" : "Pause"}{" "}
+          AI?
         </Typography>
 
         <Typography variant="body2" className={styles.dialogSubheading}>
           Pausing AI means you want AI to hold the conversation with{" "}
-          <strong>{leadName}</strong> until you decide to let AI continue the conversation.
+          <strong>{leadName}</strong> until you decide to let AI continue the
+          conversation.
         </Typography>
 
-        <Button variant="contained" color="primary" onClick={onPauseConfirm} className={styles.dialogButton}>
-          Agree, Pause AI
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onPauseConfirm}
+          className={styles.dialogButton}
+        >
+          Agree, {campaginStatus === "IN_PROGRESS" ? "Resume" : "Pause"} AI
         </Button>
       </DialogContent>
     </Dialog>

@@ -15,6 +15,14 @@
     background-color: white;
   }
 }
+.searchBox {
+  display: flex;
+  align-items: center !important;
+  @media (max-width: 400px) {
+    margin-inline: -34px;
+    width: 130%;
+  }
+}
 
 .indexSecondary {
   border: 1px solid #ddd;
@@ -97,7 +105,7 @@
   align-items: center;
   flex: 1;
   width: 164px;
-  height: 45px;
+  height: 70px; //45
   gap: 16px;
 
   @media (max-width: 400px) {
@@ -115,10 +123,26 @@
   }
 }
 
+// .progressbar {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   gap: 4px;
+//   margin-left: 16px;
+
+//   @media (max-width: 600px) {
+//     margin-top: 12px;
+//     width: 111px;
+//   }
+
+//   @media (min-width: 600px) and (max-width: 700px) {
+//     width: 90px;
+//     margin-top: 14px;
+//   }
+// }
 .progressbar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(5, auto); // 🔑 always 5 per row
   gap: 4px;
   margin-left: 16px;
 

@@ -8,7 +8,10 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import AvatarPic from "../../assests/images/Avatars.png";
-import { useGetConversationQuery } from "@/src/redux/services/conversation/conversationApi";
+import {
+  useGetConversationQuery,
+  useLazyGetSuggestionsQuery,
+} from "@/src/redux/services/conversation/conversationApi";
 import { useEffect, useRef, useState } from "react";
 import { getInitials } from "@/src/utils/GetInitials";
 import { Message, Typing } from "@/src/assests/icons";
@@ -20,11 +23,22 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   const [allMessages, setAllMessages] = useState<any[]>([]);
   const latestOffset = useRef(0);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [fetchSuggestions] = useLazyGetSuggestionsQuery();
 
   const { data, isLoading, refetch } = useGetConversationQuery({
     lead_ID: leadId,
     offset: latestOffset.current,
   });
+
+  //
+  const lastMessageId = useRef<string | null>(null);
+  const lastMessageCount = useRef(0);
+
+  // ✅ Trigger suggestion API when conversation refreshes via refreshTrigger
+  useEffect(() => {
+    fetchSuggestions({ lead_id: leadId });
+  }, [refreshTrigger, leadId]);
+  //
 
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -52,13 +66,31 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
     setHasMounted(true);
   }, []);
 
+  // useEffect(() => {
+  //   if (data?.data?.length) {
+  //     const newMessages = data.data;
+  //     setAllMessages((prev) => [...prev, ...newMessages]);
+  //     latestOffset.current += newMessages.length;
+  //   }
+  // }, [data]);
+
   useEffect(() => {
     if (data?.data?.length) {
       const newMessages = data.data;
       setAllMessages((prev) => [...prev, ...newMessages]);
       latestOffset.current += newMessages.length;
+
+      // Compare count or ID to detect change
+      if (
+        newMessages.length !== lastMessageCount.current ||
+        newMessages[newMessages.length - 1]?.id !== lastMessageId.current
+      ) {
+        lastMessageCount.current = newMessages.length;
+        lastMessageId.current = newMessages[newMessages.length - 1]?.id || null;
+        fetchSuggestions({ lead_id: leadId });
+      }
     }
-  }, [data]);
+  }, [data, fetchSuggestions, leadId]);
 
   useEffect(() => {
     refetch();
@@ -108,12 +140,14 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
           {allMessages.map((msg: any, index: number) => {
             const time = msg.created_at;
             const isAI = msg.is_bot === true;
-
+            const campaign = msg.sender_name === "Campaign Drip";
+            const AIAssistant =
+              msg.sender_name === "AI Assistant (to Director)";
             const senderName = msg.sender_name || "Unknown";
 
             return (
               <Box key={index} className={styles.leadChatMainBox}>
-                {isAI ? (
+                {isAI || campaign || AIAssistant ? (
                   <Image
                     src={AvatarPic}
                     alt="AI Avatar"

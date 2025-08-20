@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,6 +8,7 @@ import {
   IconButton,
   Button,
   TextField,
+  Tooltip,
 } from "@mui/material";
 
 import {
@@ -26,7 +27,7 @@ import styles from "./style.module.scss";
 interface OutreachAndSuggestionCardProps {
   status1: { channel: string; message: string } | null;
   status2: { channel: string; message: string } | null;
-  suggestedMessage: string;
+  suggestedMessage?: string | null;
 }
 
 const OutreachAndSuggestionCard: React.FC<OutreachAndSuggestionCardProps> = ({
@@ -34,18 +35,31 @@ const OutreachAndSuggestionCard: React.FC<OutreachAndSuggestionCardProps> = ({
   status2,
   suggestedMessage,
 }) => {
+  // const [editField, setEditField] = useState(false);
+  // const [message, setMessage] = useState(suggestedMessage || "");
+  // const [save, setSave] = useState(false);
+  // const [originalMessage, setOriginalMessage] = useState(
+  //   suggestedMessage || ""
+  // );
   const [editField, setEditField] = useState(false);
-  const [message, setMessage] = useState(suggestedMessage);
+  const [message, setMessage] = useState(""); // start empty
   const [save, setSave] = useState(false);
-  const [originalMessage, setOriginalMessage] = useState(suggestedMessage);
-
+  const [originalMessage, setOriginalMessage] = useState("");
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = e.target;
-    textarea.style.height = "auto"; // Reset height
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set new height
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
     setMessage(e.target.value);
   };
-
+  useEffect(() => {
+    if (suggestedMessage) {
+      setMessage(suggestedMessage);
+      setOriginalMessage(suggestedMessage);
+    } else {
+      setMessage(""); 
+      setOriginalMessage("");
+    }
+  }, [suggestedMessage]);
   return (
     <Box className={styles.outReachRoot}>
       {/* Outreach Status */}
@@ -55,7 +69,6 @@ const OutreachAndSuggestionCard: React.FC<OutreachAndSuggestionCardProps> = ({
         </Typography>
 
         <Box className={styles.statusesBox}>
-         
           <Stack className={styles.statusesStack}>
             {status1?.channel === "Email" ? <MailGrey /> : <MessageGrey />}
             <Typography variant="caption" className={styles.statusColor}>
@@ -63,7 +76,6 @@ const OutreachAndSuggestionCard: React.FC<OutreachAndSuggestionCardProps> = ({
             </Typography>
           </Stack>
 
-       
           <Stack className={styles.statusesStack}>
             {status2?.channel === "Email" ? <MailGrey /> : <MessageGrey />}
             <Typography variant="caption" className={styles.statusColor}>
@@ -83,20 +95,30 @@ const OutreachAndSuggestionCard: React.FC<OutreachAndSuggestionCardProps> = ({
         </Stack>
 
         <Box className={styles.messageBox}>
-          <textarea
-            value={message}
-            className={styles.input}
-            onChange={handleChange}
-            disabled={!editField || save}
-            rows={3}
-          />
+          
+          <Tooltip title={message.length > 25 ? message : ""} arrow>
+           
+            <textarea
+              value={
+                !message?.trim()
+                  ? "No message available"
+                  : message.length > 30
+                  ? `${message.slice(0, 68)}...`
+                  : message
+              }
+              className={styles.input}
+              onChange={handleChange}
+              disabled={!editField || save}
+              rows={2}
+            />
+          </Tooltip>
 
           <Stack
             direction="row"
             spacing={0.8}
             className={styles.editPreiewStack}
           >
-            {!editField && (
+            {/* {!editField && (
               <IconButton className={styles.editButton}>
                 <Editting
                   onClick={() => {
@@ -105,14 +127,14 @@ const OutreachAndSuggestionCard: React.FC<OutreachAndSuggestionCardProps> = ({
                   }}
                 />
               </IconButton>
-            )}
+            )} */}
 
-            {!editField && (
+            {/* {!editField && (
               <Button variant="outlined" className={styles.previewButton}>
                 Preview
               </Button>
-            )}
-            <Box display={"flex"} alignItems="center" gap={1}>
+            )} */}
+            {/* <Box display={"flex"} alignItems="center" gap={1}>
               {editField && !save && (
                 <Button
                   onClick={() => {
@@ -136,7 +158,7 @@ const OutreachAndSuggestionCard: React.FC<OutreachAndSuggestionCardProps> = ({
                   Save
                 </Button>
               )}
-            </Box>
+            </Box> */}
 
             {save && (
               <Button
