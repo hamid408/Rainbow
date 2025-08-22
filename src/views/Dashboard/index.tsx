@@ -95,6 +95,7 @@ const Dashboard = () => {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         activeTab={activeTab}
+        refetch={refetch}
       />
       {/* check drag n drop functionality */}
       {/* <DragDropBoard /> */}
@@ -126,7 +127,7 @@ const Dashboard = () => {
                 variant="contained"
                 onClick={() => setOpenModal(true)}
               >
-                Add New Lead
+                Add Lead
               </CustomButton>
             </Box>
           </Box>
