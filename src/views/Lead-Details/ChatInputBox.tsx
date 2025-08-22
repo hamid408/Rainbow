@@ -127,7 +127,7 @@ const ChatInputBox = ({
             fontWeight="600"
             onClick={() => setIsCallOpen(true)}
           >
-            Call via Twilio
+            Start a call{" "}
           </CustomButton>
 
           <CustomButton
@@ -175,7 +175,6 @@ const ChatInputBox = ({
             width: "108%",
           }}
         ></Divider>
-        
 
         <div className={styles.sendBtn}>
           <CustomButton
