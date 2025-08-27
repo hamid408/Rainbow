@@ -70,6 +70,11 @@
     width: 56px !important;
     height: 56px !important;
   }
+  // @media (max-width: 400px) {
+  //   width: 50px !important;
+  //   height: 50px !important;
+  //   font-size: 20px !important;
+  // }
 }
 
 .leadHeaderBox {
@@ -130,7 +135,6 @@
   padding: 16px;
   background-color: #fff;
 }
-
 
 .leadDetailTopIcon {
   display: flex;
@@ -432,10 +436,9 @@
     font-size: 10px !important;
   }
 
-  @media(max-width: 600px){
+  @media (max-width: 600px) {
     margin-left: 4px !important;
   }
-
 }
 
 .chatInputMarkBtn {
@@ -449,7 +452,7 @@
     padding-right: 18px;
   }
 
-  @media(min-width: 900px) and (max-width: 880px){
+  @media (min-width: 900px) and (max-width: 880px) {
     margin-left: 10px;
   }
 
@@ -461,7 +464,7 @@
     font-size: 10px !important;
   }
 
-  @media(max-width: 600px){
+  @media (max-width: 600px) {
     margin-top: 0px !important;
   }
 }
@@ -475,7 +478,7 @@
     font-size: 10px !important;
   }
 
-  @media(min-width: 600px) and (max-width: 700px){
+  @media (min-width: 600px) and (max-width: 700px) {
     margin-top: 0px !important;
   }
 }
@@ -544,6 +547,10 @@
   height: 60px !important;
   font-size: 32px !important;
   margin-bottom: 16px !important;
+  // @media (max-width: 400px) {
+  //   width: 50px !important;
+  //   height: 50px !important;
+  // }
 }
 
 .leadImage {
@@ -642,7 +649,6 @@
   @media (max-width: 400px) {
     margin-left: 113px;
   }
-
 }
 
 .divider {
@@ -660,33 +666,33 @@
   }
 }
 
-.editSlider{
+.editSlider {
   display: none;
 
-  @media(max-width: 1000px){
+  @media (max-width: 1000px) {
     display: inline;
     margin-top: 6px;
     margin-left: 6px;
   }
 
-  @media(min-width: 300px) and (max-width: 800px){
+  @media (min-width: 300px) and (max-width: 800px) {
     margin-top: 20px !important;
   }
 }
 
-.refreshEditBtn{
-   @media(max-width: 1000px){
+.refreshEditBtn {
+  @media (max-width: 1000px) {
     display: flex;
     // justify-content: space-between;
   }
 }
 
-.drawerSlider{
+.drawerSlider {
   width: 100%;
   max-width: 400px;
   padding: 16px;
 
-  @media(max-width: 600px){
+  @media (max-width: 600px) {
     max-width: 200px !important;
   }
 }

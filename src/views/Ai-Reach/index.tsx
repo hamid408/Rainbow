@@ -18,6 +18,7 @@ const AiReach = () => {
   const pageSize = 5;
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useDebounce(searchQuery, 1000);
+  
 
   const { data, isLoading, refetch } = useGetCampaignQuery({
     page,
