@@ -13,7 +13,8 @@ export async function initTwilioDevice(leadId: string): Promise<Device> {
   }
 
   const res = await fetch(
-    `https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/calls/outbound/user/twilio_auth?lead_id=${leadId}`,
+    // `https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/calls/outbound/user/twilio_auth?lead_id=${leadId}`,
+    `https://3qsk0avfk4.execute-api.us-west-2.amazonaws.com/dev/calls/outbound/user/twilio_auth?lead_id=${leadId}`,
     {
       method: "GET",
       headers: {
