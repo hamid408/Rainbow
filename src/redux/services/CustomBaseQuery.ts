@@ -4,7 +4,7 @@ import type { BaseQueryFn } from "@reduxjs/toolkit/query";
 import Cookies from "js-cookie";
 
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl: "https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/",
+  baseUrl: process.env.NEXT_PUBLIC_BASE_URL as string,
   prepareHeaders: (headers) => {
     const token = Cookies.get("id_token");
     if (token) {
