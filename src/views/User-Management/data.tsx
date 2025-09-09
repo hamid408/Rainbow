@@ -2,6 +2,7 @@ export const tabItems = [
   { label: "Admin Dashboard" },
   { label: "Settings & Configuration" },
   { label: "Agent Configuration" },
+  { label: "Bot Settings" },
 ];
 export const users = [
   { name: "Kerina Wang", email: "kewang@mail.com", role: "Owner" },

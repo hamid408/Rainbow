@@ -2,7 +2,7 @@
 import { Box } from "@mui/material";
 import React from "react";
 import CardComponent from "./CardComponent";
-import { conversationData, messageData } from "./data";
+import userData, { conversationData, messageData } from "./data";
 import CardsRow from "./CardsRow";
 import styles from "./styles.module.scss";
 import { ThreeDotsVertical } from "@/src/assests/icons";
@@ -11,6 +11,7 @@ import useUserManagementColumns from "@/src/hooks/Ag-Grid/useUserManagementColum
 import { userColumn } from "@/src/constants/Grid-Table/ColDefs";
 import AgGridTable from "@/src/components/ag-grid";
 import { usersRows } from "@/src/constants/Grid-Table/RowData";
+import UserPerformanceCard from "./UserPerformanceCard";
 
 const AdminDashboard = () => {
   const userCol = useUserManagementColumns(userColumn);
@@ -43,7 +44,12 @@ const AdminDashboard = () => {
         <Box className={styles.cardRoot}>
           <Box className={styles.cardHeadingBox}>
             <Box className={styles.headingLeftBox}>
-              <Typography className={styles.headingTypo} variant="body1" fontSize={18} fontWeight={600}>
+              <Typography
+                className={styles.headingTypo}
+                variant="body1"
+                fontSize={18}
+                fontWeight={600}
+              >
                 Quality Control Tools
               </Typography>
             </Box>
@@ -79,11 +85,29 @@ const AdminDashboard = () => {
             <ThreeDotsVertical />
           </Box>
         </Box>
-        <AgGridTable
+        {/* <AgGridTable
           rowData={usersRows}
           columnDefs={userCol}
           domLayout="autoHeight"
-        />
+        /> */}
+
+        <Box sx={{ display: { md: "block", xs: "none" } }}>
+          <AgGridTable
+            rowData={usersRows}
+            columnDefs={userCol}
+            domLayout="autoHeight"
+          />
+        </Box>
+        <Box>
+          <Box
+            sx={{ display: { xs: "block", md: "none" } }}
+            paddingInline={2.5}
+          >
+            {userData.map((user, index) => (
+              <UserPerformanceCard key={index} user={user} />
+            ))}
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

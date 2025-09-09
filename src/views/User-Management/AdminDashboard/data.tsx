@@ -101,3 +101,40 @@ export const messageData: MessageCardData[] = [
     message: 'Hi Danielle, would you be available...',
   },
 ];
+
+// 
+
+const userData = [
+  {
+    name: "Kerina Wang",
+    service: "Burial Services",
+    time: "15m 12s",
+    score: 4,
+  },
+  {
+    name: "Sam Jones",
+    service: "Cremation Services",
+    time: "21m 33s",
+    score: 6,
+  },
+  {
+    name: "Dulce Calzoni",
+    service: "Burial Services",
+    time: "15m 12s",
+    score: 4,
+  },
+  {
+    name: "Omar Rosser",
+    service: "Cremation Services",
+    time: "21m 33s",
+    score: 6,
+  },
+  {
+    name: "Madelyn Philips",
+    service: "Burial Services",
+    time: "15m 12s",
+    score: 4,
+  },
+];
+
+export default userData;
