@@ -159,7 +159,7 @@ const StyleEditor = () => {
       <Grid>
         <Paper
           elevation={2}
-          sx={{ p: 3, borderRadius: 3, height: "100%", width: "100%",maxWidth:"100%" }}
+          sx={{ p: 3, borderRadius: 3, height: "100%", width: "100%",maxWidth:"160%" }}
         >
           <StyleControls
             register={register}
