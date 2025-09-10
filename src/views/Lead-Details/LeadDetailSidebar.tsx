@@ -26,6 +26,7 @@ import {
 import { toast } from "react-toastify";
 import CustomSelect from "@/src/components/common/CustomSelect";
 import styles from "./style.module.scss";
+import CustomTextField from "@/src/components/common/CustomTextfield";
 
 // const LeadDetailsSidebar = ({ data }: any) => {
 const LeadDetailsSidebar = ({
@@ -41,6 +42,7 @@ const LeadDetailsSidebar = ({
   const [inquiryStatus, setInquiryStatus] = useState(lead.inquiry_status || "");
   const [tag, setTag] = useState(lead.tag || "");
   const [notes, setNotes] = useState(lead.notes || "");
+  const [phone, setPhone] = useState(lead.phone || "");
 
   const [updateLead, { isLoading: isUpdating }] = useUpdateLeadMutation();
   const { data: enumsData, refetch } = useGetLeadsEnumsQuery();
@@ -80,6 +82,7 @@ const LeadDetailsSidebar = ({
         inquiry_status: inquiryStatus,
         tag,
         notes,
+        phone,
       }).unwrap();
 
       // setLead((prev: any) => ({
@@ -95,6 +98,7 @@ const LeadDetailsSidebar = ({
         inquiry_status: inquiryStatus,
         tag,
         notes,
+        phone,
       });
       setIsEditing(false);
       refetch();
@@ -117,7 +121,6 @@ const LeadDetailsSidebar = ({
         </IconButton>
       </Box>
 
-
       <Stack spacing={4}>
         <Box>
           <Typography variant="body2" color="#666D80" mb={1}>
@@ -129,19 +132,28 @@ const LeadDetailsSidebar = ({
         </Box>
 
         <Box>
-          <Box className = {styles.leadDetailPhoneEmail}>
+          <Box className={styles.leadDetailPhoneEmail}>
             <SmallPhone />
             <Typography variant="body2" color="#666D80">
               Phone Number
             </Typography>
           </Box>
-          <Typography variant="body2" color="#0D0D12" fontWeight={600}>
-            {lead.phone || "N/A"}
-          </Typography>
+
+          {isEditing ? (
+            <CustomTextField
+              value={phone}
+              onChange={(e: any) => setPhone(e.target.value)}
+              placeholder="Enter phone number"
+            />
+          ) : (
+            <Typography variant="body2" color="#0D0D12" fontWeight={600}>
+              {lead.phone || "N/A"}
+            </Typography>
+          )}
         </Box>
 
         <Box>
-          <Box className = {styles.leadDetailPhoneEmail}>
+          <Box className={styles.leadDetailPhoneEmail}>
             <SmallMail />
             <Typography variant="body2" color="#666D80">
               Email
@@ -153,7 +165,7 @@ const LeadDetailsSidebar = ({
         </Box>
 
         <Box>
-          <Box className = {styles.leadDetailPhoneEmail}>
+          <Box className={styles.leadDetailPhoneEmail}>
             <Inquiry />
             <Typography variant="body2" color="#666D80">
               Inquiry Type
@@ -162,7 +174,7 @@ const LeadDetailsSidebar = ({
           {isEditing ? (
             <CustomSelect
               value={inquiryType}
-              onChange={(e:any) => setInquiryType(e.target.value)}
+              onChange={(e: any) => setInquiryType(e.target.value)}
               options={inquiryTypeOptions}
               placeholder="Select inquiry type"
             />
@@ -181,7 +193,7 @@ const LeadDetailsSidebar = ({
             <CustomSelect
               // label="Select Status"
               value={inquiryStatus}
-              onChange={(e:any) => setInquiryStatus(e.target.value)}
+              onChange={(e: any) => setInquiryStatus(e.target.value)}
               options={inquiryStatusOptions}
               placeholder="Select status"
             />
@@ -211,7 +223,7 @@ const LeadDetailsSidebar = ({
             <CustomSelect
               // label="Select Tag"
               value={tag}
-              onChange={(e:any) => setTag(e.target.value)}
+              onChange={(e: any) => setTag(e.target.value)}
               options={tagOptions}
               placeholder="Select tag"
             />
@@ -234,7 +246,7 @@ const LeadDetailsSidebar = ({
         </Box>
 
         <Box>
-          <Box className = {styles.leadDetailPhoneEmail}>
+          <Box className={styles.leadDetailPhoneEmail}>
             <Notes />
             <Typography variant="body2" color="#666D80" fontSize={16}>
               Notes
@@ -247,7 +259,7 @@ const LeadDetailsSidebar = ({
             fullWidth
             disabled={!isEditing}
             value={notes}
-            onChange={(e:any) => setNotes(e.target.value)}
+            onChange={(e: any) => setNotes(e.target.value)}
             placeholder="Add a note"
             sx={{
               // "& .MuiOutlinedInput-root": {

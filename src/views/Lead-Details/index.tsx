@@ -87,7 +87,7 @@ const LeadDetails = ({
             refetchSuggestion={refetchSuggestion}
           />
         </Box>
-        <Box
+        {/* <Box
           sx={{
             backgroundColor: "red",
             position: "absolute",
@@ -96,7 +96,7 @@ const LeadDetails = ({
           }}
         >
           <BotEmbed />
-        </Box>
+        </Box> */}
 
         {/*<LeadDetailsSidebar lead={lead} setLead={setLead} />*/}
 

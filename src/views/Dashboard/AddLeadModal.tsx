@@ -269,7 +269,7 @@ const AddLeadModal = ({
                 <Controller
                   name="time_zone"
                   control={control}
-                  rules={{ required: "time zone is required" }}
+                  // rules={{ required: "time zone is required" }}
                   render={({ field }) => (
                     <CustomSelect
                       label="Time Zone"

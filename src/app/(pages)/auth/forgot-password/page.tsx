@@ -38,9 +38,11 @@ export default function ForgotPassword() {
       setSeverity("success");
       setMessage("Code Sent to your email");
       router.push("/auth/reset-password");
-    } catch (err) {
+    } catch (err: any) {
       setSeverity("error");
-      setMessage("Something went wrong. Please try again.");
+      setMessage(
+        err?.data?.message || "Something went wrong. Please try again."
+      );
     }
   };
 
