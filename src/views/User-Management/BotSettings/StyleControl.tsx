@@ -18,7 +18,13 @@ const StyleControls = ({ register, setValue, watch, control }: any) => {
   const borderColor = watch("borderColor");
 
   return (
-    <Box display="flex" flexDirection="column" gap={3} width="100%">
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={3}
+      width="100%"
+      maxWidth={"100%"}
+    >
       <Typography variant="h5" fontWeight={700}>
         Widget Appearance
       </Typography>
