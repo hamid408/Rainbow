@@ -107,7 +107,6 @@ const StyleEditor = () => {
       primaryColor: "#FFA726",
       backgroundColor: "#FFFFFF",
       borderColor: "#e0e0e0",
-      fontFamily: "Roboto",
       fontSize: 16,
       borderRadius: 12,
       padding: 12,
@@ -116,6 +115,7 @@ const StyleEditor = () => {
       botMessageColor: "#F8BBD0",
       userMessageColor: "#FFECB3",
       headerColor: "#BBDEFB",
+      welcomeMessage: "Hello! How can I help?",
     },
   });
 
@@ -132,6 +132,7 @@ const StyleEditor = () => {
       setValue("primaryColor", data.primaryColor);
       setValue("fontSize", data.fontSize);
       setValue("borderRadius", data.borderRadius);
+      setValue("welcomeMessage", data.welcomeMessage);
     }
 
     if (error) {
@@ -151,10 +152,15 @@ const StyleEditor = () => {
         display: "flex",
         alignItems: "baseline",
         justifyContent: "space-between",
+        // maxWidth: "780px",
+        width: "100%",
       }}
     >
       <Grid>
-        <Paper elevation={3} sx={{ p: 3, borderRadius: 3, height: "100%" }}>
+        <Paper
+          elevation={2}
+          sx={{ p: 3, borderRadius: 3, height: "100%", width: "100%",maxWidth:"100%" }}
+        >
           <StyleControls
             register={register}
             setValue={setValue}
@@ -162,6 +168,7 @@ const StyleEditor = () => {
             control={control}
           />
         </Paper>
+          hello world
       </Grid>
 
       <Grid>
@@ -174,6 +181,7 @@ const StyleEditor = () => {
             alignItems: "center",
             justifyContent: "center",
             gap: 4,
+            width: "100%",
           }}
         >
           <PreviewBox values={values} />

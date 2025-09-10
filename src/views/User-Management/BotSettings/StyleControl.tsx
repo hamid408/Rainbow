@@ -25,7 +25,7 @@ const StyleControls = ({ register, setValue, watch, control }: any) => {
       <Divider />
 
       {/* Colors Section */}
-      <Box display="flex" gap={4} width="100%">
+      <Box display="flex" gap={4} width="100%" flexWrap={"wrap"}>
         {/* Primary Color */}
         <Box flex={1}>
           <Typography gutterBottom>Primary Color</Typography>
@@ -58,18 +58,6 @@ const StyleControls = ({ register, setValue, watch, control }: any) => {
 
       {/* Font & Layout Section */}
       <Box display="flex" flexWrap="wrap" gap={4} width="100%">
-        {/* Font Family */}
-        {/* <Box flex={1} minWidth="200px">
-          <Typography gutterBottom>Font Family</Typography>
-          <TextField select fullWidth {...register("fontFamily")} size="small">
-            {fonts.map((font) => (
-              <MenuItem key={font} value={font} style={{ fontFamily: font }}>
-                {font}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Box> */}
-
         {/* Font Size */}
         <Box flex={1} minWidth="200px">
           <Typography gutterBottom>Font Size</Typography>

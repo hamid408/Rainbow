@@ -95,6 +95,7 @@ const Dashboard = () => {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         activeTab={activeTab}
+        refetch={refetch}
       />
       {/* check drag n drop functionality */}
       {/* <DragDropBoard /> */}

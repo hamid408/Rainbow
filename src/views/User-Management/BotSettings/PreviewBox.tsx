@@ -133,6 +133,7 @@ import { motion } from "framer-motion";
 import CustomTextField from "@/src/components/common/CustomTextfield";
 
 const PreviewBox = ({ values }: any) => {
+  console.log("PreviewBox values:", values);
   return (
     <motion.div
       style={{
@@ -153,7 +154,7 @@ const PreviewBox = ({ values }: any) => {
       {/* Header */}
       <Box
         sx={{
-          backgroundColor: values.headerColor,
+          backgroundColor: values.primaryColor,
           borderRadius: `${values.borderRadius}px ${values.borderRadius}px 0 0`,
           color: "#fff",
           p: 1,
@@ -162,14 +163,16 @@ const PreviewBox = ({ values }: any) => {
           gap: 1,
         }}
       >
-        <Avatar sx={{ bgcolor: "#fff", color: values.primaryColor }}>🤖</Avatar>
+        <Avatar sx={{ color: values.primaryColor, bgcolor: "#fff" }}>🤖</Avatar>
         <Typography
           variant="body1"
           fontSize={values.fontSize}
           fontFamily={values.fontFamily}
           fontWeight={600}
+          color="#0e0e0e"
         >
-          Support
+          {/* Support */}
+          {values.botMessage}
         </Typography>
       </Box>
 
@@ -188,7 +191,7 @@ const PreviewBox = ({ values }: any) => {
         {/* Bot Bubble (left) */}
         <Box
           sx={{
-            bgcolor: values.botMessageColor,
+            bgcolor: values.primaryColor,
             p: 1.5,
             borderRadius: 2,
             maxWidth: "75%",
@@ -200,14 +203,14 @@ const PreviewBox = ({ values }: any) => {
             fontFamily={values.fontFamily}
             color="black"
           >
-            {values.botMessage}
+            {values.welcomeMessage}
           </Typography>
         </Box>
 
         {/* User Bubble (right) */}
         <Box
           sx={{
-            bgcolor: values.userMessageColor || values.primaryColor,
+            bgcolor: values.userMessageColor,
             p: 1.5,
             borderRadius: 2,
             maxWidth: "75%",
@@ -247,6 +250,7 @@ const PreviewBox = ({ values }: any) => {
             bgcolor: values.primaryColor,
             textTransform: "none",
             borderRadius: 2,
+            color: "black",
           }}
         >
           Send

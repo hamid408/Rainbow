@@ -10,10 +10,14 @@ import {
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
+import CustomSelect from "@/src/components/common/CustomSelect";
 
 const Scripted = ({ cloudfrontUrl }: any) => {
   const [type, setType] = useState("iframe");
-
+  const options = [
+    { label: "Iframe", value: "iframe" },
+    { label: "Script", value: "script" },
+  ];
   const snippets: Record<string, string> = {
     iframe: `<iframe src="${
       cloudfrontUrl || "https://placeholder.com"
@@ -47,14 +51,15 @@ const Scripted = ({ cloudfrontUrl }: any) => {
       </Typography>
 
       {/* Dropdown */}
-      <Select
+
+      <CustomSelect
+        label="Select Type"
         value={type}
         onChange={(e) => setType(e.target.value)}
-        sx={{ maxWidth: 200 }}
-      >
-        <MenuItem value="iframe">Iframe</MenuItem>
-        <MenuItem value="script">Script</MenuItem>
-      </Select>
+        options={options}
+        minWidth={200}
+        placeholder="Select a type"
+      />
 
       {/* Code Box */}
       <Paper
@@ -66,13 +71,14 @@ const Scripted = ({ cloudfrontUrl }: any) => {
           position: "relative",
           whiteSpace: "pre-wrap",
           wordBreak: "break-word",
+          paddingRight: 2,
         }}
       >
         {snippets[type]}
         <IconButton
           onClick={handleCopy}
           size="small"
-          sx={{ position: "absolute", top: 8, right: 8 }}
+          sx={{ position: "absolute", top: 0, right: -2,width: 30,height: 30 }}
         >
           <ContentCopyIcon fontSize="small" />
         </IconButton>

@@ -6,6 +6,7 @@ import CustomSearchField from "../../../components/common/CustomSearch";
 import { Search } from "@mui/icons-material";
 import styles from "./style.module.scss";
 import CustomButton from "@/src/components/common/CustomButton";
+import AddLeadModal from "../AddLeadModal";
 const filterItems = [
   { label: "1 Month" },
   { label: "2 Month" },
@@ -15,12 +16,15 @@ const Header = ({
   searchQuery,
   setSearchQuery,
   activeTab,
+  refetch,
 }: {
   searchQuery: string;
   setSearchQuery: (val: string) => void;
   activeTab: any;
+  refetch: any;
 }) => {
   const [selectedValue, setSlectedValue] = useState<string>("");
+  const [openModal, setOpenModal] = useState(false);
 
   const handleSelect = (label: string | null) => {
     setSlectedValue(label ?? "dummy");
@@ -45,11 +49,16 @@ const Header = ({
           setSearchQuery={setSearchQuery}
         />
         <Box className={styles.shortText}>
-          <CustomButton variant="contained">
+          <CustomButton variant="contained" onClick={() => setOpenModal(true)}>
             Add Lead
           </CustomButton>
         </Box>
       </Box>
+      <AddLeadModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        refetchLeads={refetch}
+      />
     </Box>
   );
 };
