@@ -166,6 +166,7 @@ const StyleEditor = () => {
             setValue={setValue}
             watch={watch}
             control={control}
+            
           />
         </Paper>
           hello world

@@ -62,8 +62,8 @@ const Scripted = ({ cloudfrontUrl }: any) => {
       />
 
       {/* Code Box */}
-      <Paper
-        variant="outlined"
+      <Box
+        // variant="outlined"
         sx={{
           p: 2,
           bgcolor: "#f5f5f5",
@@ -78,11 +78,17 @@ const Scripted = ({ cloudfrontUrl }: any) => {
         <IconButton
           onClick={handleCopy}
           size="small"
-          sx={{ position: "absolute", top: 0, right: -2,width: 30,height: 30 }}
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: -2,
+            width: 30,
+            height: 30,
+          }}
         >
           <ContentCopyIcon fontSize="small" />
         </IconButton>
-      </Paper>
+      </Box>
     </Box>
   );
 };
