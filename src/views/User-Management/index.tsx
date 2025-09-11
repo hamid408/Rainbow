@@ -30,6 +30,7 @@ import styles from "./styles.module.scss";
 import CSVUploader from "../Dashboard/CsvFile";
 import AgentConfiguration from "./Configurations";
 import DisplayField from "./DisplayField";
+import StyleEditor from "./BotSettings";
 
 const UserManagement = () => {
   const [open, setOpen] = useState(false);
@@ -104,7 +105,12 @@ const UserManagement = () => {
             </Box>
           )}
         </Box>
-       
+        {activeTab === "Bot Settings" && (
+          <Box mt={3}>
+            <StyleEditor />
+          </Box>
+        )}
+
         {activeTab === "Settings & Configuration" && (
           <>
             <Box mb={4} mt={3}>
@@ -140,9 +146,7 @@ const UserManagement = () => {
                 User Management
               </Typography>
               <Box sx={{ height: "350px", overflowY: "auto" }}>
-
                 <Box mt={2}>
-                
                   {isUsersLoading && <CircularProgress size={24} />}
                   {isError && (
                     <Typography color="error">Failed to load users.</Typography>
@@ -214,12 +218,10 @@ const UserManagement = () => {
         <Dialog
           open={confirmOpen}
           onClose={() => setConfirmOpen(false)}
-          
           PaperProps={{
             sx: {
               padding: "14px 10px",
             },
-            
           }}
         >
           <DialogTitle

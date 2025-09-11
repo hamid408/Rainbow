@@ -44,7 +44,12 @@ const AdminDashboard = () => {
         <Box className={styles.cardRoot}>
           <Box className={styles.cardHeadingBox}>
             <Box className={styles.headingLeftBox}>
-              <Typography className={styles.headingTypo} variant="body1" fontSize={18} fontWeight={600}>
+              <Typography
+                className={styles.headingTypo}
+                variant="body1"
+                fontSize={18}
+                fontWeight={600}
+              >
                 Quality Control Tools
               </Typography>
             </Box>
@@ -80,30 +85,29 @@ const AdminDashboard = () => {
             <ThreeDotsVertical />
           </Box>
         </Box>
-        <Box sx={{display:{md:"block",xs:"none"}}}>
-
-        <AgGridTable
+        {/* <AgGridTable
           rowData={usersRows}
           columnDefs={userCol}
           domLayout="autoHeight"
+        /> */}
+
+        <Box sx={{ display: { md: "block", xs: "none" } }}>
+          <AgGridTable
+            rowData={usersRows}
+            columnDefs={userCol}
+            domLayout="autoHeight"
           />
+        </Box>
+        <Box>
+          <Box
+            sx={{ display: { xs: "block", md: "none" } }}
+            paddingInline={2.5}
+          >
+            {userData.map((user, index) => (
+              <UserPerformanceCard key={index} user={user} />
+            ))}
           </Box>
-          <Box>
-         
-
-
-    <Box sx={{display:{xs:"block",md:"none"}}} paddingInline={2.5}>
-      
-
-        {userData.map((user, index) => (
-          <UserPerformanceCard key={index} user={user} />
-        ))}
-    </Box>
- 
-
-
-
-          </Box>
+        </Box>
       </Box>
     </Box>
   );

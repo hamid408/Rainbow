@@ -9,6 +9,7 @@ import ChatInputBox from "./ChatInputBox";
 import { useGetLeadByIdQuery } from "@/src/redux/services/leads/leadsApi";
 import styles from "./style.module.scss";
 import { useGetSuggestionsQuery } from "@/src/redux/services/conversation/conversationApi";
+import BotEmbed from "./BotEmbed";
 
 const LeadDetails = ({
   leadId,
@@ -89,6 +90,16 @@ const LeadDetails = ({
             refetchSuggestion={refetchSuggestion}
           />
         </Box>
+        {/* <Box
+          sx={{
+            backgroundColor: "red",
+            position: "absolute",
+            right: 0,
+            bottom: 0,
+          }}
+        >
+          <BotEmbed />
+        </Box> */}
 
         {/*<LeadDetailsSidebar lead={lead} setLead={setLead} />*/}
 
