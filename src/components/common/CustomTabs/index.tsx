@@ -27,7 +27,7 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
   };
 
   return (
-    <Box className={styles.customTabWrapper}>
+    <Box className={styles.customTabWrapper} sx={{ xs: { ml: "-40px" } }}>
       <Box display="flex" gap={2} pb={1}>
         {tabs.map((tab, index) => (
           <Button

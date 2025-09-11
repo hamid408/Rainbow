@@ -31,10 +31,13 @@ const LeadDetails = ({
     }
   }, [data]);
 
+  // const handleRefreshClick = useCallback(() => {
+  //   setRefreshChat((prev) => prev + 1);
+  // }, []);
   const handleRefreshClick = useCallback(() => {
     setRefreshChat((prev) => prev + 1);
-  }, []);
-
+    refetchSuggestion();
+  }, [refetchSuggestion]);
   const isLoadingState =
     isLoading || isFetching || !data || !data.data?.length || !lead;
 

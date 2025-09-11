@@ -101,9 +101,6 @@ export const messageData: MessageCardData[] = [
     message: 'Hi Danielle, would you be available...',
   },
 ];
-
-// 
-
 const userData = [
   {
     name: "Kerina Wang",

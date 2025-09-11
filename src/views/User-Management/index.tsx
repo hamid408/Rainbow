@@ -123,7 +123,7 @@ const UserManagement = () => {
                 editable
                 organizationsId={organizationsId}
               />
-              <Divider />
+              {/* <Divider /> */}
             </Box>
             <Divider
               sx={{ border: "1px solid #eceff3", marginBlock: "16px" }}
@@ -133,7 +133,7 @@ const UserManagement = () => {
               p={4}
               bgcolor="#fff"
               borderRadius={2}
-              boxShadow={1}
+              // boxShadow={1}
               mt={2}
               className={styles.UserDetails}
             >

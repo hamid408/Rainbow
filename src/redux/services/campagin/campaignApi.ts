@@ -6,11 +6,33 @@ export const campaignApi = createApi({
   baseQuery: customBaseQuery,
 
   endpoints: (builder) => ({
-    getCampaign: builder.query<any, { page: number; page_size: number }>({
-      query: ({ page, page_size }) =>
-        `/campaign/outreach?page=${page}&page_size=${page_size}`,
+    getCampaign: builder.query<
+      any,
+      { page: number; page_size: number; name: string }
+    >({
+      query: ({ page, page_size, name }) =>
+        `/campaign/outreach?page=${page}&page_size=${page_size}&name=${name}`,
+    }),
+
+    // changeCampaignStatus: builder.mutation({
+    //   query: (body) => ({
+    //     url: "/campaign/status/update",
+    //     method: "POST",
+    //     body: body,
+    //   }),
+    // }),
+    changeCampaignStatus: builder.mutation({
+      query: (body) => ({
+        url: "/campaign/status/update",
+        method: "POST",
+        body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
     }),
   }),
 });
 
-export const { useGetCampaignQuery } = campaignApi;
+export const { useGetCampaignQuery, useChangeCampaignStatusMutation } =
+  campaignApi;

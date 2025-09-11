@@ -43,6 +43,13 @@ import ThumbsDown from "./ThumbsDown.svg";
 import ThumbsUp from "./ThumbsUp.svg";
 import ThreeDotsVertical from "./ThreeDotsVertical.svg";
 import LargeUrgent from "./LargeUrgent.svg";
+// import TaskActive from "./AnalyticsActive.svg";
+// import AnalyticsActive from "./TaskActive.svg";
+import UserActive from "./UserActive.svg";
+import AIActive from "./AiReachActive.svg";
+import HotLeadsNormal from "./HotLeadsNormal.svg"
+import AnalyticsActive from "./AnalyticsActive.svg";
+import TaskActive from "./TaskActive.svg";
 export {
   LeadsIcon,
   UserIcon,
@@ -89,4 +96,10 @@ export {
   ThumbsUp,
   ThreeDotsVertical,
   LargeUrgent,
+  TaskActive,
+  AnalyticsActive,
+  UserActive,
+  AIActive,
+  HotLeadsNormal,
+
 };

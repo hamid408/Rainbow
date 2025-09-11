@@ -258,7 +258,7 @@ export default function CallModal({
         ) : (
           <>
             <Typography variant="h6" className={styles.callModalTypo}>
-              Start a Twilio Call
+              Start a call{" "}
             </Typography>
             <Stack spacing={4} mt={2}>
               <Box sx={{ display: "flex", justifyContent: "end", gap: "24px" }}>

@@ -52,9 +52,43 @@ const AvatarCell = ({ value }: { value: string }) => {
 
 const ActionCell = (params: ICellRendererParams) => {
   return (
-    <Box sx={{ borderRadius: "60px", border: "1px solid #7A4DF5",padding:"10px 8px",cursor:"pointer",maxWidth:"64px" }}>
-      <button style={{ border: "none", outline: "none",cursor:"pointer",color:"blue" }}>View</button>
-    </Box>
+   
+<Box
+  sx={{
+    borderRadius: "60px",
+    border: "1px solid #7A4DF5",
+    padding: "10px 8px",
+    cursor: "pointer",
+    maxWidth: "64px",
+      background: "#F8F5FF",
+    display: "flex",
+  
+  }}
+>
+  <button
+    style={{
+      border: "none",
+      outline: "none",
+      cursor: "pointer",
+      color: "#7A4DF5",
+      background: "none",
+      fontWeight: 600,
+      fontSize: "14px",
+      padding: 0,
+      margin: 0,
+      width: "100%",
+      height: "100%",
+      
+    }}
+    onClick={() => {
+      // your click logic here
+      console.log("View clicked");
+    }}
+  >
+    View
+  </button>
+</Box>
+
   );
 };
 
@@ -76,8 +110,8 @@ const useUserManagementColumns = (columns: { field: string }[]) => {
         case "avg_response_time":
           return {
             ...col,
-            headerName: "Avg Response Time",
-            flex: 1,
+            headerName: "Response Time",
+            flex: 1.5,
             // cellRenderer: (params: ICellRendererParams) => (
             //   <StatusCell value={params.value} />
             // ),

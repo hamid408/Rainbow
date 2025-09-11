@@ -21,7 +21,7 @@ const Header = ({
   searchQuery: string;
   setSearchQuery: (val: string) => void;
   activeTab: any;
-  refetch: any;
+  refetch: () => void;
 }) => {
   const [selectedValue, setSlectedValue] = useState<string>("");
   const [openModal, setOpenModal] = useState(false);

@@ -2,26 +2,38 @@
 import {
   Aireach,
   Analytics,
-  LeadsIcon,
+  HotLeadsNormal,
   Tasks,
   UserIcon,
+  LeadsIcon,
+  AnalyticsActive,
+  TaskActive,
+  AIActive,
+  UserActive,  
 } from "@/src/assests/icons";
 export const sidebarButtons = [
   { label: "Admin User", id: "admin" },
   { label: "Solo User", id: "solo" },
 ];
 
+// export const sidebarItems = [
+//   { label: "Dashboard", icon: HotLeadsNormal },
+//   // { label: "AI Outreach", icon: Aireach },
+//   // { label: "Tasks & Reminder", icon: Tasks },
+//   { label: "AI Outreach", icon: Aireach },
+//   { label: "Tasks & Reminder", icon: Tasks, disabled: true },
+//   { label: "Analytics", icon: Analytics, disabled: true },
+//   { label: "Admin Oversight", icon: UserIcon },
+// ];
 export const sidebarItems = [
-  { label: "Dashboard", icon: LeadsIcon },
-  // { label: "AI Outreach", icon: Aireach },
-  // { label: "Tasks & Reminder", icon: Tasks },
-  { label: "AI Outreach", icon: Aireach },
-  { label: "Tasks & Reminder", icon: Tasks, disabled: true },
-  { label: "Analytics", icon: Analytics, disabled: true },
-  { label: "Admin Oversight", icon: UserIcon },
+  { label: "Dashboard", icon: HotLeadsNormal, activeIcon: LeadsIcon }, // use same if no separate active version
+  { label: "AI Outreach", icon: Aireach, activeIcon: AIActive },
+  { label: "Tasks & Reminder", icon: Tasks, activeIcon: TaskActive, disabled: true },
+  { label: "Analytics", icon: Analytics, activeIcon: AnalyticsActive, disabled: true },
+  { label: "Admin Oversight", icon: UserIcon, activeIcon: UserActive },
 ];
 export const sidebarItemsMobile = [
-  { label: "Dashboard", icon: LeadsIcon },
+  { label: "Dashboard", icon: HotLeadsNormal },
   { label: "AI Outreach", icon: Aireach },
   { label: "Tasks", icon: Tasks },
   { label: "Analytics", icon: Analytics },

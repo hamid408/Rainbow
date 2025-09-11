@@ -1,5 +1,5 @@
 // AdminDashboard.tsx
-import { Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import React from "react";
 import CardComponent from "./CardComponent";
 import userData, { conversationData, messageData } from "./data";
@@ -11,7 +11,7 @@ import useUserManagementColumns from "@/src/hooks/Ag-Grid/useUserManagementColum
 import { userColumn } from "@/src/constants/Grid-Table/ColDefs";
 import AgGridTable from "@/src/components/ag-grid";
 import { usersRows } from "@/src/constants/Grid-Table/RowData";
-import UserPerformanceCard from "./UserPerformanceCard";
+import UserPerformanceCard from "./userPerformanceCard";
 
 const AdminDashboard = () => {
   const userCol = useUserManagementColumns(userColumn);
@@ -73,7 +73,7 @@ const AdminDashboard = () => {
           alignItems={"center"}
         >
           <Typography
-            variant="body2"
+            // variant="body1"
             color="#0D0D12"
             fontWeight={600}
             m={2.4}

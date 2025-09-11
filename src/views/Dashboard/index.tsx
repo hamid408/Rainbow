@@ -127,7 +127,7 @@ const Dashboard = () => {
                 variant="contained"
                 onClick={() => setOpenModal(true)}
               >
-                Add New Lead
+                Add Lead
               </CustomButton>
             </Box>
           </Box>
