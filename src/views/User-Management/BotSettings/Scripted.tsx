@@ -62,27 +62,29 @@ const Scripted = ({ cloudfrontUrl }: any) => {
       />
 
       {/* Code Box */}
-      <Paper
-        variant="outlined"
-        sx={{
-          p: 2,
-          bgcolor: "#f5f5f5",
-          fontFamily: "monospace",
-          position: "relative",
-          whiteSpace: "pre-wrap",
-          wordBreak: "break-word",
-          paddingRight: 2,
-        }}
-      >
-        {snippets[type]}
+      <Box display={"flex"} alignItems="center" gap={2}>
+        <Paper
+          variant="outlined"
+          sx={{
+            p: 2,
+            bgcolor: "#f5f5f5",
+            fontFamily: "monospace",
+            // position: "relative",
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+            paddingRight: 2,
+          }}
+        >
+          {snippets[type]}
+        </Paper>
         <IconButton
           onClick={handleCopy}
           size="small"
-          sx={{ position: "absolute", top: 0, right: -2,width: 30,height: 30 }}
+          sx={{ top: 0, right: -2, width: 30, height: 30 }}
         >
           <ContentCopyIcon fontSize="small" />
         </IconButton>
-      </Paper>
+      </Box>
     </Box>
   );
 };

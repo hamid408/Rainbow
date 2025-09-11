@@ -31,7 +31,7 @@ const StyleControls = ({ register, setValue, watch, control }: any) => {
       <Divider />
 
       {/* Colors Section */}
-      <Box display="flex" gap={4} width="100%" flexWrap={"wrap"}>
+      <Box display="flex" gap={13} width="100%" flexWrap={"wrap"} justifyContent={"space-evenly"}>
         {/* Primary Color */}
         <Box flex={1}>
           <Typography gutterBottom>Primary Color</Typography>
