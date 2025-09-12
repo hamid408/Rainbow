@@ -11,7 +11,6 @@ import useUserManagementColumns from "@/src/hooks/Ag-Grid/useUserManagementColum
 import { userColumn } from "@/src/constants/Grid-Table/ColDefs";
 import AgGridTable from "@/src/components/ag-grid";
 import { usersRows } from "@/src/constants/Grid-Table/RowData";
-// import UserPerformanceCard from "./userPerformanceCard";
 
 const AdminDashboard = () => {
   const userCol = useUserManagementColumns(userColumn);
@@ -102,11 +101,7 @@ const AdminDashboard = () => {
           <Box
             sx={{ display: { xs: "block", md: "none" } }}
             paddingInline={2.5}
-          >
-            {/* {userData.map((user, index) => (
-              <UserPerformanceCard key={index} user={user} />
-            ))} */}
-          </Box>
+          ></Box>
         </Box>
       </Box>
     </Box>
