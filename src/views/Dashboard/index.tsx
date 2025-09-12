@@ -74,7 +74,7 @@ const Dashboard = () => {
   }, [leads, isAll]);
 
   const tags = useMemo(() => {
-    const tagSet = new Set(leads.map((lead: any) => lead.tag || "Untagged"));
+    const tagSet = new Set(leads.map((lead: any) => lead.tag || null));
     return ["All", ...Array.from(tagSet)];
   }, [leads]);
 

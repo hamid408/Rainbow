@@ -21,6 +21,13 @@ export const organizationApi = createApi({
     getLexBotStyling: builder.query<any, void>({
       query: () => `/organizations/lex_bot_styling`,
     }),
+    updateBotStyling: builder.mutation<any, any>({
+      query: (body) => ({
+        url: `/organizations/lex_bot_styling`,
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -28,4 +35,5 @@ export const {
   useGetOrganzationQuery,
   useUpdateOrganizationMutation,
   useGetLexBotStylingQuery,
+  useUpdateBotStylingMutation,
 } = organizationApi;

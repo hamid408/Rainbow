@@ -8,6 +8,9 @@ import {
   TextField,
   Button,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogActions,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import {
@@ -20,6 +23,7 @@ import {
   Urgent,
 } from "@/src/assests/icons";
 import {
+  useDeleteLeadMutation,
   useGetLeadsEnumsQuery,
   useUpdateLeadMutation,
 } from "@/src/redux/services/leads/leadsApi";
@@ -27,6 +31,8 @@ import { toast } from "react-toastify";
 import CustomSelect from "@/src/components/common/CustomSelect";
 import styles from "./style.module.scss";
 import CustomTextField from "@/src/components/common/CustomTextfield";
+import CustomButton from "@/src/components/common/CustomButton";
+import { useRouter } from "next/navigation";
 
 // const LeadDetailsSidebar = ({ data }: any) => {
 const LeadDetailsSidebar = ({
@@ -36,17 +42,19 @@ const LeadDetailsSidebar = ({
   lead: any;
   setLead: (lead: any) => void;
 }) => {
-  // const [lead, setLead] = useState(data?.data?.[0]);
   const [isEditing, setIsEditing] = useState(false);
   const [inquiryType, setInquiryType] = useState(lead.inquiry_type || "");
   const [inquiryStatus, setInquiryStatus] = useState(lead.inquiry_status || "");
   const [tag, setTag] = useState(lead.tag || "");
   const [notes, setNotes] = useState(lead.notes || "");
   const [phone, setPhone] = useState(lead.phone || "");
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const [updateLead, { isLoading: isUpdating }] = useUpdateLeadMutation();
   const { data: enumsData, refetch } = useGetLeadsEnumsQuery();
+  const [deleteLead, { isLoading: isDeleting }] = useDeleteLeadMutation();
 
+  const router = useRouter();
   const inquiryTypeOptions = useMemo(
     () =>
       enumsData?.inquiry_types?.map((type: string) => ({
@@ -85,13 +93,6 @@ const LeadDetailsSidebar = ({
         phone,
       }).unwrap();
 
-      // setLead((prev: any) => ({
-      //   ...prev,
-      //   inquiry_type: inquiryType,
-      //   inquiry_status: inquiryStatus,
-      //   tag,
-      //   notes,
-      // }));
       setLead({
         ...lead,
         inquiry_type: inquiryType,
@@ -106,6 +107,20 @@ const LeadDetailsSidebar = ({
     } catch (error) {
       console.error("Update failed:", error);
       toast.error("Failed to update lead. Please try again.");
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteLead({
+        lead_id: lead.lead_id,
+      }).unwrap();
+      toast.success("Lead Successfully Deleted!!");
+      setIsConfirmOpen(false);
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Failed to Delete the lead:", error);
+      toast.error("Failed to Delete lead. Try again.");
     }
   };
   const tagStatus = (lead.tag || "").toLowerCase().trim();
@@ -198,17 +213,6 @@ const LeadDetailsSidebar = ({
               placeholder="Select status"
             />
           ) : (
-            // <Chip
-            //   label={lead.inquiry_status || "Unknown"}
-            //   size="medium"
-            //   sx={{
-            //     background: "#FFF0F3",
-            //     color: "#36394A",
-            //     fontSize: "14px",
-            //     fontWeight: 600,
-            //   }}
-            //   icon={<Urgent />}
-            // />
             <Typography variant="body2" color="#0062FF" fontWeight={500}>
               {lead.inquiry_status || "N/A"}
             </Typography>
@@ -221,16 +225,12 @@ const LeadDetailsSidebar = ({
           </Typography>
           {isEditing ? (
             <CustomSelect
-              // label="Select Tag"
               value={tag}
               onChange={(e: any) => setTag(e.target.value)}
               options={tagOptions}
               placeholder="Select tag"
             />
           ) : (
-            // <Typography variant="body2" color="#0062FF" fontWeight={500}>
-            //   {lead.tag || "N/A"}
-            // </Typography>
             <Chip
               label={lead.tag || "Unknown"}
               size="medium"
@@ -262,28 +262,17 @@ const LeadDetailsSidebar = ({
             onChange={(e: any) => setNotes(e.target.value)}
             placeholder="Add a note"
             sx={{
-              // "& .MuiOutlinedInput-root": {
-              //   borderRadius: "12px",
-              //   fontSize: "16px",
-              //   fontWeight: 400,
-              //   backgroundColor: "#fff",
-              //   "&.Mui-disabled": {
-              //     WebkitTextFillColor: "#000", // ✅ makes text look black even if disabled
-              //     color: "#000",
-              //     opacity: 1, // ✅ keeps text full contrast
-              //   },
-              // },
               "& .MuiOutlinedInput-root.Mui-disabled .MuiOutlinedInput-input": {
-                WebkitTextFillColor: "#0D0D12", // ✅ dark text in disabled mode
+                WebkitTextFillColor: "#0D0D12",
                 opacity: 1,
               },
               "& .MuiOutlinedInput-input": {
                 fontSize: "16px",
                 fontWeight: 400,
-                color: "#000", // ✅ ensures active and editable color is black
+                color: "#000",
               },
               "& .MuiInputBase-input::placeholder": {
-                color: "#999", // ✅ optional: use light grey placeholder like Figma
+                color: "#999",
                 fontWeight: 400,
                 fontSize: "14px",
               },
@@ -313,6 +302,65 @@ const LeadDetailsSidebar = ({
           </Box>
         )}
       </Stack>
+      <Box
+        sx={{
+          marginTop: 4.5,
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <CustomButton
+          variant="contained"
+          background="rgba(212, 10, 10, 1)"
+          padding="10px 20px"
+          onClick={() => setIsConfirmOpen(true)}
+        >
+          Delete Lead
+        </CustomButton>
+      </Box>
+      <Dialog
+        open={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        PaperProps={{ sx: { padding: "14px 10px" } }}
+      >
+        <DialogTitle sx={{ fontSize: "18px", fontWeight: 500, pb: 0 }}>
+          <Typography variant="h6" fontWeight={600} mb={2}>
+            Are you sure you want to Delete this lead?
+          </Typography>
+        </DialogTitle>
+
+        <DialogActions
+          sx={{
+            mt: 4,
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 1.5,
+            pt: 0,
+          }}
+        >
+          <CustomButton
+            onClick={() => setIsConfirmOpen(false)}
+            variant="outlined"
+          >
+            Cancel
+          </CustomButton>
+
+          <CustomButton
+            onClick={handleConfirmDelete}
+            variant="contained"
+            background="red"
+            disabled={isDeleting}
+            sx={{
+              minWidth: 120,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {isDeleting ? "Deleting..." : "Delete"}
+          </CustomButton>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
