@@ -18,13 +18,14 @@ const Scripted = ({ cloudfrontUrl }: any) => {
     { label: "Iframe", value: "iframe" },
     { label: "Script", value: "script" },
   ];
+  console.log("Cloudfront URL:", cloudfrontUrl);
   const snippets: Record<string, string> = {
     iframe: `<iframe src="${
       cloudfrontUrl || "https://placeholder.com"
     }" width="400" height="500" frameborder="0"></iframe>`,
     script: `<script src="${
       cloudfrontUrl || "https://placeholder.com"
-    }/chatbot.js"></script>`,
+    }/chatbot.js" width="400" height="500"></script>`,
   };
 
   const handleCopy = () => {
@@ -40,10 +41,11 @@ const Scripted = ({ cloudfrontUrl }: any) => {
       sx={{
         width: "100%",
         marginTop: 4,
-        marginBottom: 8,
+        marginBottom: 18,
         boxShadow: 3,
         p: 3,
         borderRadius: 3,
+        maxWidth: "100%",
       }}
     >
       <Typography variant="h6" fontWeight={600}>
@@ -73,6 +75,8 @@ const Scripted = ({ cloudfrontUrl }: any) => {
             whiteSpace: "pre-wrap",
             wordBreak: "break-word",
             paddingRight: 2,
+            // minWidth: "300px",
+            width: "100%",
           }}
         >
           {snippets[type]}

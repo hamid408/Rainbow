@@ -10,6 +10,7 @@ import { useGetLeadByIdQuery } from "@/src/redux/services/leads/leadsApi";
 import styles from "./style.module.scss";
 import { useGetSuggestionsQuery } from "@/src/redux/services/conversation/conversationApi";
 import BotEmbed from "./BotEmbed";
+import CustomButton from "@/src/components/common/CustomButton";
 
 const LeadDetails = ({
   leadId,
@@ -145,6 +146,8 @@ const LeadDetails = ({
             },
           }}
         >
+          {/* <LeadDetailsSidebar lead={lead} setLead={setLead} />
+           */}
           <LeadDetailsSidebar lead={lead} setLead={setLead} />
         </Drawer>
       </Box>

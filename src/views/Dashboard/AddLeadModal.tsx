@@ -269,7 +269,6 @@ const AddLeadModal = ({
                 <Controller
                   name="time_zone"
                   control={control}
-                  // rules={{ required: "time zone is required" }}
                   render={({ field }) => (
                     <CustomSelect
                       label="Time Zone"
@@ -300,7 +299,10 @@ const AddLeadModal = ({
               disabled={isSubmitting || isLoading}
             >
               {isSubmitting ? (
-                <CircularProgress size={20} sx={{ color: "#fff" }} />
+                <CircularProgress
+                  size={20}
+                  sx={{ background: "rgba(72, 74, 176, 1)" }}
+                />
               ) : (
                 "Add Lead"
               )}
