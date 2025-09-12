@@ -15,7 +15,7 @@ const UserPerformanceCard = ({ user }: any) => {
           <Typography fontWeight={600} color="#0D0D12" fontSize={16}>
             {user.name}
           </Typography>
-          <Typography color="#666D80" fontSize={14} fontWeight={400} mt={0.5}>
+          <Typography color="#727887ff" fontSize={14} fontWeight={400} mt={0.5}>
             {user.service} &nbsp; | &nbsp; {user.time} &nbsp; | &nbsp;{" "}
             {user.score}
           </Typography>
