@@ -31,31 +31,45 @@ const StyleControls = ({ register, setValue, watch, control }: any) => {
       <Divider />
 
       {/* Colors Section */}
-      <Box display="flex" gap={13} width="100%" flexWrap={"wrap"} justifyContent={"space-evenly"}>
+      <Box
+        display="flex"
+        gap={13}
+        width="100%"
+        flexWrap={"wrap"}
+        justifyContent={"space-evenly"}
+      >
         {/* Primary Color */}
         <Box flex={1}>
           <Typography gutterBottom>Primary Color</Typography>
           <HexColorPicker
             color={primaryColor}
-            onChange={(val) => setValue("primaryColor", val)}
+            onChange={(val) =>
+              setValue("primaryColor", val, { shouldDirty: true })
+            }
           />
         </Box>
 
         {/* Background Color */}
         <Box flex={1}>
           <Typography gutterBottom>Background Color</Typography>
+        
           <HexColorPicker
             color={backgroundColor}
-            onChange={(val) => setValue("backgroundColor", val)}
+            onChange={(val) =>
+              setValue("backgroundColor", val, { shouldDirty: true })
+            }
           />
         </Box>
 
         {/* Border Color */}
         <Box flex={1}>
           <Typography gutterBottom>Border Color</Typography>
+          
           <HexColorPicker
             color={borderColor}
-            onChange={(val) => setValue("borderColor", val)}
+            onChange={(val) =>
+              setValue("borderColor", val, { shouldDirty: true })
+            }
           />
         </Box>
       </Box>

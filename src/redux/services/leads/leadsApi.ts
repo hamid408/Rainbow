@@ -16,19 +16,6 @@ type LeadType = {
 };
 export const leadsapi = createApi({
   reducerPath: "leadsApi",
-  // baseQuery: fetchBaseQuery({
-  //   baseUrl: "https://ajzjuk1jch.execute-api.us-east-2.amazonaws.com/dev/",
-  //   prepareHeaders: (headers) => {
-  //     // const token = sessionStorage.getItem("id_token");
-  //     const token = Cookies.get("id_token");
-
-  //     if (token) {
-  //       headers.set("Authorization", `Bearer ${token}`);
-  //     }
-  //     headers.set("Content-Type", "application/json");
-  //     return headers;
-  //   },
-  // }),
   baseQuery: customBaseQuery,
 
   endpoints: (builder) => ({
@@ -83,6 +70,13 @@ export const leadsapi = createApi({
         body: { lead_id, is_active },
       }),
     }),
+    deleteLead: builder.mutation<any, { lead_id: string }>({
+      query: ({ lead_id }) => ({
+        url: `leads`,
+        method: "DELETE",
+        body: { lead_id },
+      }),
+    }),
   }),
 });
 
@@ -93,4 +87,5 @@ export const {
   useUpdateLeadMutation,
   useGetLeadsEnumsQuery,
   useResolvedLeadMutation,
+  useDeleteLeadMutation,
 } = leadsapi;
