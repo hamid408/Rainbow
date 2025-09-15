@@ -29,7 +29,7 @@ const customBaseQuery: BaseQueryFn<
   //new code generated
   //
   const isUnauthorized =
-    result.error?.status === 401 &&
+    result.error?.status === 401 ||
     (errorType === "UnauthorizedException" || // AWS Gateway error header
       message === "The incoming token has expired" || // Cognito expired token
       (typeof message === "string" && !message.startsWith("Password"))); // General 401 with message not related to password
