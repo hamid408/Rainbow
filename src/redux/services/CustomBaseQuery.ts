@@ -26,6 +26,25 @@ const customBaseQuery: BaseQueryFn<
   const errorType = result?.meta?.response?.headers.get("x-amzn-errortype");
   const message = (result.error?.data as any)?.message;
 
+  //new code generated
+  //
+  const isUnauthorized =
+    result.error?.status === 401 &&
+    (errorType === "UnauthorizedException" || // AWS Gateway error header
+      message === "The incoming token has expired" || // Cognito expired token
+      (typeof message === "string" && !message.startsWith("Password"))); // General 401 with message not related to password
+
+  // ✅ Handle unauthorized: remove token + redirect
+  if (isUnauthorized) {
+    Cookies.remove("id_token");
+    if (typeof window !== "undefined") {
+      if (window.location.pathname !== "/auth/sign-in") {
+        window.location.replace("/auth/sign-in");
+      }
+    }
+  }
+
+  //
   const isTokenExpired =
     result.error?.status === 401 &&
     (errorType === "UnauthorizedException" ||
@@ -43,8 +62,6 @@ const customBaseQuery: BaseQueryFn<
       }
     }
   }
-
-  //new logic for expired token
 
   if (
     result.error?.status === 401 &&
