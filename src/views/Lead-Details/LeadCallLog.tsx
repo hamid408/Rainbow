@@ -11,6 +11,7 @@ import {
 } from "@/src/redux/services/conversation/conversationApi";
 import { toast } from "react-toastify";
 import styles from "./style.module.scss";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const CallLogsSection = ({
   lead_id,
@@ -95,7 +96,13 @@ const CallLogsSection = ({
       toast.success("Suggestion Sent Successfully!!");
     } catch (err) {
       console.error("SMS Failed:", err);
-      toast.error("Failed to send Message. Try Again");
+      const error = err as FetchBaseQueryError;
+
+      if ("data" in error && error.data) {
+        toast.error((error.data as any).message || "Failed to send SMS");
+      } else {
+        toast.error((error.data as any).message || "Failed to send SMS");
+      }
     }
   };
 
@@ -165,10 +172,12 @@ const CallLogsSection = ({
           <CustomButton
             variant="contained"
             onClick={SendNowMessage}
-            disabled={isSending}
+            disabled={isSending || isLoading}
             className={styles.leadCallLogSendNow}
           >
             {isSending ? "Sending...." : "Send Now"}
+
+            {/* {isSending ? <CircularProgress size={20} /> : "Send Now"} */}
           </CustomButton>
         )}
       </Box>
