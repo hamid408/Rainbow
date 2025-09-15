@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { useEffect, useMemo, useState } from "react";
 import CSVUploader from "./CsvFile";
 import CustomTabs from "@/src/components/common/CustomTabs";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 const AddLeadModal = ({
   open,
@@ -91,21 +92,19 @@ const AddLeadModal = ({
       reset();
       refetchLeads();
     } catch (error) {
-      console.error("Failed to create lead:", error);
-      toast.error("Failed to create lead");
+      const err = error as FetchBaseQueryError & {
+        data?: { message?: string };
+      };
+
+      const errorMessage =
+        (err.data as any)?.message ||
+        (err as any)?.error ||
+        "Failed to create lead";
+
+      toast.error(errorMessage);
     }
   };
-  // const handleBulkSubmit = async (dataArray: any[]) => {
-  //   try {
-  //     await createLead(dataArray).unwrap();
-  //     toast.success("Bulk leads uploaded successfully!");
-  //     onClose();
-  //     refetchLeads();
-  //   } catch (error) {
-  //     console.error("Bulk lead upload failed:", error);
-  //     toast.error("Failed to upload bulk leads.");
-  //   }
-  // };
+
   const handleBulkSubmit = async (dataArray: any[]) => {
     const chunkSize = 25;
 
@@ -298,14 +297,7 @@ const AddLeadModal = ({
               variant="contained"
               disabled={isSubmitting || isLoading}
             >
-              {isSubmitting ? (
-                <CircularProgress
-                  size={20}
-                  sx={{ background: "rgba(72, 74, 176, 1)" }}
-                />
-              ) : (
-                "Add Lead"
-              )}
+              {isSubmitting ? <CircularProgress size={20} /> : "Add Lead"}
             </CustomButton>
           </DialogActions>
         )}
