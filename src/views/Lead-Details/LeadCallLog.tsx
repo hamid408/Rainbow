@@ -101,7 +101,7 @@ const CallLogsSection = ({
       if ("data" in error && error.data) {
         toast.error((error.data as any).message || "Failed to send SMS");
       } else {
-        toast.error("Failed to send SMS. Try Again");
+        toast.error((error.data as any).message || "Failed to send SMS");
       }
     }
   };
