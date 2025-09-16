@@ -90,10 +90,13 @@ const CallLogsSection = ({
         sms_content: message,
         suggestion_id: SuggestionData.suggestion?.id,
       }).unwrap();
-      onRefreshClick();
-
-      await refetchSuggestion();
       toast.success("Suggestion Sent Successfully!!");
+      onRefreshClick();
+      await refetchSuggestion();
+      // setTimeout(async () => {
+      //   onRefreshClick();
+      //   await refetchSuggestion();
+      // }, 7000);
     } catch (err) {
       console.error("SMS Failed:", err);
       const error = err as FetchBaseQueryError;

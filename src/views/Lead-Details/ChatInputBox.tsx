@@ -72,6 +72,10 @@ const ChatInputBox = ({
       toast.success("Message Sent Successfully!");
       onRefreshClick();
       await refetchSuggestion();
+      // setTimeout(async () => {
+      //   onRefreshClick();
+      //   await refetchSuggestion();
+      // }, 7000);
       setMessage("");
     } catch (err) {
       console.error("SMS Failed:", err);
