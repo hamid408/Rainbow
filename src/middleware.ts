@@ -22,9 +22,7 @@ export function middleware(request: NextRequest) {
   if (token && currentPath === "/auth/sign-in") {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
-  // new addition to check token validity
   if (token) {
-    // Optionally decode and validate expiry if needed
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
       const now = Math.floor(Date.now() / 1000);

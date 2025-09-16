@@ -1,14 +1,14 @@
-
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Box, Typography, Divider } from "@mui/material";
 import DisplayField from "./DisplayField";
 import TimeSelector from "@/src/utils/TimeSelector";
 import CustomButton from "@/src/components/common/CustomButton";
 import { useUpdateOrganizationMutation } from "@/src/redux/services/organization/organizationApi";
 import { toast } from "react-toastify";
-import styles from "./styles.module.scss"
+import styles from "./styles.module.scss";
+import { useGetLeadsEnumsQuery } from "@/src/redux/services/leads/leadsApi";
 const AIOutreachSettings = ({
   data,
   editable = false,
@@ -28,7 +28,6 @@ const AIOutreachSettings = ({
   const [fromTime, setFromTime] = useState("08:00");
   const [toTime, setToTime] = useState("20:00");
   const [timeZone, setTimeZone] = useState(aiData.time_zone || "");
- 
 
   const [updateOrganization, { isLoading: isUpdating }] =
     useUpdateOrganizationMutation();
@@ -57,6 +56,7 @@ const AIOutreachSettings = ({
 
   const fromTimeValue = convertTo24HourNumber(fromTime);
   const toTimeValue = convertTo24HourNumber(toTime);
+  const { data: enumsData, refetch } = useGetLeadsEnumsQuery();
 
   const handleSave = async () => {
     try {
@@ -72,9 +72,21 @@ const AIOutreachSettings = ({
       console.error("Update error:", error);
     }
   };
-
+  const timeZoneOptions = useMemo(
+    () =>
+      enumsData?.time_zone?.map((time: string) => ({
+        label: time,
+        value: time,
+      })) || [],
+    [enumsData]
+  );
   return (
-    <Box p={4} bgcolor="#fff" borderRadius={2} className={styles.AiOutreachMain}>
+    <Box
+      p={4}
+      bgcolor="#fff"
+      borderRadius={2}
+      className={styles.AiOutreachMain}
+    >
       <Typography variant="h2" fontSize={24} fontWeight={600} mb={3}>
         AI Outreach Cadence Settings
       </Typography>
@@ -136,11 +148,12 @@ const AIOutreachSettings = ({
         onChange={editable ? setTimeZone : undefined}
         placeholder="Select time zone"
         disabled={!editable}
+        options={timeZoneOptions}
+        type="select"
       />
 
       <Divider sx={{ border: "1px solid #eceff3", marginBlock: "16px" }} />
 
-    
       {editable && (
         <Box mt={3} display="flex" justifyContent="flex-end">
           <CustomButton

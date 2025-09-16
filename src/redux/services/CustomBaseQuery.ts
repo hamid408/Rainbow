@@ -76,16 +76,18 @@
 //   //     window.location.replace("/auth/sign-in");
 //   //   }
 //   // }
-//   console.log("result error", result.error);
+//   // console.log("result error", result.error);
 //   console.log("result error", result.error?.status);
 
 //   if (result.error?.status === 401) {
+//     console.log("result error final", result.error?.status);
+
 //     Cookies.remove("id_token");
 //     if (
 //       typeof window !== "undefined" &&
 //       window.location.pathname !== "/auth/sign-in"
 //     ) {
-//       window.location.replace("/auth/sign-in");
+//       // window.location.replace("/auth/sign-in");
 //     }
 //     const errorType = result?.meta?.response?.headers.get("x-amzn-errortype");
 //     const message = (result.error?.data as any)?.message;
@@ -101,7 +103,7 @@
 //         typeof window !== "undefined" &&
 //         window.location.pathname !== "/auth/sign-in"
 //       ) {
-//         window.location.replace("/auth/sign-in");
+//         // window.location.replace("/auth/sign-in");
 //       }
 //     }
 //     //
@@ -124,9 +126,9 @@ type JWTPayload = {
 const isTokenExpired = (token: string): boolean => {
   try {
     const { exp } = jwtDecode<JWTPayload>(token);
-    return exp * 1000 < Date.now(); // exp is in seconds → convert to ms
+    return exp * 1000 < Date.now();
   } catch {
-    return true; // invalid token
+    return true;
   }
 };
 
@@ -136,7 +138,6 @@ const rawBaseQuery = fetchBaseQuery({
     const token = Cookies.get("id_token");
     if (token) {
       if (isTokenExpired(token)) {
-        // 🔴 Token expired → clear & redirect instantly
         Cookies.remove("id_token");
         if (
           typeof window !== "undefined" &&
@@ -145,7 +146,6 @@ const rawBaseQuery = fetchBaseQuery({
           window.location.replace("/auth/sign-in");
         }
       } else {
-        // ✅ Still valid → attach header
         headers.set("Authorization", `Bearer ${token}`);
       }
     }
@@ -161,7 +161,6 @@ const customBaseQuery: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   const result = await rawBaseQuery(args, api, extraOptions);
 
-  // 🔒 Backup: handle 401 errors from server
   if (result.error?.status === 401) {
     Cookies.remove("id_token");
     if (
