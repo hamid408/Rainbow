@@ -32,14 +32,42 @@ const AIOutreachSettings = ({
   const [updateOrganization, { isLoading: isUpdating }] =
     useUpdateOrganizationMutation();
 
+  // useEffect(() => {
+  //   if (aiData?.preferred_calling_window) {
+  //     try {
+  //       const [from, to] = JSON.parse(aiData.preferred_calling_window);
+  //       setFromTime(convert24HourNumberToTimeString(from));
+  //       setToTime(convert24HourNumberToTimeString(to));
+  //     } catch (e) {
+  //       console.warn("Invalid preferred_calling_window format");
+  //     }
+  //   }
+  // }, [aiData]);
+
   useEffect(() => {
     if (aiData?.preferred_calling_window) {
+      console.log("aiData inside useeffect", aiData.preferred_calling_window);
+
       try {
-        const [from, to] = JSON.parse(aiData.preferred_calling_window);
-        setFromTime(convert24HourNumberToTimeString(from));
-        setToTime(convert24HourNumberToTimeString(to));
+        let parsed = aiData.preferred_calling_window;
+
+        // If it's a string, parse it
+        if (typeof parsed === "string") {
+          parsed = JSON.parse(parsed);
+        }
+
+        if (Array.isArray(parsed) && parsed.length === 2) {
+          const [from, to] = parsed;
+          console.log("from,to", from, to);
+          setFromTime(convert24HourNumberToTimeString(from));
+          setToTime(convert24HourNumberToTimeString(to));
+        } else {
+          console.warn(
+            "preferred_calling_window is not a valid [from,to] array"
+          );
+        }
       } catch (e) {
-        console.warn("Invalid preferred_calling_window format");
+        console.warn("Invalid preferred_calling_window format", e);
       }
     }
   }, [aiData]);

@@ -64,6 +64,7 @@ const UserManagement = () => {
 
   const [deactivateUser, { isLoading: isDeactivating }] =
     useDeactivateUserMutation();
+  // console.log("organizationData", organizationData);
 
   const handleDeactivate = async (email: string) => {
     try {
