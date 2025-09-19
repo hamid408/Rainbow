@@ -99,6 +99,15 @@ const Dashboard = () => {
       />
       {/* check drag n drop functionality */}
       {/* <DragDropBoard /> */}
+      <Box sx={{ margin: "89px" }}>
+        <iframe
+          src="/Content.html"
+          id="embedded-html"
+          width="100%"
+          height="500px"
+          title="Embedded HTML Content"
+        ></iframe>
+      </Box>
 
       <Box
         borderRadius="12px"
