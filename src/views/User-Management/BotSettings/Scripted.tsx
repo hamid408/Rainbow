@@ -22,7 +22,7 @@ const Scripted = ({ cloudfrontUrl }: any) => {
   const snippets: Record<string, string> = {
     iframe: `<iframe src="${
       cloudfrontUrl || "https://placeholder.com"
-    }" width="400" height="500" frameborder="0"></iframe>`,
+    }" width="500" height="600" frameborder="0"></iframe>`,
     script: `<script src="${
       cloudfrontUrl || "https://placeholder.com"
     }/chatbot.js" width="400" height="500"></script>`,

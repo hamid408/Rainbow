@@ -14,6 +14,8 @@ const BotEmbed = () => {
     // Load the script
     const script = document.createElement("script");
     script.src = "https://cdn.openwidget.com/openwidget.js";
+    // script.src =
+    //   "https://d1h2diufv4l0b.cloudfront.net/widget.html?clientId=ff67060d-afa4-4f3c-928a-085256c74630/chatbot.js";
     script.async = true;
     script.type = "text/javascript";
     document.head.appendChild(script);
