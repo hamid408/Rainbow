@@ -1,0 +1,15 @@
+{
+  "region": "us-west-2",
+  "identityPoolId": "us-west-2:931b2e17-52e6-4f28-974e-0f445cfed7f0",
+  "botId": "U1BQUSTEDQ",
+  "botAliasId": "JJ4KVSR63M",
+  "localeId": "en_US",
+  "welcomeMessage": "Hello, Welcome to Memory Arc. How can i Help you today?",
+  "background": "#fff",
+  "headerColor": "#fff",
+  "userMessageColor": "#f9f8e9",
+  "botMessageColor": "#0e0e0e",
+  "primaryColor": "#FFA726",
+  "borderRadius": 2,
+  "fontSize": 16
+}
