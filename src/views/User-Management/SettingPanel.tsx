@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, Typography } from "@mui/material";
 import DisplayField from "./DisplayField";
 import styles from "./styles.module.scss";
 
@@ -8,7 +8,7 @@ const SettingsPanel = ({ data }: any) => {
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
   };
-  if (!data) return null;
+  if (!data) return <CircularProgress />;
   const settingData = data?.data || {};
   return (
     <Box className={styles.settingPanelMainBox}>

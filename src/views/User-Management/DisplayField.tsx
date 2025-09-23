@@ -4,15 +4,10 @@ import {
   Box,
   Typography,
   IconButton,
-  TextField,
-  Popper,
-  Paper,
 } from "@mui/material";
 import { Check } from "@mui/icons-material";
 import { Copy } from "@/src/assests/icons";
-import { DigitalClock } from "@mui/x-date-pickers";
-import CustomSelect from "@/src/components/common/CustomSelect"; 
-import dayjs from "dayjs";
+import CustomSelect from "@/src/components/common/CustomSelect";
 import CustomTextField from "@/src/components/common/CustomTextfield";
 
 const DisplayField = ({
@@ -60,13 +55,14 @@ const DisplayField = ({
         </Typography>
       </Box>
 
-      <Box flex={1} display="flex" alignItems="center">
+      <Box flex={1} display="flex" alignItems="center"> 
         {type === "select" ? (
           <CustomSelect
             value={value}
             onChange={(e: any) => onChange(e.target.value)}
             options={options}
             placeholder={placeholder}
+            
           />
         ) : (
           <CustomTextField
@@ -88,8 +84,10 @@ const DisplayField = ({
           </IconButton>
         )}
       </Box>
+     
     </Box>
   );
 };
+
 
 export default DisplayField;

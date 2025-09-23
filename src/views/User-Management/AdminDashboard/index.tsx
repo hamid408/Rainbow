@@ -1,5 +1,5 @@
 // AdminDashboard.tsx
-import { Box, Paper } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 import CardComponent from "./CardComponent";
 import userData, { conversationData, messageData } from "./data";
