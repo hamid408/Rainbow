@@ -151,9 +151,9 @@ const ContactProgressCard: React.FC<ContactProgressCardProps> = ({
           className={styles.pauseButton}
           onClick={() => setPauseDialogOpen(true)}
         >
-          {campaginStatus === "IN_PROGRESS" ? "RESUME" : "PAUSE"}
-
-          {/* {isAIPaused ? "RESUME" : "PAUSE"} */}
+          {/* {campaginStatus === "IN_PROGRESS" ? "RESUME" : "PAUSE"}
+           */}
+          {campaginStatus === "PAUSE" ? "RESUME" : "PAUSE"}
         </Button>
         {/* ) : (
           <Button

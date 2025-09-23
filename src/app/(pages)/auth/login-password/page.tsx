@@ -45,6 +45,41 @@ const FirstLoginPassword = () => {
     }
   }, []);
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError("");
+
+  //   if (!newPassword || !confirmPassword) {
+  //     setError("Both password fields are required.");
+  //     return;
+  //   }
+
+  //   if (newPassword !== confirmPassword) {
+  //     setError("Passwords do not match.");
+  //     return;
+  //   }
+
+  //   try {
+  //     setLoading(true);
+
+  //     const payload = {
+  //       session,
+  //       new_password: newPassword,
+  //       email,
+  //     };
+
+  //     const response = await firstLoginPassword(payload).unwrap();
+
+  //     Cookies.remove("auth_session");
+  //     Cookies.set("id_token", response.id_token);
+  //     Cookies.set("auth_email", email);
+  //     router.push("/dashboard");
+  //   } catch (err: any) {
+  //     setError(err?.data?.message || "Failed to reset password.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -70,12 +105,18 @@ const FirstLoginPassword = () => {
 
       const response = await firstLoginPassword(payload).unwrap();
 
-      Cookies.remove("auth_session");
-      Cookies.set("id_token", response.id_token);
-      Cookies.set("auth_email", email);
-      router.push("/dashboard");
+      // ✅ Only clear session + set tokens on success
+      if (response?.id_token) {
+        Cookies.remove("auth_session");
+        Cookies.set("id_token", response.id_token);
+        Cookies.set("auth_email", email);
+        router.push("/dashboard");
+      }
     } catch (err: any) {
-      setError(err?.data?.message || "Failed to reset password.");
+      // ✅ Stay on same screen and show error
+      setError(
+        err?.data?.message || "Password must meet strength requirements."
+      );
     } finally {
       setLoading(false);
     }
@@ -131,7 +172,7 @@ const FirstLoginPassword = () => {
             type={showPassword ? "text" : "password"}
             fullWidth
             value={newPassword}
-            onChange={(e:any) => setNewPassword(e.target.value)}
+            onChange={(e: any) => setNewPassword(e.target.value)}
             placeholder="Write new password"
             InputProps={{
               endAdornment: (
@@ -149,7 +190,7 @@ const FirstLoginPassword = () => {
             type={showConfirmPassword ? "text" : "password"}
             fullWidth
             value={confirmPassword}
-            onChange={(e:any) => setConfirmPassword(e.target.value)}
+            onChange={(e: any) => setConfirmPassword(e.target.value)}
             placeholder="Confirm new password"
             InputProps={{
               endAdornment: (

@@ -17,7 +17,6 @@ export async function initTwilioDevice(leadId: string): Promise<Device> {
     
     // `https://3qsk0avfk4.execute-api.us-west-2.amazonaws.com/dev/calls/outbound/user/twilio_auth?lead_id=${leadId}`,
     `${process.env.NEXT_PUBLIC_BASE_URL}/calls/outbound/user/twilio_auth?lead_id=${leadId}`,
-
     {
       method: "GET",
       headers: {
