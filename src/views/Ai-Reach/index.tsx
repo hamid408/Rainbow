@@ -75,7 +75,7 @@ const AiReach = () => {
                   leadId={contact.lead_id}
                   campaignId={contact.campaign?.id}
                   refetchCampaigns={refetch}
-                />
+                /> 
 
                 <Divider className={styles.divider} />
 

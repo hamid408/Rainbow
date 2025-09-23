@@ -162,6 +162,11 @@ const customBaseQuery: BaseQueryFn<
   const result = await rawBaseQuery(args, api, extraOptions);
 
   if (result.error?.status === 401) {
+    const message = (result.error?.data as any)?.message;
+
+    if (typeof message === "string" && message.startsWith("Password")) {
+      return result; 
+    }
     Cookies.remove("id_token");
     if (
       typeof window !== "undefined" &&
