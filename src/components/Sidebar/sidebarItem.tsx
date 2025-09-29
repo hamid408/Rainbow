@@ -9,7 +9,7 @@ import {
   AnalyticsActive,
   TaskActive,
   AIActive,
-  UserActive,  
+  UserActive,
 } from "@/src/assests/icons";
 export const sidebarButtons = [
   { label: "Admin User", id: "admin" },
@@ -28,8 +28,18 @@ export const sidebarButtons = [
 export const sidebarItems = [
   { label: "Dashboard", icon: HotLeadsNormal, activeIcon: LeadsIcon }, // use same if no separate active version
   { label: "AI Outreach", icon: Aireach, activeIcon: AIActive },
-  { label: "Tasks & Reminder", icon: Tasks, activeIcon: TaskActive, disabled: true },
-  { label: "Analytics", icon: Analytics, activeIcon: AnalyticsActive, disabled: true },
+  {
+    label: "Tasks & Reminder",
+    icon: Tasks,
+    activeIcon: TaskActive,
+    disabled: true,
+  },
+  {
+    label: "Analytics",
+    icon: Analytics,
+    activeIcon: AnalyticsActive,
+    disabled: true,
+  },
   { label: "Admin Oversight", icon: UserIcon, activeIcon: UserActive },
 ];
 export const sidebarItemsMobile = [
