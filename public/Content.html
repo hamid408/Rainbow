@@ -24,14 +24,14 @@
       /* Floating chat button */
       #chatButton {
         position: fixed;
-        bottom: 5px;
+        bottom: 20px;
         right: 20px;
         background: var(--primary-color);
         color: #fff;
         border: none;
         border-radius: 50%;
-        width: 44px;
-        height: 44px;
+        width: 56px;
+        height: 56px;
         cursor: pointer;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         font-size: 24px;
@@ -44,10 +44,10 @@
       /* Floating widget window */
       #widget {
         position: fixed;
-        bottom: 48px;
+        bottom: 90px;
         right: 30px;
         width: 400px;
-        height: 440px;
+        height: 470px;
         background: #fff;
         border-radius: 10px;
         overflow: hidden;
@@ -148,9 +148,9 @@
     </div>
 
     <!-- AWS SDK (v2) -->
-    <!-- <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1481.0.min.js"></script> -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1481.0.min.js"></script>
 
-    <!-- <script>
+    <script>
       // Floating widget toggle
       const chatButton = document.getElementById("chatButton");
       const widget = document.getElementById("widget");
@@ -179,20 +179,11 @@
 
         const clientId = q("clientId") || "default";
         let config = {};
-        // try {
-        //   const r = await fetch(`configs/${clientId}.json`);
-
-        //   if (r.ok) config = await r.json();
-        // } catch (e) {
-        //   console.error("Config not found for client", e);
-        // }
         try {
-          const r = await fetch("https://3qsk0avfk4.execute-api.us-west-2.amazonaws.com/dev/organizations/lex_bot_styling", {
-            headers: { "Content-Type": "application/json" },
-          });
+          const r = await fetch(`configs/${clientId}.json`);
           if (r.ok) config = await r.json();
         } catch (e) {
-          console.error("Failed to fetch bot styling config", e);
+          console.error("Config not found for client", e);
         }
 
         if (config.logo)
@@ -279,227 +270,6 @@
             el("send").click();
           }
         });
-      })();
-    </script> -->
-
-    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1481.0.min.js"></script>
-    <script>
-      (async function () {
-        // small helpers
-        const q = (name) =>
-          new URLSearchParams(window.location.search).get(name);
-        const el = (id) => document.getElementById(id);
-
-        function addMessage(who, text) {
-          const chat = el("chat");
-          if (!chat) return console.warn("No #chat element found");
-          const d = document.createElement("div");
-          d.className = "message " + (who === "user" ? "msg-user" : "msg-bot");
-          d.textContent = text;
-          chat.appendChild(d);
-          chat.scrollTop = chat.scrollHeight;
-        }
-
-        // Elements
-        const chatButton = el("chatButton");
-        const widget = el("widget");
-        const sendBtn = el("send");
-        const inputEl = el("input");
-
-        if (!chatButton) console.error("Missing element: #chatButton");
-        if (!widget) console.error("Missing element: #widget");
-        if (!sendBtn) console.error("Missing element: #send");
-        if (!inputEl) console.error("Missing element: #input");
-
-        // Toggle logic (robust)
-        let isOpen = false;
-        if (chatButton && widget) {
-          chatButton.addEventListener("click", () => {
-            isOpen = !isOpen;
-            widget.style.display = isOpen ? "flex" : "none";
-            chatButton.textContent = isOpen ? "❌" : "💬";
-          });
-        }
-
-        // Fetch config (absolute URL to your API)
-        const apiUrl =
-          "https://3qsk0avfk4.execute-api.us-west-2.amazonaws.com/dev/organizations/lex_bot_styling";
-        let config = {};
-        try {
-          const r = await fetch(apiUrl, {
-            headers: { "Content-Type": "application/json" },
-          });
-          if (!r.ok) throw new Error("Fetch failed: " + r.status);
-          config = await r.json();
-          console.log("Bot styling config:", config);
-        } catch (err) {
-          console.error("Failed to fetch bot styling config:", err);
-        }
-
-        // Apply theme safely
-        try {
-          if (config.primaryColor) {
-            document.documentElement.style.setProperty(
-              "--primary-color",
-              config.primaryColor
-            );
-            if (el("header"))
-              el("header").style.background = config.primaryColor;
-            if (sendBtn) sendBtn.style.background = config.primaryColor;
-            if (chatButton) chatButton.style.background = config.primaryColor;
-          }
-          if (config.background) {
-            document.documentElement.style.setProperty(
-              "--bg",
-              config.background
-            );
-            document.body.style.background = config.background;
-            if (widget) widget.style.background = config.background;
-          }
-          if (typeof config.fontSize !== "undefined") {
-            document.documentElement.style.fontSize = config.fontSize + "px";
-          }
-          if (typeof config.borderRadius !== "undefined") {
-            const br = config.borderRadius + "px";
-            if (widget) widget.style.borderRadius = br;
-            if (sendBtn) sendBtn.style.borderRadius = br;
-          }
-
-          // User/bot bubble colors — inject one style tag (replace if exists)
-          (function applyBubbleColors() {
-            const existing = document.getElementById("dynamic-bubble-styles");
-            if (existing) existing.remove();
-            const style = document.createElement("style");
-            style.id = "dynamic-bubble-styles";
-            style.innerHTML = `
-          .msg-user { background: ${
-            config.userMessageColor || "#e6f0ff"
-          }; color: ${config.userMessageTextColor || "#000"}; }
-          .msg-bot  { background: ${
-            config.botMessageColor || "#f1f7ea"
-          }; color: ${config.botMessageTextColor || "#000"}; }
-        `;
-            document.head.appendChild(style);
-          })();
-        } catch (err) {
-          console.warn("Applying theme failed:", err);
-        }
-
-        // logo/title/welcome
-        try {
-          if (config.logo && el("logoArea"))
-            el(
-              "logoArea"
-            ).innerHTML = `<img src="${config.logo}" alt="logo" style="height:28px;object-fit:contain">`;
-          if (config.title && el("title"))
-            el("title").textContent = config.title;
-          if (config.welcomeMessage) addMessage("bot", config.welcomeMessage);
-        } catch (err) {
-          console.warn("Applying logo/title failed:", err);
-        }
-
-        // AWS Lex init — ensure required fields exist
-        if (
-          !config.identityPoolId ||
-          !config.region ||
-          !config.botId ||
-          !config.botAliasId
-        ) {
-          addMessage(
-            "bot",
-            "Chat initialization failed: missing AWS config. Contact support."
-          );
-          console.error("Missing AWS Lex config:", {
-            identityPoolId: config.identityPoolId,
-            region: config.region,
-            botId: config.botId,
-            botAliasId: config.botAliasId,
-          });
-          return;
-        }
-
-        try {
-          AWS.config.region = config.region;
-          AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: config.identityPoolId,
-          });
-          await new Promise((res, rej) => {
-            AWS.config.credentials.get((err) => (err ? rej(err) : res()));
-          });
-        } catch (err) {
-          console.error("Failed to init AWS credentials:", err);
-          addMessage(
-            "bot",
-            "Unable to initialize chat (AWS credentials error)."
-          );
-          return;
-        }
-
-        const lexClient = new AWS.LexRuntimeV2();
-        const clientId = q("clientId") || "default";
-        const sessionId =
-          clientId + "_" + Math.random().toString(36).slice(2, 10);
-
-        async function sendToLex(text) {
-          const params = {
-            botId: config.botId,
-            botAliasId: config.botAliasId,
-            localeId: config.localeId || "en_US",
-            sessionId,
-            text,
-          };
-          return new Promise((resolve, reject) => {
-            lexClient.recognizeText(params, (err, data) => {
-              if (err) reject(err);
-              else resolve(data);
-            });
-          });
-        }
-
-        function parseLexResponse(data) {
-          if (!data) return "No response";
-          if (Array.isArray(data.messages) && data.messages.length) {
-            return data.messages
-              .map((m) => m.content || JSON.stringify(m))
-              .join("\n");
-          }
-          return JSON.stringify(data);
-        }
-
-        // Wire send button & enter key
-        if (sendBtn && inputEl) {
-          sendBtn.addEventListener("click", async () => {
-            const text = inputEl.value.trim();
-            if (!text) return;
-            inputEl.value = "";
-            addMessage("user", text);
-            sendBtn.disabled = true;
-            try {
-              const res = await sendToLex(text);
-              const botText = parseLexResponse(res);
-              addMessage("bot", botText);
-            } catch (err) {
-              console.error("Lex error:", err);
-              addMessage("bot", "Error: " + (err.message || err));
-            } finally {
-              sendBtn.disabled = false;
-            }
-          });
-
-          inputEl.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              sendBtn.click();
-            }
-          });
-        }
-
-        console.log(
-          "Widget script initialized. Widget element:",
-          widget,
-          "Chat button:",
-          chatButton
-        );
       })();
     </script>
   </body>

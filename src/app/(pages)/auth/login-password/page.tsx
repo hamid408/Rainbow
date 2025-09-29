@@ -203,6 +203,7 @@ const FirstLoginPassword = () => {
             }}
           />
         </Stack>
+   
 
         {error && (
           <Typography variant="body2" color="error" align="center" mt={2}>

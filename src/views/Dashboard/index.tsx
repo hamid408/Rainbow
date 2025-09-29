@@ -68,7 +68,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (isAll && leads.length > 0) {
-      const tagSet = new Set(leads.map((lead: any) => lead.tag || "Untagged"));
+      const tagSet = new Set(leads.map((lead: any) => lead.tag || "unTagged"));
       setAllTags(["All", ...Array.from(tagSet)]);
     }
   }, [leads, isAll]);
@@ -106,8 +106,8 @@ const Dashboard = () => {
           width="140%"
           height="600px"
           title="Embedded HTML Content"
-        ></iframe>
-      </Box> */}
+        ></iframe> */}
+      {/* </Box> */}
 
       <Box
         borderRadius="12px"
@@ -160,7 +160,7 @@ const Dashboard = () => {
               mt={4}
             >
               <Typography variant="body1" color="textSecondary">
-                No data found
+                No data found!!
               </Typography>
             </Box>
           ) : (
@@ -208,11 +208,11 @@ const Dashboard = () => {
             const searchParams = new URLSearchParams(window.location.search);
 
             if (val === 1) {
+              
               searchParams.delete("page");
             } else {
               searchParams.set("page", String(val));
             }
-
             router.push(`?${searchParams.toString()}`);
           }}
         />

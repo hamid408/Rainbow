@@ -1,14 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Box,
-  MenuItem,
-  Typography,
-  Select,
-  InputBase,
-} from "@mui/material";
+import { Box, MenuItem, Typography, Select, InputBase } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
-import { Filter } from "@/src/assests/icons";
+import { Filter, Filters } from "@/src/assests/icons";
+import { FilterButtonComp } from "ag-grid-community";
 
 interface SelectItem {
   label: string;
@@ -59,6 +54,8 @@ const CustomFilterSelect: React.FC<CustomFilterSelectProps> = ({
         marginTop: "8px",
         cursor: "pointer",
         height: height,
+        maxWidth: "100px",
+        width: "100%",
       }}
     >
       {/* <Filter sx={{ marginRight: "8px" }} /> */}
@@ -88,10 +85,12 @@ const CustomFilterSelect: React.FC<CustomFilterSelectProps> = ({
           },
         }}
         renderValue={(selected) => (
-          <Typography variant="body2" mt={0.3} sx={{ marginRight: "-34px" }}>
-            {/* { "Filter"} */}
-            <Filter/>
-          </Typography>
+          <Box display={"flex"} alignItems="center" gap={1}>
+            <Filters />
+            <Typography variant="body2" sx={{ marginRight: "-34px" }}>
+              {"Filter"}
+            </Typography>
+          </Box>
         )}
       >
         {items.map((item) => (
@@ -115,9 +114,7 @@ const CustomFilterSelect: React.FC<CustomFilterSelectProps> = ({
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
               {item.icon && <Box sx={{ color: "#0D47A1" }}>{item.icon}</Box>}
-              <Typography variant="body2">
-                {(item.label)}
-              </Typography>
+              <Typography variant="body2">{item.label}</Typography>
             </Box>
 
             {(selectedItem === item.label || hoveredItem === item.label) && (

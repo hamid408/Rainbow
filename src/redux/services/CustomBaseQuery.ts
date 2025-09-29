@@ -163,9 +163,25 @@ const customBaseQuery: BaseQueryFn<
 
   if (result.error?.status === 401) {
     const message = (result.error?.data as any)?.message;
-
     if (typeof message === "string" && message.startsWith("Password")) {
-      return result; 
+      return result;
+    }
+    const errorType = result?.meta?.response?.headers.get("x-amzn-errortype");
+    const messageType = (result.error?.data as any)?.message;
+
+    const isUnauthorized =
+      errorType === "UnauthorizedException" ||
+      messageType === "The incoming token has expired" ||
+      (typeof message === "string" && !message.startsWith("Password"));
+
+    if (isUnauthorized) {
+      Cookies.remove("id_token");
+      if (
+        typeof window !== "undefined" &&
+        window.location.pathname !== "/auth/sign-in"
+      ) {
+        window.location.replace("/auth/sign-in");
+      }
     }
     Cookies.remove("id_token");
     if (
