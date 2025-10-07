@@ -18,6 +18,7 @@ const IconChip: React.FC<IconChipProps> = ({
   color = "#656565",
   variant = "outlined",
   size = "small",
+  ...props
 }) => {
   return (
     <Chip
@@ -28,11 +29,13 @@ const IconChip: React.FC<IconChipProps> = ({
       color={color}
       variant={variant}
       size={size}
+      {...props}
       sx={{
         borderRadius: "12px",
         fontWeight: 400,
         fontSize: 14,
         padding: "7px",
+        color: color,
       }}
     />
   );

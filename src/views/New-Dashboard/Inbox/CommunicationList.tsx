@@ -1,38 +1,67 @@
 import React, { useState } from "react";
 import CommunicationRow from "./CommunicationRow";
 import CustomSearchField from "@/src/components/common/CustomSearch";
-import { Add, Search } from "@mui/icons-material";
-import { Box, Divider, Typography } from "@mui/material";
+import { Search } from "@mui/icons-material";
+import {
+  Box,
+  Divider,
+  Typography,
+  Menu,
+  MenuItem,
+  Checkbox,
+  ListItemText,
+  CircularProgress,
+} from "@mui/material";
 import IconChip from "@/src/components/common/CustomChip";
 import { Plus } from "@/src/assests/icons";
+import { useGetLeadsReachOutLeadsQuery } from "@/src/redux/services/campagin/campaignApi";
 
 const initialData = [
   {
     name: "James Carter",
     status: "AI attempted live transfer, but your office did not answer.",
     actionItem: "Please return call or reschedule transfer.",
+    tags: ["High Priority", "Price Inquiry"],
   },
   {
     name: "Maria Lopez",
     status: "AI successfully connected live call. Conversation held on 09/27.",
     actionItem: "Review notes and follow up with family as needed.",
+    tags: ["Pre-Need"],
   },
   {
     name: "Danielle Patel",
     status:
       "Family asked if Catholic and Buddhist traditions can be combined. AI paused outreach pending your input.",
     actionItem: "Review AI draft reply or respond directly to family.",
+    tags: ["Aftercare"],
   },
   {
     name: "Homie Lopez",
     status: "AI successfully connected live call. Conversation held on 09/27.",
     actionItem: "Review notes and follow up with family as needed.",
+    tags: ["Referral"],
   },
+];
+
+const allTags = [
+  "High Priority",
+  "Price Inquiry",
+  "Pre-Need",
+  "Aftercare",
+  "Bilingual Support",
+  "Veteran",
+  "Referral",
+  "Insurance Check",
+  "Meeting Scheduled",
+  "Community Event Lead",
 ];
 
 const CommunicationList = () => {
   const [search, setSearch] = useState("");
   const [checkedItems, setCheckedItems] = useState<any>({});
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleCheck = (name: any) => {
     setCheckedItems((prev: any) => ({
@@ -41,13 +70,39 @@ const CommunicationList = () => {
     }));
   };
 
-  const filteredData = initialData.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
+  const handleTagClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleTagClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleTagSelect = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
+
+  const clearAllTags = () => {
+    setSelectedTags([]);
+  };
+
+  const filteredData = initialData.filter(
+    (item) =>
+      item.name.toLowerCase().includes(search.toLowerCase()) &&
+      (selectedTags.length === 0 ||
+        selectedTags.every((tag) => item.tags.includes(tag)))
   );
 
   return (
     <Box style={styles.container}>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        gap={1}
+      >
         <CustomSearchField
           type="text"
           placeholder="Search..."
@@ -63,10 +118,13 @@ const CommunicationList = () => {
           color="#818181"
           marginRight={2.5}
         >
-          Showing 3 results
+          Showing {filteredData.length} result
+          {filteredData.length !== 1 ? "s" : ""}
         </Typography>
       </Box>
+
       <Divider />
+
       <Box
         display={"flex"}
         gap={1.5}
@@ -74,31 +132,116 @@ const CommunicationList = () => {
         marginLeft={2.3}
         marginBottom={2.3}
         marginTop={2.3}
+        flexWrap={"wrap"}
       >
-        <IconChip
-          label="Creation Date"
-          icon={<Plus />}
-          onClick={() => alert("Home clicked!")}
-          color="#656565"
-        />
-        <IconChip
-          label="Last Response Date"
-          icon={<Plus />}
-          onClick={() => alert("Home clicked!")}
-          color="#656565"
-        />
-        <IconChip
-          label="Tag"
-          icon={<Plus />}
-          onClick={() => alert("Home clicked!")}
-          color="#656565"
-        />
-        <IconChip
-          label="Source"
-          icon={<Plus />}
-          onClick={() => alert("Home clicked!")}
-          color="#656565"
-        />
+        <IconChip label="Creation Date" icon={<Plus />} color="#656565" />
+        <IconChip label="Last Response Date" icon={<Plus />} color="#656565" />
+
+        {/* Tag Dropdown */}
+        <div onClick={handleTagClick}>
+          <IconChip label="Tag" icon={<Plus />} color="#656565" />
+        </div>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleTagClose}
+        >
+          {allTags.map((tag) => (
+            <MenuItem key={tag} onClick={() => handleTagSelect(tag)}>
+              <Checkbox checked={selectedTags.includes(tag)} />
+              <ListItemText primary={tag} />
+            </MenuItem>
+          ))}
+        </Menu>
+
+        <IconChip label="Source" icon={<Plus />} color="#656565" />
+      </Box>
+
+      {/* Selected Tags Row */}
+      {/* {selectedTags.length > 0 && (
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={1.5}
+          marginLeft={2.3}
+          marginBottom={2}
+        >
+          {selectedTags.map((tag) => (
+            <IconChip
+              key={tag}
+              label={tag}
+              color="#4a4a4a"
+              onDelete={() => handleTagSelect(tag)}
+            />
+          ))}
+          <Typography
+            variant="body2"
+            color="primary"
+            style={{ cursor: "pointer" }}
+            onClick={clearAllTags}
+          >
+            Clear all
+          </Typography>
+        </Box>
+      )} */}
+      {/* Selected Tags Row */}
+      {selectedTags.length > 0 && (
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={1.5}
+          marginLeft={2.3}
+          marginBottom={2}
+        >
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            sx={{
+              background: "rgba(0,0,0,0.05)",
+              borderRadius: "20px",
+              padding: "6px 10px",
+              color: "#7A4DF5",
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 500, fontSize: 13, color: "#555" }}
+            >
+              Tag:
+            </Typography>
+            <Box display="flex" gap={1} flexWrap="wrap">
+              {selectedTags.map((tag) => (
+                <IconChip key={tag} label={tag} color={"#7A4DF5"} />
+              ))}
+            </Box>
+          </Box>
+
+          <Typography
+            variant="body2"
+            color="#7A4DF5"
+            style={{ cursor: "pointer" }}
+            onClick={clearAllTags}
+          >
+            Clear all
+          </Typography>
+        </Box>
+      )}
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          padding: "16px",
+          fontWeight: 600,
+          borderBottom: "1px solid #E4E4E4",
+          backgroundColor: "#fafafa",
+        }}
+      >
+        {/* <input type="checkbox" style={{ marginRight: "12px" }} disabled /> */}
+        <div style={{ flex: 0.5, padding: "0 8px" }}>Name</div>
+        <div style={{ flex: 1, padding: "0 8px" }}>Status</div>
+        <div style={{ flex: 1, padding: "0 8px" }}>Action Item</div>
       </Box>
 
       {filteredData.map((item) => (
@@ -120,7 +263,6 @@ const styles = {
     margin: "40px auto",
     fontFamily: "Arial, sans-serif",
     borderRadius: "12px",
-    borderColor: "#160707ff",
     border: "1px solid #ccc",
     cursor: "pointer",
   },

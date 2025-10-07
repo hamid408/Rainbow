@@ -52,6 +52,7 @@ import AnalyticsActive from "./AnalyticsActive.svg";
 import TaskActive from "./TaskActive.svg";
 import Filters from "./Filters.svg";
 import Plus from "./Plus.svg";
+import BackNew from "./BackNew.svg";
 export {
   LeadsIcon,
   UserIcon,
@@ -105,4 +106,5 @@ export {
   HotLeadsNormal,
   Filters,
   Plus,
+  BackNew,
 };

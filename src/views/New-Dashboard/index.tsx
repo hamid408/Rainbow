@@ -13,8 +13,8 @@ const NewDashboard = () => {
   ];
   return (
     <>
-      <Box padding={5}>
-        <Box marginBottom={4.5} display="flex" justifyContent="space-between">
+      <Box padding={3}>
+        <Box  display="flex" justifyContent="space-between">
           <Typography variant="h4" fontSize={23} fontWeight={500}>
             My Inbox
           </Typography>
@@ -27,7 +27,6 @@ const NewDashboard = () => {
           tabs={[
             { label: "Action Needed", count: 3 },
             { label: "Awaiting Reply From Lead", count: 0 },
-            { label: "Completed" }, 
           ]}
           onTabChange={(tab) => console.log("Selected:", tab)}
         />

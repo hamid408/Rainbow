@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const CommunicationRow = ({
@@ -7,14 +8,28 @@ const CommunicationRow = ({
   checked,
   onCheck,
 }: any) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/dashboard/cca9d275-53d3-4c80-8ec6-ec3df34ed2ce?page=1`);
+  };
   return (
-    <div style={styles.row}>
+    <div
+      style={{
+        ...styles.row,
+        backgroundColor: checked ? "#E4E4E4" : "#fff",
+      }}
+      className="row"
+      onClick={handleClick}
+    >
+      {" "}
       <input
         type="checkbox"
         checked={checked}
         onChange={onCheck}
         style={styles.checkbox}
       />
+   
       <div style={styles.cellName}>{name}</div>
       <div style={styles.cell}>{status}</div>
       <div style={styles.cell}>{actionItem}</div>
@@ -26,11 +41,12 @@ const styles = {
   row: {
     display: "flex",
     alignItems: "center",
-    padding: "12px",
-    margin: "8px 0",
-    borderRadius: "6px",
-    backgroundColor: "#f9f9f9",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+    padding: "16px",
+    margin: "2px 0",
+    width: "100%",
+    flex: 1,
+    transition: "background-color 0.2s ease",
+    borderBottom: "1px solid #E4E4E4",
   },
   checkbox: {
     marginRight: "12px",
@@ -41,7 +57,7 @@ const styles = {
     fontSize: 14,
   },
   cellName: {
-    flex: 1,
+    flex: 0.5,
     padding: "0 8px",
     fontWeight: 500,
     fontSize: 14,

@@ -8,17 +8,20 @@ import { FilterButtonComp } from "ag-grid-community";
 interface SelectItem {
   label: string;
   icon?: React.ReactNode;
+  title?: string;
 }
 interface CustomFilterSelectProps {
   items: SelectItem[];
   onSelect: (label: string | null) => void;
   height?: string;
+  title?: string;
 }
 
 const CustomFilterSelect: React.FC<CustomFilterSelectProps> = ({
   items,
   onSelect,
   height = "44px",
+  title,
 }) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -88,7 +91,7 @@ const CustomFilterSelect: React.FC<CustomFilterSelectProps> = ({
           <Box display={"flex"} alignItems="center" gap={1}>
             <Filters />
             <Typography variant="body2" sx={{ marginRight: "-34px" }}>
-              {"Filter"}
+              {title || "Filter"}
             </Typography>
           </Box>
         )}

@@ -5,6 +5,7 @@ import {
   Stack,
   CircularProgress,
   Avatar,
+  Paper,
 } from "@mui/material";
 import Image from "next/image";
 import AvatarPic from "../../assests/images/Avatars.png";
@@ -136,7 +137,7 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
   return (
     <>
       <Box className={styles.leadChat}>
-        <Stack gap={4}>
+        {/* <Stack gap={4}>
           {allMessages.map((msg: any, index: number) => {
             const time = msg.created_at;
             const isAI = msg.is_bot === true;
@@ -194,6 +195,82 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                     </Typography>
                   </Box>
                 </Stack>
+              </Box>
+            );
+          })}
+        </Stack> */}
+        <Stack gap={3}>
+          {allMessages.map((msg: any, index: number) => {
+            const isBot =
+              msg.is_bot === true ||
+              msg.sender_name === "Campaign Drip" ||
+              msg.sender_name?.includes("AI Assistant");
+            const isUser = !isBot;
+
+            return (
+              <Box
+                key={index}
+                display="flex"
+                justifyContent={isUser ? "flex-end" : "flex-start"}
+                mb={2.5}
+                alignItems="flex-end"
+              >
+                {!isUser && (
+                  <Avatar sx={{ bgcolor: "#EDE7F6", mr: 2, mb: 3 }}>
+                    <Image
+                      src={AvatarPic}
+                      alt="AI Avatar"
+                      width={40}
+                      height={40}
+                    />
+                  </Avatar>
+                )}
+
+                <Box maxWidth="70%">
+                  <Paper
+                    elevation={1}
+                    sx={{
+                      p: 2,
+                      borderRadius: 3,
+                      borderTopLeftRadius: isUser ? 12 : 0,
+                      borderTopRightRadius: isUser ? 0 : 12,
+                      bgcolor: isUser ? "#624AA6" : "#fff",
+                      color: isUser ? "#fff" : "#333",
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      fontSize={14}
+                      fontWeight={400}
+                      color={isUser ? "#fff" : "#000"}
+                    >
+                      {msg.content}
+                    </Typography>
+                  </Paper>
+
+                  <Box
+                    mt={0.5}
+                    display="flex"
+                    justifyContent={isUser ? "flex-end" : "flex-start"}
+                    alignItems="center"
+                    gap={1}
+                  >
+                    <Typography variant="caption" color="text.secondary">
+                      {msg.channel} • {msg.created_at}
+                    </Typography>
+
+                    {msg.channel === "call" && (
+                      <CustomButton
+                        variant="outlined"
+                        size="small"
+                        padding="2px 6px"
+                        onClick={() => handleOpenModal(msg.provider_event_id)}
+                      >
+                        Call logs
+                      </CustomButton>
+                    )}
+                  </Box>
+                </Box>
               </Box>
             );
           })}

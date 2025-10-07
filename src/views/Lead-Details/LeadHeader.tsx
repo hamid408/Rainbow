@@ -1,5 +1,5 @@
 "use client";
-import { Back, Cold, Urgent } from "@/src/assests/icons";
+import { Back, BackNew, Cold, Urgent } from "@/src/assests/icons";
 import {
   Box,
   Typography,
@@ -9,7 +9,10 @@ import {
   Avatar,
   CircularProgress,
   IconButton,
+  Paper,
+  Collapse,
 } from "@mui/material";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Refresh } from "@mui/icons-material";
@@ -17,6 +20,11 @@ import { getInitials } from "@/src/utils/GetInitials";
 import CustomButton from "@/src/components/common/CustomButton";
 import styles from "./style.module.scss";
 import { Edit } from "@mui/icons-material";
+import CustomFilterSelect from "@/src/components/common/CustomFilterSelect";
+import ActionsButton from "@/src/components/common/ActionsButton";
+import Summary from "./SummaryCard";
+import SummaryCard from "./SummaryCard";
+import CustomSelect from "@/src/components/common/CustomSelect";
 interface LeadHeaderProps {
   name: string;
   status: string;
@@ -50,46 +58,82 @@ const LeadHeader = ({
       setLoading(false);
     }, 2000);
   };
+  const actionsData = [
+    { label: "1", value: "once" },
+    { label: "2", value: "twice" },
+    { label: "3", value: "thrice" },
+  ];
+  const [actions, setActions] = React.useState("Actions");
+
   return (
     <>
       <Box className={styles.leadHeaderRoot}>
-        <Box className={styles.leadHeaderSecondRoot}>
+        <Stack className={styles.leadHeaderSecondRoot}>
           {!hideBackButton && (
-            <Box className={styles.leadHeaderFirstRow}>
-              {/* <Back onClick={handleRouteBack} /> */}
-              <Back onClick={() => router.back()} />
+            <Box
+              className={styles.leadHeaderFirstRow}
+              onClick={() => router.back()}
+            >
+              <BackNew />
+              <Typography
+                variant="subtitle1"
+                fontSize={15}
+                fontWeight={400}
+                color="#0D0D12"
+              >
+                Back to my Inbox
+              </Typography>
             </Box>
           )}
 
-          <Avatar
-            className={styles.leadHeaderAvatar}
-            // sx={{
-            //   bgcolor: "#D9EFFF",
-            //   height: "60px",
-            //   width: "60px",
-            //   color: "#0062FF",
-
-            //   fontWeight: "600",
-            //   fontSize: "24px",
-            //   mb: 2,
-            // }}
-          >
-            {initials || "U"}
-          </Avatar>
+          {/* <Avatar className={styles.leadHeaderAvatar}>{initials || "U"}</Avatar> */}
           <Stack gap={1}>
-            <Typography className={styles.leadHeaderName}>{name}</Typography>
+            <Box
+              display={"flex"}
+              alignItems="center"
+              gap={1.5}
+              justifyContent={"space-between"}
+              width={"100%"}
+              // maxWidth={1200}
+            >
+              <Box display="flex" alignItems="center" gap={3.8}>
+                <Typography
+                  variant="h6"
+                  fontWeight={600}
+                  fontSize={23}
+                  color="#0D0D12"
+                >
+                  {name}
+                </Typography>
+                <Box display={"flex"} alignItems="center" gap={1}>
+                  <Box
+                    sx={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      bgcolor: "#D3C4FC",
+                    }}
+                  />
+                  <Typography
+                    variant="body2"
+                    color="#090909"
+                    fontSize={13}
+                    fontWeight={400}
+                  >
+                    {/* {status} */}
+                    AI is active
+                  </Typography>
+                </Box>
+              </Box>
 
-            <Chip
-              className={styles.leadHeaderChip}
-              label={status}
-              size="small"
-              icon={keyword === "hot" ? <Urgent /> : <Cold />}
-            />
+              <Box>
+                <ActionsButton />
+              </Box>
+            </Box>
           </Stack>
-        </Box>
-
+        </Stack>
         <Box className={styles.refreshEditBtn}>
-          <Box className={styles.refreshBtn}>
+          {/* <Box className={styles.refreshBtn}>
             <CustomButton
               variant="contained"
               onClick={handleRefreshClick}
@@ -101,9 +145,9 @@ const LeadHeader = ({
                 )
               }
             >
-              Refresh
+              RefreshL
             </CustomButton>
-          </Box>
+          </Box> */}
 
           <Box className={styles.editSlider}>
             <IconButton onClick={onEditClick} sx={{ color: "#0057b7" }}>
@@ -112,14 +156,9 @@ const LeadHeader = ({
           </Box>
         </Box>
       </Box>
-      <Divider className={styles.leadHeaderSlider} />
+      {/* <Divider className={styles.leadHeaderSlider} /> */}
     </>
   );
 };
 
 export default LeadHeader;
-
-
-
-
-

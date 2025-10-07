@@ -11,6 +11,7 @@ import styles from "./style.module.scss";
 import { useGetSuggestionsQuery } from "@/src/redux/services/conversation/conversationApi";
 import BotEmbed from "./BotEmbed";
 import CustomButton from "@/src/components/common/CustomButton";
+import SummaryCard from "./SummaryCard";
 
 const LeadDetails = ({
   leadId,
@@ -71,8 +72,15 @@ const LeadDetails = ({
         hideBackButton={hideBackButton}
         onRefreshClick={handleRefreshClick}
       />
+
       <Box className={styles.indexSecondaryBox}>
         <Box className={styles.indexLastBox}>
+          <Box mt={2 }>
+            <SummaryCard
+              summary="Danielle asked if it’s possible to combine Catholic and Buddhist traditions for her mother’s service."
+              flaggedText="AI paused to flag this as a sensitive question."
+            />
+          </Box>
           <LeadChatSection
             refreshTrigger={refreshChat}
             leadId={leadId}
