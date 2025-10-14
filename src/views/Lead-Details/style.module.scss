@@ -129,7 +129,7 @@
   padding: 32px;
   background-color: #fff;
   border-left: 1px solid #dfe1e7;
-  margin-top: -40%;
+  // margin-top: -40%;
 
   @media (max-width: 1000px) {
     margin-top: 0;
@@ -684,6 +684,7 @@
 }
 
 .refreshEditBtn {
+  margin-top: 12px;
   @media (max-width: 1000px) {
     display: flex;
     // justify-content: space-between;

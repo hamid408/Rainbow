@@ -11,7 +11,7 @@ const CommunicationRow = ({
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/dashboard/cca9d275-53d3-4c80-8ec6-ec3df34ed2ce?page=1`);
+    // router.push(`/dashboard/cca9d275-53d3-4c80-8ec6-ec3df34ed2ce?page=1`);
   };
   return (
     <div

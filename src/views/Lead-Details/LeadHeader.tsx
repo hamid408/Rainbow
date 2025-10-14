@@ -133,7 +133,7 @@ const LeadHeader = ({
           </Stack>
         </Stack>
         <Box className={styles.refreshEditBtn}>
-          {/* <Box className={styles.refreshBtn}>
+          <Box className={styles.refreshBtn}>
             <CustomButton
               variant="contained"
               onClick={handleRefreshClick}
@@ -147,7 +147,7 @@ const LeadHeader = ({
             >
               RefreshL
             </CustomButton>
-          </Box> */}
+          </Box>
 
           <Box className={styles.editSlider}>
             <IconButton onClick={onEditClick} sx={{ color: "#0057b7" }}>
