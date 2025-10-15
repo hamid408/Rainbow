@@ -26,7 +26,7 @@ export const campaignApi = createApi({
     }),
     getLeadsReachOutLeads: builder.query<
       any,
-      { page: number; page_size: number; name?: string }
+      { page?: number; page_size?: number; name?: string }
     >({
       query: ({ page, page_size, name = "" }) =>
         `/campaign/outreach?page=${page}&page_size=${page_size}&name=${name}`,

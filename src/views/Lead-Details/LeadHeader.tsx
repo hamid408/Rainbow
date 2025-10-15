@@ -1,30 +1,22 @@
 "use client";
-import { Back, BackNew, Cold, Urgent } from "@/src/assests/icons";
+import { BackNew } from "@/src/assests/icons";
 import {
   Box,
   Typography,
-  Chip,
   Stack,
-  Divider,
-  Avatar,
   CircularProgress,
   IconButton,
-  Paper,
-  Collapse,
 } from "@mui/material";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Refresh } from "@mui/icons-material";
 import { getInitials } from "@/src/utils/GetInitials";
 import CustomButton from "@/src/components/common/CustomButton";
 import styles from "./style.module.scss";
 import { Edit } from "@mui/icons-material";
-import CustomFilterSelect from "@/src/components/common/CustomFilterSelect";
 import ActionsButton from "@/src/components/common/ActionsButton";
-import Summary from "./SummaryCard";
-import SummaryCard from "./SummaryCard";
-import CustomSelect from "@/src/components/common/CustomSelect";
+
 interface LeadHeaderProps {
   name: string;
   status: string;
@@ -133,7 +125,7 @@ const LeadHeader = ({
           </Stack>
         </Stack>
         <Box className={styles.refreshEditBtn}>
-          {/* <Box className={styles.refreshBtn}>
+          <Box className={styles.refreshBtn}>
             <CustomButton
               variant="contained"
               onClick={handleRefreshClick}
@@ -145,9 +137,9 @@ const LeadHeader = ({
                 )
               }
             >
-              RefreshL
+              Refresh
             </CustomButton>
-          </Box> */}
+          </Box>
 
           <Box className={styles.editSlider}>
             <IconButton onClick={onEditClick} sx={{ color: "#0057b7" }}>

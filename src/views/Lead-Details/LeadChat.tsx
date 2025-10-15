@@ -120,13 +120,14 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
       <Avatar
         sx={{
           bgcolor: "#D9EFFF",
-          height: "60px",
-          width: "60px",
+          height: "40px",
+          width: "40px",
           color: "#0062FF",
 
           fontWeight: "600",
-          fontSize: "24px",
+          fontSize: "16px",
           mb: 2,
+          mr: 1.4,
         }}
       >
         {initials || "U"}
@@ -206,16 +207,17 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
               msg.sender_name === "Campaign Drip" ||
               msg.sender_name?.includes("AI Assistant");
             const isUser = !isBot;
+            const isLead = msg.direction === "inbound";
 
             return (
               <Box
                 key={index}
                 display="flex"
-                justifyContent={isUser ? "flex-end" : "flex-start"}
+                justifyContent={isLead ? "flex-end" : "flex-start"}
                 mb={2.5}
                 alignItems="flex-end"
               >
-                {!isUser && (
+                {!isUser ? (
                   <Avatar sx={{ bgcolor: "#EDE7F6", mr: 2, mb: 3 }}>
                     <Image
                       src={AvatarPic}
@@ -224,6 +226,8 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                       height={40}
                     />
                   </Avatar>
+                ) : (
+                  renderUserAvatar(msg.sender_name)
                 )}
 
                 <Box maxWidth="70%">
@@ -232,17 +236,19 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                     sx={{
                       p: 2,
                       borderRadius: 3,
-                      borderTopLeftRadius: isUser ? 12 : 0,
-                      borderTopRightRadius: isUser ? 0 : 12,
-                      bgcolor: isUser ? "#624AA6" : "#fff",
-                      color: isUser ? "#fff" : "#333",
+                      borderTopLeftRadius: isLead ? 12 : 0,
+                      borderTopRightRadius: isLead ? 0 : 12,
+                      // bgcolor: isUser ? "#624AA6" : "#fff",
+                      bgcolor: isLead ? "#624AA6" : "#fff",
+
+                      color: isLead ? "#fff" : isUser ? "#333" : "#fff",
                     }}
                   >
                     <Typography
                       variant="body2"
                       fontSize={14}
                       fontWeight={400}
-                      color={isUser ? "#fff" : "#000"}
+                      color={isLead ? "#fff" : "#000"}
                     >
                       {msg.content}
                     </Typography>
@@ -251,7 +257,7 @@ const LeadChatSection = ({ refreshTrigger, leadId, userName }: any) => {
                   <Box
                     mt={0.5}
                     display="flex"
-                    justifyContent={isUser ? "flex-end" : "flex-start"}
+                    justifyContent={isLead ? "flex-end" : "flex-start"}
                     alignItems="center"
                     gap={1}
                   >

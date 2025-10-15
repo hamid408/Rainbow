@@ -15,6 +15,8 @@ import {
 import IconChip from "@/src/components/common/CustomChip";
 import { Plus } from "@/src/assests/icons";
 import { useGetLeadsReachOutLeadsQuery } from "@/src/redux/services/campagin/campaignApi";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 const initialData = [
   {
@@ -57,11 +59,19 @@ const allTags = [
   "Community Event Lead",
 ];
 
-const CommunicationList = () => {
+const CommunicationList = ({
+  leadsData,
+  isFetching,
+  isLoading,
+  isError,
+}: any) => {
   const [search, setSearch] = useState("");
   const [checkedItems, setCheckedItems] = useState<any>({});
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const searchParams = useSearchParams();
+
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
 
   const handleCheck = (name: any) => {
     setCheckedItems((prev: any) => ({
@@ -88,11 +98,11 @@ const CommunicationList = () => {
     setSelectedTags([]);
   };
 
-  const filteredData = initialData.filter(
-    (item) =>
-      item.name.toLowerCase().includes(search.toLowerCase()) &&
+  const filteredData = (leadsData || []).filter(
+    (item: any) =>
+      item.lead_name?.toLowerCase().includes(search.toLowerCase()) &&
       (selectedTags.length === 0 ||
-        selectedTags.every((tag) => item.tags.includes(tag)))
+        selectedTags.every((tag) => item.tags?.includes(tag)))
   );
 
   return (
@@ -134,8 +144,8 @@ const CommunicationList = () => {
         marginTop={2.3}
         flexWrap={"wrap"}
       >
-        <IconChip label="Creation Date" icon={<Plus />} color="#656565" />
-        <IconChip label="Last Response Date" icon={<Plus />} color="#656565" />
+        {/* <IconChip label="Creation Date" icon={<Plus />} color="#656565" />
+        <IconChip label="Last Response Date" icon={<Plus />} color="#656565" /> */}
 
         {/* Tag Dropdown */}
         <div onClick={handleTagClick}>
@@ -154,7 +164,7 @@ const CommunicationList = () => {
           ))}
         </Menu>
 
-        <IconChip label="Source" icon={<Plus />} color="#656565" />
+        {/* <IconChip label="Source" icon={<Plus />} color="#656565" /> */}
       </Box>
 
       {/* Selected Tags Row */}
@@ -239,21 +249,50 @@ const CommunicationList = () => {
         }}
       >
         {/* <input type="checkbox" style={{ marginRight: "12px" }} disabled /> */}
-        <div style={{ flex: 0.5, padding: "0 8px" }}>Name</div>
+        <div style={{ flex: 0.6, padding: "0 8px" }}>Name</div>
         <div style={{ flex: 1, padding: "0 8px" }}>Status</div>
         <div style={{ flex: 1, padding: "0 8px" }}>Action Item</div>
       </Box>
-
-      {filteredData.map((item) => (
-        <CommunicationRow
-          key={item.name}
-          name={item.name}
-          status={item.status}
-          actionItem={item.actionItem}
-          checked={!!checkedItems[item.name]}
-          onCheck={() => handleCheck(item.name)}
-        />
-      ))}
+      {isLoading || isFetching ? (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="300px"
+        >
+          <CircularProgress size={40} />
+        </Box>
+      ) : isError ? (
+        <Typography variant="body1" color="error" textAlign="center" mt={3}>
+          Failed to load leads. Please try again.
+        </Typography>
+      ) : filteredData.length === 0 ? (
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          textAlign="center"
+          mt={3}
+        >
+          No leads found.
+        </Typography>
+      ) : (
+        filteredData.map((item: any) => (
+          <Link
+            key={item.lead_id}
+            href={`/dashboard/${item.lead_id}?page=${page}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <CommunicationRow
+              key={item.lead_id}
+              name={item.lead_name}
+              status={item.action_status || "oi"}
+              actionItem={item.action_item}
+              checked={!!checkedItems[item.lead_id]}
+              onCheck={() => handleCheck(item.lead_id)}
+            />
+          </Link>
+        ))
+      )}
     </Box>
   );
 };
