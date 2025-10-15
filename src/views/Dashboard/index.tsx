@@ -3,15 +3,18 @@ import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import CustomTabs from "@/src/components/common/CustomTabs";
 import AddLeadModal from "./AddLeadModal";
-import { useGetLeadsQuery } from "@/src/redux/services/leads/leadsApi";
+import {
+  useGetLeadsActionQuery,
+  useGetLeadsQuery,
+} from "@/src/redux/services/leads/leadsApi";
 import { useDebounce } from "use-debounce";
 import CustomPagination from "@/src/components/common/CustomPagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
 import Cookies from "js-cookie";
 import CustomFilterSelect from "@/src/components/common/CustomFilterSelect";
-import AwaitingReplyList from "../New-Dashboard/AwaitingReplyList";
-import InboxDashboard from "../New-Dashboard/Inbox";
+import AwaitingReplyList from "./New-Features/AwaitingReplyList";
+import CommunicationList from "./New-Features/CommunicationList";
 
 const Dashboard = () => {
   const searchParams = useSearchParams();
@@ -42,7 +45,24 @@ const Dashboard = () => {
         refetchOnMountOrArgChange: true,
       }
     );
-
+  const {
+    data: actionData,
+    isLoading: isActionLoading,
+    isFetching: isActionFetching,
+    refetch: ActionRefetch,
+    isError: isActionError,
+    error: actionError,
+  } = useGetLeadsActionQuery(
+    {
+      tag: isAll ? undefined : activeTab,
+      limit: ITEMS_PER_PAGE,
+      offset,
+      name: debouncedSearch?.trim() || undefined,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
   const pathname = usePathname();
 
   useEffect(() => {
@@ -62,9 +82,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     refetch();
+    ActionRefetch();
   }, []);
 
   const leads = data?.data || [];
+  const actionLeads = Array.isArray(actionData)
+    ? actionData
+    : actionData?.data || [];
   const totalCount = data?.total_records || 0;
 
   useEffect(() => {
@@ -102,6 +126,7 @@ const Dashboard = () => {
       : leads.filter((lead: any) =>
           selectedTags.every((tag) => lead.tags?.includes(tag))
         );
+
   return (
     <Box>
       <>
@@ -119,7 +144,7 @@ const Dashboard = () => {
           <CustomTabs
             tabs={[
               { label: "All Leads", count: filteredData.length },
-              { label: "Action Needed", count: 4 },
+              { label: "Action Needed", count: actionLeads.length },
             ]}
             onTabChange={(tab) => setSelectedTab(tab)}
           />
@@ -131,9 +156,18 @@ const Dashboard = () => {
                 isLoading={isLoading}
                 isFetching={isFetching}
                 isError={isError}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
               />
             )}
-            {selectedTab === "Action Needed" && <InboxDashboard />}
+            {selectedTab === "Action Needed" && (
+              <CommunicationList
+                leadsData={actionLeads}
+                isLoading={isActionLoading}
+                isFetching={isActionFetching}
+                isError={isActionError}
+              />
+            )}
           </Box>
         </Box>
       </>

@@ -14,9 +14,9 @@ import {
 import IconChip from "@/src/components/common/CustomChip";
 import { Plus } from "@/src/assests/icons";
 import { useGetLeadsQuery } from "@/src/redux/services/leads/leadsApi";
-import CommunicationRow from "./Inbox/CommunicationRow";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import CommunicationRow from "./CommunicationRow";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -33,12 +33,23 @@ const allTags = [
   "Community Event Lead",
 ];
 
-const AwaitingReplyList = ({
+type AwaitingReplyListProps = {
+  leadsData: any;
+  isLoading: boolean;
+  isFetching: boolean;
+  isError: boolean;
+  searchQuery: string;
+  setSearchQuery: (val: string) => void;
+};
+
+const AwaitingReplyList: React.FC<AwaitingReplyListProps> = ({
   leadsData,
   isLoading,
   isFetching,
   isError,
-}: any) => {
+  searchQuery,
+  setSearchQuery,
+}) => {
   const [search, setSearch] = useState("");
   const [checkedItems, setCheckedItems] = useState<any>({});
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -49,18 +60,6 @@ const AwaitingReplyList = ({
   const searchParams = useSearchParams();
 
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
-  // const { data, isLoading, isFetching, isError, error, refetch } =
-  //   useGetLeadsQuery(
-  //     {
-  //       tag: isAll ? undefined : activeTab,
-  //       limit: ITEMS_PER_PAGE,
-  //       offset,
-  //       name: search.trim() || undefined,
-  //     },
-  //     { refetchOnMountOrArgChange: true }
-  //   );
-
-  // const leads = data?.data || [];
 
   const handleCheck = (name: any) => {
     setCheckedItems((prev: any) => ({
@@ -105,12 +104,10 @@ const AwaitingReplyList = ({
           gap={1}
         >
           <CustomSearchField
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            endIcon={<Search />}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
             style={styles.search}
-            startIcon={<Search />}
           />
           <Typography
             variant="subtitle1"
@@ -126,7 +123,6 @@ const AwaitingReplyList = ({
 
         <Divider />
 
-        {/* 🏷️ Filter Chips */}
         <Box
           display={"flex"}
           gap={1.5}
@@ -136,14 +132,6 @@ const AwaitingReplyList = ({
           marginTop={2.3}
           flexWrap={"wrap"}
         >
-          <IconChip label="Creation Date" icon={<Plus />} color="#656565" />
-          <IconChip
-            label="Last Response Date"
-            icon={<Plus />}
-            color="#656565"
-          />
-
-          {/* Tag Dropdown */}
           <div onClick={handleTagClick}>
             <IconChip label="Tag" icon={<Plus />} color="#656565" />
           </div>
@@ -159,11 +147,8 @@ const AwaitingReplyList = ({
               </MenuItem>
             ))}
           </Menu>
-
-          <IconChip label="Source" icon={<Plus />} color="#656565" />
         </Box>
 
-        {/* 🏷️ Selected Tags Display */}
         {selectedTags.length > 0 && (
           <Box
             display="flex"
@@ -218,26 +203,54 @@ const AwaitingReplyList = ({
             backgroundColor: "#fafafa",
           }}
         >
-          <div style={{ flex: 0.5, padding: "0 8px" }}>Name</div>
+          <div style={{ flex: 1, padding: "0 8px" }}>Name</div>
+          <div style={{ flex: 1, padding: "0 8px" }}>Email</div>
           <div style={{ flex: 1, padding: "0 8px" }}>Status</div>
-          <div style={{ flex: 1, padding: "0 8px" }}>Action Item</div>
+          <div style={{ flex: 1, padding: "0 8px" }}>Inquiry Type</div>
         </Box>
 
-        {filteredData.map((item: any) => (
-          <Link
-            key={item.lead_id}
-            href={`/dashboard/${item.lead_id}?page=${page}`}
-            style={{ textDecoration: "none" }}
+        {isLoading || isFetching ? (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="300px"
           >
-            <CommunicationRow
-              name={`${item.first_name || ""} ${item.last_name || ""}`}
-              status={item.inquiry_status || "—"}
-              actionItem={item.inquiry_type || item.content || "—"}
-              checked={!!checkedItems[item.lead_id]}
-              onCheck={() => handleCheck(item.lead_id)}
-            />
-          </Link>
-        ))}
+            <CircularProgress size={40} />
+          </Box>
+        ) : isError ? (
+          <Typography variant="body1" color="error" textAlign="center" m={3}>
+            Failed to load leads. Please try again.
+          </Typography>
+        ) : filteredData.length === 0 ? (
+          <Typography
+            variant="body1"
+            color="textSecondary"
+            textAlign="center"
+            m={3}
+          >
+            No leads found.
+          </Typography>
+        ) : (
+          filteredData.map((item: any) => (
+            <Link
+              key={item.lead_id}
+              href={`/dashboard/${item.lead_id}?page=${page}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <CommunicationRow
+                name={`${item.lead_name || item.first_name || ""} ${
+                  item.last_name || ""
+                }`}
+                email={item.email || "—"}
+                status={item.inquiry_status || "—"}
+                inquiry_type={item.inquiry_type || item.content || "—"}
+                checked={!!checkedItems[item.lead_id]}
+                onCheck={() => handleCheck(item.lead_id)}
+              />
+            </Link>
+          ))
+        )}
       </Box>
     </>
   );

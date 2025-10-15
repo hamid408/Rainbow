@@ -77,6 +77,26 @@ export const leadsapi = createApi({
         body: { lead_id },
       }),
     }),
+    getLeadsAction: builder.query<
+      {
+        data: any[];
+        limit: number;
+        next_page: number | null;
+        prev_page: number | null;
+        returned_records: number;
+        total_records: number;
+      },
+      { tag?: string; limit?: number; offset?: number; name?: string }
+    >({
+      query: ({ tag, limit = 5, offset = 0, name }) => {
+        const params = new URLSearchParams();
+        if (tag && tag !== "All") params.append("tag", tag);
+        if (name) params.append("name", name);
+        params.append("limit", limit.toString());
+        params.append("offset", offset.toString());
+        return `leads/action_needed?${params.toString()}`;
+      },
+    }),
   }),
 });
 
@@ -88,4 +108,5 @@ export const {
   useGetLeadsEnumsQuery,
   useResolvedLeadMutation,
   useDeleteLeadMutation,
+  useGetLeadsActionQuery,
 } = leadsapi;

@@ -1,30 +1,22 @@
 "use client";
-import { Back, BackNew, Cold, Urgent } from "@/src/assests/icons";
+import { BackNew } from "@/src/assests/icons";
 import {
   Box,
   Typography,
-  Chip,
   Stack,
-  Divider,
-  Avatar,
   CircularProgress,
   IconButton,
-  Paper,
-  Collapse,
 } from "@mui/material";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Refresh } from "@mui/icons-material";
 import { getInitials } from "@/src/utils/GetInitials";
 import CustomButton from "@/src/components/common/CustomButton";
 import styles from "./style.module.scss";
 import { Edit } from "@mui/icons-material";
-import CustomFilterSelect from "@/src/components/common/CustomFilterSelect";
 import ActionsButton from "@/src/components/common/ActionsButton";
-import Summary from "./SummaryCard";
-import SummaryCard from "./SummaryCard";
-import CustomSelect from "@/src/components/common/CustomSelect";
+
 interface LeadHeaderProps {
   name: string;
   status: string;
@@ -145,7 +137,7 @@ const LeadHeader = ({
                 )
               }
             >
-              RefreshL
+              Refresh
             </CustomButton>
           </Box>
 
