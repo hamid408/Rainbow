@@ -39,8 +39,13 @@ const CommunicationRow: React.FC<CommunicationRowProps> = ({
       <input
         type="checkbox"
         checked={checked}
-        onChange={onCheck}
+        // onChange={onCheck}
         style={styles.checkbox}
+        onChange={(e) => {
+          e.stopPropagation();
+          e.preventDefault(); 
+          onCheck?.();
+        }}
       />
       <div style={actionItem ? styles.cellNameNew : styles.cellName}>
         {name || "—"}

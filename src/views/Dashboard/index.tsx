@@ -27,7 +27,7 @@ const Dashboard = () => {
   const offset = (page - 1) * ITEMS_PER_PAGE;
   const isAll = activeTab === "All";
   const [allTags, setAllTags] = useState<string[]>([]);
-  const [selectedTab, setSelectedTab] = useState("All Leads");
+  const [selectedTab, setSelectedTab] = useState("Action Needed");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -143,13 +143,21 @@ const Dashboard = () => {
 
           <CustomTabs
             tabs={[
-              { label: "All Leads", count: filteredData.length },
               { label: "Action Needed", count: actionLeads.length },
+              { label: "All Leads", count: filteredData.length },
             ]}
             onTabChange={(tab) => setSelectedTab(tab)}
           />
 
           <Box marginTop={3}>
+            {selectedTab === "Action Needed" && (
+              <CommunicationList
+                leadsData={actionLeads}
+                isLoading={isActionLoading}
+                isFetching={isActionFetching}
+                isError={isActionError}
+              />
+            )}
             {selectedTab === "All Leads" && (
               <AwaitingReplyList
                 leadsData={leads}
@@ -158,14 +166,6 @@ const Dashboard = () => {
                 isError={isError}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
-              />
-            )}
-            {selectedTab === "Action Needed" && (
-              <CommunicationList
-                leadsData={actionLeads}
-                isLoading={isActionLoading}
-                isFetching={isActionFetching}
-                isError={isActionError}
               />
             )}
           </Box>
