@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import CustomFilterSelect from "@/src/components/common/CustomFilterSelect";
 import AwaitingReplyList from "./New-Features/AwaitingReplyList";
 import CommunicationList from "./New-Features/CommunicationList";
+import CustomButton from "@/src/components/common/CustomButton";
 
 const Dashboard = () => {
   const searchParams = useSearchParams();
@@ -140,14 +141,28 @@ const Dashboard = () => {
               onSelect={(item: any) => console.log(item)}
             />
           </Box>
-
-          <CustomTabs
-            tabs={[
-              { label: "Action Needed", count: actionLeads.length },
-              { label: "All Leads", count: filteredData.length },
-            ]}
-            onTabChange={(tab) => setSelectedTab(tab)}
-          />
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            mt={2}
+          >
+            <CustomTabs
+              tabs={[
+                { label: "Action Needed", count: actionLeads.length },
+                { label: "All Leads", count: filteredData.length },
+              ]}
+              onTabChange={(tab) => setSelectedTab(tab)}
+            />
+            <Box className={styles.shortText}>
+              <CustomButton
+                variant="contained"
+                onClick={() => setOpenModal(true)}
+              >
+                Add Lead
+              </CustomButton>
+            </Box>
+          </Box>
 
           <Box marginTop={3}>
             {selectedTab === "Action Needed" && (

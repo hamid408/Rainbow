@@ -23,8 +23,8 @@ const NewAiOutreach = () => {
   });
 
   const leads = data?.data || [];
+  console.log("Fetched Leads:", leads);
 
-  // 🔹 Filter by engagement status
   const engagedLeads = leads.filter((lead: any) => lead.engaging === true);
   const awaitingLeads = leads.filter((lead: any) => lead.engaging === false);
 
@@ -61,6 +61,7 @@ const NewAiOutreach = () => {
           </Typography>
         ) : (
           <AiReachList list={currentList} />
+          // <div>ok</div>
         )}
       </Box>
     </Box>

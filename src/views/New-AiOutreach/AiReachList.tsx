@@ -36,9 +36,13 @@ const AiReachList = ({ list }: any) => {
   };
 
   // 🔹 Filter search locally
-  const filteredList = list.filter((item: any) =>
-    item.lead_name.toLowerCase().includes(search.toLowerCase())
-  );
+ // 🔹 Filter search locally (safe for null)
+const filteredList = list.filter((item: any) =>
+  (item.lead_name || "")
+    .toLowerCase()
+    .includes(search.toLowerCase())
+);
+
 
   return (
     <Box style={styles.container}>

@@ -36,7 +36,7 @@ const CommunicationRow: React.FC<CommunicationRowProps> = ({
       className="row"
       onClick={handleClick}
     >
-      <input
+      {/* <input
         type="checkbox"
         checked={checked}
         // onChange={onCheck}
@@ -46,6 +46,17 @@ const CommunicationRow: React.FC<CommunicationRowProps> = ({
           e.preventDefault(); 
           onCheck?.();
         }}
+      /> */}
+      <input
+        type="checkbox"
+        checked={!!checked}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        onChange={() => {
+          onCheck?.();
+        }}
+        style={styles.checkbox}
       />
       <div style={actionItem ? styles.cellNameNew : styles.cellName}>
         {name || "—"}
