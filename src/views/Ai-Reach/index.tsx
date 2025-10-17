@@ -36,7 +36,7 @@ const AiReach = () => {
   console.log("Campaign Data:", data?.data);
   return (
     <Box className={styles.indexRoot}>
-      <Box
+      {/* <Box
         display={"flex"}
         justifyContent="space-between"
         alignItems="center"
@@ -52,7 +52,7 @@ const AiReach = () => {
             setSearchQuery={setSearchQuery}
           />
         </Box>
-      </Box>
+      </Box> */}
 
       {isLoading ? (
         <CircularProgress />
@@ -75,7 +75,7 @@ const AiReach = () => {
                   leadId={contact.lead_id}
                   campaignId={contact.campaign?.id}
                   refetchCampaigns={refetch}
-                /> 
+                />
 
                 <Divider className={styles.divider} />
 

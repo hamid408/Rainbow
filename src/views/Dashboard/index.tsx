@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import CustomFilterSelect from "@/src/components/common/CustomFilterSelect";
 import AwaitingReplyList from "./New-Features/AwaitingReplyList";
 import CommunicationList from "./New-Features/CommunicationList";
+import CustomButton from "@/src/components/common/CustomButton";
 
 const Dashboard = () => {
   const searchParams = useSearchParams();
@@ -135,29 +136,35 @@ const Dashboard = () => {
             <Typography variant="h4" fontSize={23} fontWeight={500}>
               My Inbox
             </Typography>
-            <CustomFilterSelect
+            {/* <CustomFilterSelect
               items={filterItems}
               onSelect={(item: any) => console.log(item)}
+            /> */}
+          </Box>
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            mt={2}
+          >
+            <CustomTabs
+              tabs={[
+                { label: "All Leads", count: filteredData.length },
+                { label: "Action Needed", count: actionLeads.length },
+              ]}
+              onTabChange={(tab) => setSelectedTab(tab)}
             />
+            <Box className={styles.shortText}>
+              <CustomButton
+                variant="contained"
+                onClick={() => setOpenModal(true)}
+              >
+                Add Lead
+              </CustomButton>
+            </Box>
           </Box>
 
-          <CustomTabs
-            tabs={[
-              { label: "Action Needed", count: actionLeads.length },
-              { label: "All Leads", count: filteredData.length },
-            ]}
-            onTabChange={(tab) => setSelectedTab(tab)}
-          />
-
           <Box marginTop={3}>
-            {selectedTab === "Action Needed" && (
-              <CommunicationList
-                leadsData={actionLeads}
-                isLoading={isActionLoading}
-                isFetching={isActionFetching}
-                isError={isActionError}
-              />
-            )}
             {selectedTab === "All Leads" && (
               <AwaitingReplyList
                 leadsData={leads}
@@ -166,6 +173,14 @@ const Dashboard = () => {
                 isError={isError}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
+              />
+            )}
+            {selectedTab === "Action Needed" && (
+              <CommunicationList
+                leadsData={actionLeads}
+                isLoading={isActionLoading}
+                isFetching={isActionFetching}
+                isError={isActionError}
               />
             )}
           </Box>

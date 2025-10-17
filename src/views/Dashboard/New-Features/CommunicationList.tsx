@@ -17,6 +17,7 @@ import { Plus } from "@/src/assests/icons";
 import { useGetLeadsReachOutLeadsQuery } from "@/src/redux/services/campagin/campaignApi";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useGetLeadsEnumsQuery } from "@/src/redux/services/leads/leadsApi";
 
 const initialData = [
   {
@@ -70,6 +71,8 @@ const CommunicationList = ({
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const searchParams = useSearchParams();
+  const { data: enumsData, refetch } = useGetLeadsEnumsQuery();
+  const tags = enumsData?.tags || [];
 
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
 
@@ -156,7 +159,7 @@ const CommunicationList = ({
           open={Boolean(anchorEl)}
           onClose={handleTagClose}
         >
-          {allTags.map((tag) => (
+          {tags.map((tag: string) => (
             <MenuItem key={tag} onClick={() => handleTagSelect(tag)}>
               <Checkbox checked={selectedTags.includes(tag)} />
               <ListItemText primary={tag} />
@@ -164,36 +167,9 @@ const CommunicationList = ({
           ))}
         </Menu>
 
-        {/* <IconChip label="Source" icon={<Plus />} color="#656565" /> */}
       </Box>
 
-      {/* Selected Tags Row */}
-      {/* {selectedTags.length > 0 && (
-        <Box
-          display="flex"
-          alignItems="center"
-          gap={1.5}
-          marginLeft={2.3}
-          marginBottom={2}
-        >
-          {selectedTags.map((tag) => (
-            <IconChip
-              key={tag}
-              label={tag}
-              color="#4a4a4a"
-              onDelete={() => handleTagSelect(tag)}
-            />
-          ))}
-          <Typography
-            variant="body2"
-            color="primary"
-            style={{ cursor: "pointer" }}
-            onClick={clearAllTags}
-          >
-            Clear all
-          </Typography>
-        </Box>
-      )} */}
+     
       {/* Selected Tags Row */}
       {selectedTags.length > 0 && (
         <Box

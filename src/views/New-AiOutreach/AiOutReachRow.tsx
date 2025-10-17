@@ -10,8 +10,8 @@ const AiOutReachRow = ({ name, status, checked, onCheck }: any) => {
           onChange={onCheck}
           style={styles.checkbox}
         />
-        <div style={styles.cellName}>{name}</div>
-        <div style={styles.cell}>{status}</div>
+        <div style={styles.cellName}>{name || "N/A"}</div>
+        <div style={styles.cell}>{status || "N/A"}</div>
         {/* <div style={styles.cell}>{actionItem}</div> */}
       </div>
     </>
