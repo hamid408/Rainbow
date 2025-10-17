@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommunicationRow from "./CommunicationRow";
 import CustomSearchField from "@/src/components/common/CustomSearch";
 import { Search } from "@mui/icons-material";
@@ -19,34 +19,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useGetLeadsEnumsQuery } from "@/src/redux/services/leads/leadsApi";
 
-const initialData = [
-  {
-    name: "James Carter",
-    status: "AI attempted live transfer, but your office did not answer.",
-    actionItem: "Please return call or reschedule transfer.",
-    tags: ["High Priority", "Price Inquiry"],
-  },
-  {
-    name: "Maria Lopez",
-    status: "AI successfully connected live call. Conversation held on 09/27.",
-    actionItem: "Review notes and follow up with family as needed.",
-    tags: ["Pre-Need"],
-  },
-  {
-    name: "Danielle Patel",
-    status:
-      "Family asked if Catholic and Buddhist traditions can be combined. AI paused outreach pending your input.",
-    actionItem: "Review AI draft reply or respond directly to family.",
-    tags: ["Aftercare"],
-  },
-  {
-    name: "Homie Lopez",
-    status: "AI successfully connected live call. Conversation held on 09/27.",
-    actionItem: "Review notes and follow up with family as needed.",
-    tags: ["Referral"],
-  },
-];
-
 const allTags = [
   "High Priority",
   "Price Inquiry",
@@ -60,19 +32,35 @@ const allTags = [
   "Community Event Lead",
 ];
 
-const CommunicationList = ({
+type AwaitingReplyListProps = {
+  leadsData: any;
+  isLoading: boolean;
+  isFetching: boolean;
+  isError: boolean;
+  searchQuery: string;
+  setSearchQuery: (val: string) => void;
+
+  selectedTags: string[];
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+const CommunicationList: React.FC<AwaitingReplyListProps> = ({
   leadsData,
-  isFetching,
   isLoading,
+  isFetching,
   isError,
-}: any) => {
+  searchQuery,
+  setSearchQuery,
+  selectedTags,
+  setSelectedTags,
+}) => {
   const [search, setSearch] = useState("");
   const [checkedItems, setCheckedItems] = useState<any>({});
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const searchParams = useSearchParams();
   const { data: enumsData, refetch } = useGetLeadsEnumsQuery();
   const tags = enumsData?.tags || [];
+  console.log("data", tags);
 
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
 
@@ -96,17 +84,13 @@ const CommunicationList = ({
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
-
+ 
   const clearAllTags = () => {
     setSelectedTags([]);
   };
 
-  const filteredData = (leadsData || []).filter(
-    (item: any) =>
-      item.lead_name?.toLowerCase().includes(search.toLowerCase()) &&
-      (selectedTags.length === 0 ||
-        selectedTags.every((tag) => item.tags?.includes(tag)))
-  );
+  const filteredData = leadsData || [];
+
 
   return (
     <Box style={styles.container}>
@@ -117,12 +101,10 @@ const CommunicationList = ({
         gap={1}
       >
         <CustomSearchField
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          endIcon={<Search />}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
           style={styles.search}
-          startIcon={<Search />}
         />
         <Typography
           variant="subtitle1"
@@ -147,10 +129,8 @@ const CommunicationList = ({
         marginTop={2.3}
         flexWrap={"wrap"}
       >
-        {/* <IconChip label="Creation Date" icon={<Plus />} color="#656565" />
-        <IconChip label="Last Response Date" icon={<Plus />} color="#656565" /> */}
+        {/* <IconChip label="Creation Date" icon={<Plus />} color="#656565" /> */}
 
-        {/* Tag Dropdown */}
         <div onClick={handleTagClick}>
           <IconChip label="Tag" icon={<Plus />} color="#656565" />
         </div>
@@ -166,10 +146,8 @@ const CommunicationList = ({
             </MenuItem>
           ))}
         </Menu>
-
       </Box>
 
-     
       {/* Selected Tags Row */}
       {selectedTags.length > 0 && (
         <Box
@@ -241,6 +219,15 @@ const CommunicationList = ({
       ) : isError ? (
         <Typography variant="body1" color="error" textAlign="center" mt={3}>
           Failed to load leads. Please try again.
+        </Typography>
+      ) : filteredData.length === 0 ? (
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          textAlign="center"
+          m={3}
+        >
+          No leads found.
         </Typography>
       ) : filteredData.length === 0 ? (
         <Typography

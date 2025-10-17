@@ -28,19 +28,28 @@ const Dashboard = () => {
   const offset = (page - 1) * ITEMS_PER_PAGE;
   const isAll = activeTab === "All";
   const [allTags, setAllTags] = useState<string[]>([]);
-  const [selectedTab, setSelectedTab] = useState("Action Needed");
+  const [selectedTab, setSelectedTab] = useState("All Leads");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedActionTags, setSelectedActionTags] = useState<string[]>([]);
+  const [sortOrder, setSortOrder] = useState<"ASC" | "DESC">("DESC");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch] = useDebounce(searchQuery, 1000);
+  const pathname = usePathname();
+
+  const isAllLeadsTab = selectedTab === "All Leads";
+  const isActionNeededTab = selectedTab === "Action Needed";
 
   const { data, isLoading, isFetching, refetch, isError, error } =
     useGetLeadsQuery(
       {
-        tag: isAll ? undefined : activeTab,
+        // tag: isAll ? undefined : activeTab,
+        tag: selectedTags.length > 0 ? selectedTags.join(",") : undefined,
+
         limit: ITEMS_PER_PAGE,
         offset,
         name: debouncedSearch?.trim() || undefined,
+        created_at: sortOrder,
       },
       {
         refetchOnMountOrArgChange: true,
@@ -55,7 +64,12 @@ const Dashboard = () => {
     error: actionError,
   } = useGetLeadsActionQuery(
     {
-      tag: isAll ? undefined : activeTab,
+      // tag: isAll ? undefined : activeTab,
+      tag:
+        selectedActionTags.length > 0
+          ? selectedActionTags.join(",")
+          : undefined,
+
       limit: ITEMS_PER_PAGE,
       offset,
       name: debouncedSearch?.trim() || undefined,
@@ -64,7 +78,6 @@ const Dashboard = () => {
       refetchOnMountOrArgChange: true,
     }
   );
-  const pathname = usePathname();
 
   useEffect(() => {
     if (
@@ -81,24 +94,12 @@ const Dashboard = () => {
     }
   }, [isError, error]);
 
-  useEffect(() => {
-    refetch();
-    ActionRefetch();
-  }, []);
-
   const leads = data?.data || [];
   const actionLeads = Array.isArray(actionData)
     ? actionData
     : actionData?.data || [];
   const totalCount = data?.total_records || 0;
-
-  useEffect(() => {
-    if (isAll && leads.length > 0) {
-      const tagSet = new Set(leads.map((lead: any) => lead.tag || "unTagged"));
-      setAllTags(["All", ...Array.from(tagSet)]);
-    }
-  }, [leads, isAll]);
-
+  
   const tags = useMemo(() => {
     const tagSet = new Set(leads.map((lead: any) => lead.tag || null));
     return ["All", ...Array.from(tagSet)];
@@ -112,6 +113,7 @@ const Dashboard = () => {
     setLoading(true);
     setTimeout(() => setLoading(false), 400);
   };
+
   if (pathname.match(/^\/dashboard\/[^\/]+$/)) {
     return null;
   }
@@ -173,6 +175,9 @@ const Dashboard = () => {
                 isError={isError}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
+                
               />
             )}
             {selectedTab === "Action Needed" && (
@@ -181,6 +186,10 @@ const Dashboard = () => {
                 isLoading={isActionLoading}
                 isFetching={isActionFetching}
                 isError={isActionError}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                selectedTags={selectedActionTags}
+                setSelectedTags={setSelectedActionTags}
               />
             )}
           </Box>
