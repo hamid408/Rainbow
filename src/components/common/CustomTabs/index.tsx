@@ -6,6 +6,7 @@ import styles from "./index.module.scss";
 export interface TabItem {
   label: string;
   icon?: React.ReactNode;
+  count?: number; // optional count
 }
 
 export interface CustomTabsProps {
@@ -34,11 +35,10 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
             key={index}
             onClick={() => handleTabClick(index)}
             startIcon={tab.icon}
-            // disableRipple
             sx={{
               textTransform: "none",
               fontWeight: activeIndex === index ? 600 : 400,
-              fontSize: 16,
+              fontSize: { xs: "11px", sm: "14px", md: "16px" },
               color: activeIndex === index ? activeColor : "#0D0D12",
               borderBottom: "3px solid",
               borderColor: activeIndex === index ? activeColor : "transparent",
@@ -48,8 +48,6 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
               backgroundColor: "transparent",
               "&:hover": {
                 color: activeColor,
-                // borderColor: activeColor,
-                // backgroundColor: "transparent",
                 fontWeight: "600",
               },
               "&:focus": {
@@ -60,7 +58,26 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
               },
             }}
           >
-            {tab.label}
+            <Box display="flex" alignItems="center" gap={1}>
+              {tab.label}
+              {tab.count !== undefined && (
+                <Box
+                  component="span"
+                  sx={{
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    borderRadius: "12px",
+                    px: "6px",
+                    py: "2px",
+                    backgroundColor:
+                      activeIndex === index ? "#F2E8FF" : "#F5F5F5",
+                    color: activeIndex === index ? activeColor : "#555",
+                  }}
+                >
+                  {tab.count}
+                </Box>
+              )}
+            </Box>
           </Button>
         ))}
       </Box>

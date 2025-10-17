@@ -36,7 +36,7 @@ import TickMark from "./TickMark.svg";
 import BigPause from "./BigPause.svg";
 import AssignAI from "./AssignAI.svg";
 import TakeOver from "./TakeOver.svg";
-import AfterTakeOver  from "./AfterTakeOver.svg";
+import AfterTakeOver from "./AfterTakeOver.svg";
 import Arrow from "./Arrow.svg";
 import EditPurple from "./EditPurple.svg";
 import ThumbsDown from "./ThumbsDown.svg";
@@ -47,9 +47,12 @@ import LargeUrgent from "./LargeUrgent.svg";
 // import AnalyticsActive from "./TaskActive.svg";
 import UserActive from "./UserActive.svg";
 import AIActive from "./AiReachActive.svg";
-import HotLeadsNormal from "./HotLeadsNormal.svg"
+import HotLeadsNormal from "./HotLeadsNormal.svg";
 import AnalyticsActive from "./AnalyticsActive.svg";
 import TaskActive from "./TaskActive.svg";
+import Filters from "./Filters.svg";
+import Plus from "./Plus.svg";
+import BackNew from "./BackNew.svg";
 export {
   LeadsIcon,
   UserIcon,
@@ -101,5 +104,7 @@ export {
   UserActive,
   AIActive,
   HotLeadsNormal,
-
+  Filters,
+  Plus,
+  BackNew,
 };

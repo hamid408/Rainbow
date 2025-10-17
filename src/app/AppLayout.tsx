@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Sidebar from "@/src/components/Sidebar";
 import { Box } from "@mui/material";
 import { Provider } from "react-redux";
 import { store } from "@/src/redux/store";
@@ -9,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Sidebar from "../components/Sidebar";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 

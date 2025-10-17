@@ -120,7 +120,7 @@ export default function CallModal({
       }
 
       // ✅ Success path
-      const message = response?.data?.message || "Call successfully initiated.";
+      const message = "Call successfully initiated.";
 
       toast.success(message);
       onClose();
