@@ -136,10 +136,10 @@ const Dashboard = () => {
             <Typography variant="h4" fontSize={23} fontWeight={500}>
               My Inbox
             </Typography>
-            <CustomFilterSelect
+            {/* <CustomFilterSelect
               items={filterItems}
               onSelect={(item: any) => console.log(item)}
-            />
+            /> */}
           </Box>
           <Box
             display={"flex"}
@@ -149,8 +149,8 @@ const Dashboard = () => {
           >
             <CustomTabs
               tabs={[
-                { label: "Action Needed", count: actionLeads.length },
                 { label: "All Leads", count: filteredData.length },
+                { label: "Action Needed", count: actionLeads.length },
               ]}
               onTabChange={(tab) => setSelectedTab(tab)}
             />
@@ -165,14 +165,6 @@ const Dashboard = () => {
           </Box>
 
           <Box marginTop={3}>
-            {selectedTab === "Action Needed" && (
-              <CommunicationList
-                leadsData={actionLeads}
-                isLoading={isActionLoading}
-                isFetching={isActionFetching}
-                isError={isActionError}
-              />
-            )}
             {selectedTab === "All Leads" && (
               <AwaitingReplyList
                 leadsData={leads}
@@ -181,6 +173,14 @@ const Dashboard = () => {
                 isError={isError}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
+              />
+            )}
+            {selectedTab === "Action Needed" && (
+              <CommunicationList
+                leadsData={actionLeads}
+                isLoading={isActionLoading}
+                isFetching={isActionFetching}
+                isError={isActionError}
               />
             )}
           </Box>

@@ -13,25 +13,28 @@ import {
 } from "@mui/material";
 import IconChip from "@/src/components/common/CustomChip";
 import { Plus } from "@/src/assests/icons";
-import { useGetLeadsQuery } from "@/src/redux/services/leads/leadsApi";
+import {
+  useGetLeadsEnumsQuery,
+  useGetLeadsQuery,
+} from "@/src/redux/services/leads/leadsApi";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import CommunicationRow from "./CommunicationRow";
 
 const ITEMS_PER_PAGE = 10;
 
-const allTags = [
-  "High Priority",
-  "Price Inquiry",
-  "Pre-Need",
-  "Aftercare",
-  "Bilingual Support",
-  "Veteran",
-  "Referral",
-  "Insurance Check",
-  "Meeting Scheduled",
-  "Community Event Lead",
-];
+// const allTags = [
+//   "High Priority",
+//   "Price Inquiry",
+//   "Pre-Need",
+//   "Aftercare",
+//   "Bilingual Support",
+//   "Veteran",
+//   "Referral",
+//   "Insurance Check",
+//   "Meeting Scheduled",
+//   "Community Event Lead",
+// ];
 
 type AwaitingReplyListProps = {
   leadsData: any;
@@ -58,9 +61,9 @@ const AwaitingReplyList: React.FC<AwaitingReplyListProps> = ({
   const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
   const [isAll, setIsAll] = useState(true);
   const searchParams = useSearchParams();
-
+  const { data: enumsData, refetch } = useGetLeadsEnumsQuery();
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
-
+  const tags = enumsData?.tags || [];
   const handleCheck = (name: any) => {
     setCheckedItems((prev: any) => ({
       ...prev,
@@ -140,7 +143,7 @@ const AwaitingReplyList: React.FC<AwaitingReplyListProps> = ({
             open={Boolean(anchorEl)}
             onClose={handleTagClose}
           >
-            {allTags.map((tag) => (
+            {enumsData.map((tag: any) => (
               <MenuItem key={tag} onClick={() => handleTagSelect(tag)}>
                 <Checkbox checked={selectedTags.includes(tag)} />
                 <ListItemText primary={tag} />

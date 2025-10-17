@@ -36,13 +36,10 @@ const AiReachList = ({ list }: any) => {
   };
 
   // 🔹 Filter search locally
- // 🔹 Filter search locally (safe for null)
-const filteredList = list.filter((item: any) =>
-  (item.lead_name || "")
-    .toLowerCase()
-    .includes(search.toLowerCase())
-);
-
+  // 🔹 Filter search locally (safe for null)
+  const filteredList = list.filter((item: any) =>
+    (item.lead_name || "").toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <Box style={styles.container}>
@@ -121,8 +118,8 @@ const filteredList = list.filter((item: any) =>
       {filteredList.map((item: any) => (
         <AiOutReachRow
           key={item.lead_id}
-          name={item.lead_name}
-          status={item.status}
+          name={item.lead_name || "N/A"}
+          status={item.status || "N/A"}
           checked={!!checkedItems[item.lead_id]}
           onCheck={() => handleCheck(item.lead_id)}
         />
