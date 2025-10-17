@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomSearchField from "@/src/components/common/CustomSearch";
 import { Search } from "@mui/icons-material";
 import {
@@ -23,18 +23,18 @@ import CommunicationRow from "./CommunicationRow";
 
 const ITEMS_PER_PAGE = 10;
 
-// const allTags = [
-//   "High Priority",
-//   "Price Inquiry",
-//   "Pre-Need",
-//   "Aftercare",
-//   "Bilingual Support",
-//   "Veteran",
-//   "Referral",
-//   "Insurance Check",
-//   "Meeting Scheduled",
-//   "Community Event Lead",
-// ];
+const allTags = [
+  "High Priority",
+  "Price Inquiry",
+  "Pre-Need",
+  "Aftercare",
+  "Bilingual Support",
+  "Veteran",
+  "Referral",
+  "Insurance Check",
+  "Meeting Scheduled",
+  "Community Event Lead",
+];
 
 type AwaitingReplyListProps = {
   leadsData: any;
@@ -43,6 +43,8 @@ type AwaitingReplyListProps = {
   isError: boolean;
   searchQuery: string;
   setSearchQuery: (val: string) => void;
+  selectedTags: string[];
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const AwaitingReplyList: React.FC<AwaitingReplyListProps> = ({
@@ -52,18 +54,24 @@ const AwaitingReplyList: React.FC<AwaitingReplyListProps> = ({
   isError,
   searchQuery,
   setSearchQuery,
+  selectedTags,
+  setSelectedTags,
 }) => {
   const [search, setSearch] = useState("");
   const [checkedItems, setCheckedItems] = useState<any>({});
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [offset, setOffset] = useState(0);
   const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
   const [isAll, setIsAll] = useState(true);
+
+
+
+
   const searchParams = useSearchParams();
   const { data: enumsData, refetch } = useGetLeadsEnumsQuery();
-  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const tags = enumsData?.tags || [];
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
+
   const handleCheck = (name: any) => {
     setCheckedItems((prev: any) => ({
       ...prev,
@@ -89,17 +97,15 @@ const AwaitingReplyList: React.FC<AwaitingReplyListProps> = ({
     setSelectedTags([]);
   };
 
-  const filteredData =
-    selectedTags.length === 0
-      ? leadsData
-      : leadsData.filter((lead: any) =>
-          selectedTags.every((tag) => lead.tags?.includes(tag))
-        );
+  const filteredData = leadsData || [];
+  useEffect(() => {
+    console.log("Updated leads from API:", leadsData);
+    console.log("Selected tags:", selectedTags);
+  }, [leadsData, selectedTags]);
 
   return (
     <>
       <Box style={styles.container}>
-        {/* 🔍 Search Bar */}
         <Box
           display="flex"
           justifyContent="space-between"
@@ -135,15 +141,18 @@ const AwaitingReplyList: React.FC<AwaitingReplyListProps> = ({
           marginTop={2.3}
           flexWrap={"wrap"}
         >
+     
+
           <div onClick={handleTagClick}>
             <IconChip label="Tag" icon={<Plus />} color="#656565" />
+           
           </div>
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleTagClose}
           >
-            {enumsData.map((tag: any) => (
+            {tags.map((tag: any) => (
               <MenuItem key={tag} onClick={() => handleTagSelect(tag)}>
                 <Checkbox checked={selectedTags.includes(tag)} />
                 <ListItemText primary={tag} />
@@ -235,7 +244,7 @@ const AwaitingReplyList: React.FC<AwaitingReplyListProps> = ({
             No leads found.
           </Typography>
         ) : (
-          filteredData.map((item: any) => (
+          leadsData.map((item: any) => (
             <Link
               key={item.lead_id}
               href={`/dashboard/${item.lead_id}?page=${page}`}
