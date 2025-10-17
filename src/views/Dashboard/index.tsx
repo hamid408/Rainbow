@@ -28,7 +28,7 @@ const Dashboard = () => {
   const offset = (page - 1) * ITEMS_PER_PAGE;
   const isAll = activeTab === "All";
   const [allTags, setAllTags] = useState<string[]>([]);
-  const [selectedTab, setSelectedTab] = useState("All Leads");
+  const [selectedTab, setSelectedTab] = useState("Action Needed");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedActionTags, setSelectedActionTags] = useState<string[]>([]);
   const [sortOrder, setSortOrder] = useState<"ASC" | "DESC">("DESC");
@@ -99,7 +99,7 @@ const Dashboard = () => {
     ? actionData
     : actionData?.data || [];
   const totalCount = data?.total_records || 0;
-  
+
   const tags = useMemo(() => {
     const tagSet = new Set(leads.map((lead: any) => lead.tag || null));
     return ["All", ...Array.from(tagSet)];
@@ -151,8 +151,8 @@ const Dashboard = () => {
           >
             <CustomTabs
               tabs={[
-                { label: "All Leads", count: filteredData.length },
                 { label: "Action Needed", count: actionLeads.length },
+                { label: "All Leads", count: filteredData.length },
               ]}
               onTabChange={(tab) => setSelectedTab(tab)}
             />
@@ -177,7 +177,6 @@ const Dashboard = () => {
                 setSearchQuery={setSearchQuery}
                 selectedTags={selectedTags}
                 setSelectedTags={setSelectedTags}
-                
               />
             )}
             {selectedTab === "Action Needed" && (
