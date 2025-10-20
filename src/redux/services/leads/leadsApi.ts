@@ -14,38 +14,25 @@ type LeadType = {
   is_mobile?: boolean;
   preferred_calling_window?: number[];
 };
+const is_human_intervention_required = {
+  intervention_required: false,
+  action_status: "Resolved via CRM",
+  action_item: "Marked as resolved in CRM",
+};
 export const leadsapi = createApi({
   reducerPath: "leadsApi",
   baseQuery: customBaseQuery,
 
   endpoints: (builder) => ({
-    // getLeads: builder.query<
-    //   {
-    //     data: any[];
-    //     limit: number;
-    //     next_page: number | null;
-    //     prev_page: number | null;
-    //     returned_records: number;
-    //     total_records: number;
-    //   },
-    //   { tag?: string; limit?: number; offset?: number; name?: string }
-    // >({
-    //   query: ({ tag, limit = 5, offset = 0, name }) => {
-    //     const params = new URLSearchParams();
-    //     if (tag && tag !== "All") params.append("tag", tag);
-    //     if (name) params.append("name", name);
-    //     params.append("limit", limit.toString());
-    //     params.append("offset", offset.toString());
-    //     return `leads?${params.toString()}`;
-    //   },
-    // }),
-
     getLeads: builder.query({
-      query: ({ tag, limit = 5, offset = 0, name, created_at }) => {
+      query: ({ tag, limit = 5, offset = 0, name, created_at, stage }) => {
         let url = `leads?limit=${limit}&offset=${offset}`;
         if (name) url += `&name=${name}`;
         if (created_at) url += `&created_at=${created_at}`;
-
+        if (stage) {
+          const stageValue = Array.isArray(stage) ? stage.join(",") : tag;
+          url += `&stage=${stage}`;
+        }
         if (tag && tag !== "All") {
           const tagValue = Array.isArray(tag) ? tag.join(",") : tag;
           url += `&tag=${tagValue}`;
@@ -76,12 +63,12 @@ export const leadsapi = createApi({
     }),
     resolvedLead: builder.mutation<
       any,
-      { lead_id: string; is_active: boolean }
+      { lead_id: string; is_human_intervention_required: any }
     >({
-      query: ({ lead_id, is_active }) => ({
+      query: ({ lead_id, is_human_intervention_required }) => ({
         url: `leads`,
         method: "PATCH",
-        body: { lead_id, is_active },
+        body: { lead_id, is_human_intervention_required },
       }),
     }),
     deleteLead: builder.mutation<any, { lead_id: string }>({
@@ -91,34 +78,17 @@ export const leadsapi = createApi({
         body: { lead_id },
       }),
     }),
-    // getLeadsAction: builder.query<
-    //   {
-    //     data: any[];
-    //     limit: number;
-    //     next_page: number | null;
-    //     prev_page: number | null;
-    //     returned_records: number;
-    //     total_records: number;
-    //   },
-    //   { tag?: string; limit?: number; offset?: number; name?: string }
-    // >({
-    //   query: ({ tag, limit = 5, offset = 0, name }) => {
-    //     const params = new URLSearchParams();
-    //     if (tag && tag !== "All") params.append("tag", tag);
-    //     if (name) params.append("name", name);
-    //     params.append("limit", limit.toString());
-    //     params.append("offset", offset.toString());
-    //     return `leads/action_needed?${params.toString()}`;
-    //   },
-    // }),
+
     getLeadsAction: builder.query({
-      query: ({ tag, limit = 5, offset = 0, name,created_at }) => {
+      query: ({ tag, limit = 5, offset = 0, name, created_at, stage }) => {
         let url = `leads/action_needed?limit=${limit}&offset=${offset}`;
         if (name) url += `&name=${name}`;
         if (created_at) url += `&created_at=${created_at}`;
-
+        if (stage) {
+          const stageValue = Array.isArray(stage) ? stage.join(",") : tag;
+          url += `&stage=${stage}`;
+        }
         if (tag && tag !== "All") {
-          // ✅ FIX HERE: convert to comma-separated values, not JSON
           const tagValue = Array.isArray(tag) ? tag.join(",") : tag;
           url += `&tag=${tagValue}`;
         }
