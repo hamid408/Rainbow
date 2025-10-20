@@ -26,7 +26,7 @@ export const sidebarButtons = [
 //   { label: "Admin Oversight", icon: UserIcon },
 // ];
 export const sidebarItems = [
-  { label: "Dashboard", icon: HotLeadsNormal, activeIcon: LeadsIcon }, // use same if no separate active version
+  { label: "My Inbox", icon: HotLeadsNormal, activeIcon: LeadsIcon }, // use same if no separate active version
   { label: "AI Outreach", icon: Aireach, activeIcon: AIActive },
   {
     label: "Tasks & Reminder",
@@ -43,7 +43,7 @@ export const sidebarItems = [
   { label: "Admin Oversight", icon: UserIcon, activeIcon: UserActive },
 ];
 export const sidebarItemsMobile = [
-  { label: "Dashboard", icon: HotLeadsNormal },
+  { label: "My Inbox", icon: HotLeadsNormal },
   { label: "AI Outreach", icon: Aireach },
   { label: "Tasks", icon: Tasks },
   { label: "Analytics", icon: Analytics },

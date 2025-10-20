@@ -34,7 +34,7 @@ const NewAiOutreach = () => {
     <Box padding={3}>
       <Box display="flex" justifyContent="space-between">
         <Typography variant="h4" fontSize={23} fontWeight={500}>
-          AI Inbox
+          AI Outreach
         </Typography>
         <CustomFilterSelect
           items={filterItems}
