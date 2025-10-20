@@ -330,7 +330,7 @@
 
 // export default Sidebar;
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import { Box, Tooltip, Typography } from "@mui/material";
 import { CircularProgress } from "@mui/material";
@@ -343,7 +343,7 @@ import {
 } from "./sidebarItem";
 import Logo from "../../assests/images/newlogo.jpg";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Logout, Password, VerifiedUserOutlined } from "@mui/icons-material";
 import { useLogOutMutation } from "@/src/redux/services/auth/authApi";
 // import { UserIcon } from "@/src/assests/icons";
@@ -360,7 +360,7 @@ const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("hot-leads");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-
+  const pathname = usePathname();
   // const handleLogOut = async () => {
   //   setLoading(true);
   //   try {
@@ -399,9 +399,17 @@ const Sidebar = () => {
     setActiveSidebarItem("Profile");
     router.push("/profile");
   };
+  useEffect(() => {
+    const activeItem = Object.keys(pathMap).find(
+      (label) => pathMap[label] === pathname
+    );
+    if (activeItem) {
+      setActiveSidebarItem(activeItem);
+    }
+  }, [pathname]);
 
   const pathMap: Record<string, string> = {
-    Dashboard: "/dashboard",
+    "My Inbox": "/dashboard",
     "AI Outreach": "/outreach",
     "Tasks & Reminder": "/tasks",
     Analytics: "/analytics",
