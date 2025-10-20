@@ -13,9 +13,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styles from "./style.module.scss";
 import Cookies from "js-cookie";
 import CustomFilterSelect from "@/src/components/common/CustomFilterSelect";
-import AwaitingReplyList from "./New-Features/AwaitingReplyList";
-import CommunicationList from "./New-Features/CommunicationList";
+import AwaitingReplyList from "./New-Features/AllLeadsList";
+import CommunicationList from "./New-Features/ActionNeededList";
 import CustomButton from "@/src/components/common/CustomButton";
+import AllLeadsList from "./New-Features/AllLeadsList";
+import ActionNeededList from "./New-Features/ActionNeededList";
 
 const Dashboard = () => {
   const searchParams = useSearchParams();
@@ -30,8 +32,16 @@ const Dashboard = () => {
   const [allTags, setAllTags] = useState<string[]>([]);
   const [selectedTab, setSelectedTab] = useState("Action Needed");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedStages, setSelectedStages] = useState<string[]>([]);
+  const [selectedActionStages, setSelectedActionStages] = useState<string[]>(
+    []
+  );
+
   const [selectedActionTags, setSelectedActionTags] = useState<string[]>([]);
   const [sortOrder, setSortOrder] = useState<"ASC" | "DESC">("DESC");
+  const [sortActionOrder, setSortActionOrder] = useState<"ASC" | "DESC">(
+    "DESC"
+  );
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch] = useDebounce(searchQuery, 1000);
@@ -50,6 +60,8 @@ const Dashboard = () => {
         offset,
         name: debouncedSearch?.trim() || undefined,
         created_at: sortOrder,
+        stage:
+          selectedStages.length > 0 ? selectedStages.join(",") : undefined,
       },
       {
         refetchOnMountOrArgChange: true,
@@ -64,7 +76,6 @@ const Dashboard = () => {
     error: actionError,
   } = useGetLeadsActionQuery(
     {
-      // tag: isAll ? undefined : activeTab,
       tag:
         selectedActionTags.length > 0
           ? selectedActionTags.join(",")
@@ -73,6 +84,11 @@ const Dashboard = () => {
       limit: ITEMS_PER_PAGE,
       offset,
       name: debouncedSearch?.trim() || undefined,
+      created_at: sortActionOrder,
+      stage:
+        selectedActionStages.length > 0
+          ? selectedActionStages.join(",")
+          : undefined,
     },
     {
       refetchOnMountOrArgChange: true,
@@ -168,7 +184,7 @@ const Dashboard = () => {
 
           <Box marginTop={3}>
             {selectedTab === "All Leads" && (
-              <AwaitingReplyList
+              <AllLeadsList
                 leadsData={leads}
                 isLoading={isLoading}
                 isFetching={isFetching}
@@ -177,10 +193,14 @@ const Dashboard = () => {
                 setSearchQuery={setSearchQuery}
                 selectedTags={selectedTags}
                 setSelectedTags={setSelectedTags}
+                sortOrder={sortOrder}
+                setSortOrder={setSortOrder}
+                selectedStages={selectedStages}
+                setSelectedStages={setSelectedStages}
               />
             )}
             {selectedTab === "Action Needed" && (
-              <CommunicationList
+              <ActionNeededList
                 leadsData={actionLeads}
                 isLoading={isActionLoading}
                 isFetching={isActionFetching}
@@ -189,6 +209,10 @@ const Dashboard = () => {
                 setSearchQuery={setSearchQuery}
                 selectedTags={selectedActionTags}
                 setSelectedTags={setSelectedActionTags}
+                sortOrder={sortActionOrder}
+                setSortOrder={setSortActionOrder}
+                selectedStages={selectedActionStages}
+                setSelectedStages={setSelectedActionStages}
               />
             )}
           </Box>
