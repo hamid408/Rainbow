@@ -87,7 +87,11 @@ const ChatInputBox = ({
     try {
       await resolveLead({
         lead_id: leadId,
-        is_active: false,
+        is_human_intervention_required: {
+          intervention_required: false,
+          action_status: "Resolved via CRM",
+          action_item: "Marked as resolved in CRM",
+        },
       }).unwrap();
       toast.success("Lead marked resolved!");
       setIsConfirmOpen(false);
@@ -216,7 +220,7 @@ const ChatInputBox = ({
       >
         <DialogTitle sx={{ fontSize: "18px", fontWeight: 500, pb: 0 }}>
           <Typography variant="h6" fontWeight={600} mb={2}>
-            Are you sure you want to deactivate this lead?
+            Have you resolved the issue with this lead?
           </Typography>
         </DialogTitle>
 
@@ -248,7 +252,7 @@ const ChatInputBox = ({
               alignItems: "center",
             }}
           >
-            {isResolving ? "Deactivating..." : "Deactivate"}
+            {isResolving ? "Resolving..." : "Resolved"}
           </CustomButton>
         </DialogActions>
       </Dialog>

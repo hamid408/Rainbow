@@ -380,18 +380,16 @@ const Sidebar = () => {
   const handleLogOut = async () => {
     setLoading(true);
     try {
-      const token = Cookies.get("id_token"); // Read from cookie
+      const token = Cookies.get("id_token");
       if (!token) throw new Error("Token missing.");
 
       await logOut({ token }).unwrap();
 
       Cookies.remove("id_token");
-      // sessionStorage.clear(); // just in case
       setLoggedOut(true);
       router.replace("/auth/sign-in");
     } catch (error: any) {
       setLoading(false);
-      // alert(error?.data?.message || "Logout failed.");
     }
   };
 
