@@ -162,13 +162,13 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
               "& .MuiMenuItem-root": {
                 fontSize: "14px",
                 py: 0.3, // reduces vertical padding
-                minHeight: "32px", // optional: keeps it compact
+                minHeight: "48px", // optional: keeps it compact
               },
               "& .MuiCheckbox-root": {
                 p: 0.3, // smaller checkbox padding
               },
               "& .MuiListItemText-primary": {
-                fontSize: "12px",
+                fontSize: "14px",
               },
             },
           }}

@@ -202,7 +202,7 @@ const LeadDetailsSidebar = ({
 
         <Box>
           <Typography variant="body2" color="#666D80" mb={1}>
-            Status
+            Stage
           </Typography>
           {isEditing ? (
             <CustomSelect
