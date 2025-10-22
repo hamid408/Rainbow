@@ -74,11 +74,11 @@ export default function CallModal({
   // const handleBotCall = async () => {
   //   try {
   //     const res = await createBotCall({ lead_id: leadId }).unwrap();
-  //     console.log("📞 Bot Call Started:", res);
+  //     console.log("Bot Call Started:", res);
   //     toast.success(res.message || "Call Successfully Initiated");
   //     onClose();
   //   } catch (err) {
-  //     console.error("❌ Bot Call Failed:", err);
+  //     console.error(" Bot Call Failed:", err);
   //     toast.error(" Bot Call Failed ");
   //     onClose();
   //   }
@@ -92,7 +92,6 @@ export default function CallModal({
     try {
       const response = await createBotCall({ lead_id: leadId });
 
-      // 🛑 If it's an error (RTK format)
       if ("error" in response) {
         const error = response.error;
 
@@ -116,10 +115,9 @@ export default function CallModal({
           toast.error("Unexpected client-side error.");
         }
 
-        return;
+        return; 
       }
 
-      // ✅ Success path
       const message = "Call successfully initiated.";
 
       toast.success(message);
@@ -145,11 +143,11 @@ export default function CallModal({
       setConn(connection);
       setCallStarted(true);
       connection.on("accept", () => {
-        console.log("✅ Call accepted");
+        console.log("Call accepted");
       });
 
       connection.on("disconnect", () => {
-        console.log("📞 Call ended");
+        console.log("Call ended");
         if (typeof window !== "undefined") {
           const event = new CustomEvent("twilio-call-rejected");
           window.dispatchEvent(event);
@@ -160,7 +158,7 @@ export default function CallModal({
       });
 
       connection.on("cancel", () => {
-        console.log("❌ Call was canceled by the other user");
+        console.log("Call was canceled by the other user");
         if (typeof window !== "undefined") {
           const event = new CustomEvent("twilio-call-rejected");
           window.dispatchEvent(event);
@@ -172,7 +170,7 @@ export default function CallModal({
       });
 
       connection.on("reject", () => {
-        console.log("🚫 Call was rejected");
+        console.log("Call was rejected");
         if (typeof window !== "undefined") {
           const event = new CustomEvent("twilio-call-rejected");
           window.dispatchEvent(event);
@@ -184,13 +182,13 @@ export default function CallModal({
       });
 
       connection.on("error", (err) => {
-        console.error("📛 Twilio Call Error:", err);
+        console.error("Twilio Call Error:", err);
         if (
           err.code === 31003 ||
           err.code === 31000 ||
           err.message.includes("busy")
         ) {
-          console.log("🚫 Call was rejected or unreachable.");
+          console.log("Call was rejected or unreachable.");
           window.dispatchEvent(new Event("twilio-call-rejected"));
         }
         setError("Call error: " + err.message);
