@@ -1,12 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { Box, Button } from "@mui/material";
-import styles from "./index.module.scss";
+import { Box } from "@mui/material";
 
 export interface TabItem {
   label: string;
   icon?: React.ReactNode;
-  count?: number; // optional count
+  count?: number;
 }
 
 export interface CustomTabsProps {
@@ -28,59 +27,52 @@ const CustomTabs: React.FC<CustomTabsProps> = ({
   };
 
   return (
-    <Box className={styles.customTabWrapper} sx={{ xs: { ml: "-40px" } }}>
-      <Box display="flex" gap={2} pb={1}>
-        {tabs.map((tab, index) => (
-          <Button
-            key={index}
-            onClick={() => handleTabClick(index)}
-            startIcon={tab.icon}
-            sx={{
-              textTransform: "none",
-              fontWeight: activeIndex === index ? 600 : 400,
-              fontSize: { xs: "11px", sm: "14px", md: "16px" },
-              color: activeIndex === index ? activeColor : "#0D0D12",
-              borderBottom: "3px solid",
-              borderColor: activeIndex === index ? activeColor : "transparent",
-              borderRadius: 0,
-              paddingBottom: "6px",
-              minWidth: "100px",
-              backgroundColor: "transparent",
-              "&:hover": {
-                color: activeColor,
-                fontWeight: "600",
-              },
-              "&:focus": {
-                color: activeColor,
-              },
-              "&:active": {
-                color: activeColor,
-              },
-            }}
-          >
-            <Box display="flex" alignItems="center" gap={1}>
-              {tab.label}
-              {tab.count !== undefined && (
-                <Box
-                  component="span"
-                  sx={{
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    borderRadius: "12px",
-                    px: "6px",
-                    py: "2px",
-                    backgroundColor:
-                      activeIndex === index ? "#F2E8FF" : "#F5F5F5",
-                    color: activeIndex === index ? activeColor : "#555",
-                  }}
-                >
-                  {tab.count}
-                </Box>
-              )}
+    <Box sx={{ display: "flex", gap: 3, pb: 1 }}>
+      {tabs.map((tab, index) => (
+        <Box
+          key={index}
+          onClick={() => handleTabClick(index)}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            cursor: "pointer",
+            fontWeight: 600,
+            fontSize: { xs: "11px", sm: "14px", md: "16px" },
+            color: activeIndex === index ? activeColor : "#0D0D12",
+            borderBottom: "3px solid",
+            borderColor: activeIndex === index ? activeColor : "transparent",
+            paddingBottom: "6px",
+            minWidth: "100px",
+            backgroundColor: "transparent",
+            transition: "color 0.5s ease, border-color 0.2s ease",
+            "&:hover": {
+              color: activeColor,
+              // borderColor: activeColor,
+            },
+            userSelect: "none",
+          }}
+        >
+          {tab.icon && <Box>{tab.icon}</Box>}
+          <span>{tab.label}</span>
+          {tab.count !== undefined && (
+            <Box
+              component="span"
+              sx={{
+                fontSize: "12px",
+                fontWeight: 600,
+                borderRadius: "12px",
+                px: "6px",
+                py: "2px",
+                backgroundColor: activeIndex === index ? "#F2E8FF" : "#F5F5F5",
+                color: activeIndex === index ? activeColor : "#555",
+              }}
+            >
+              {tab.count}
             </Box>
-          </Button>
-        ))}
-      </Box>
+          )}
+        </Box>
+      ))}
     </Box>
   );
 };
