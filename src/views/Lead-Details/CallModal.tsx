@@ -137,7 +137,6 @@ export default function CallModal({
       const device = await initTwilioDevice(leadId);
       const connection = await device.connect({
         params: {
-          // To: phone,
           lead_id: leadId,
           user_id: user.id,
         },
