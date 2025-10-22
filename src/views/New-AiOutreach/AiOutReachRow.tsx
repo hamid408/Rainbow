@@ -1,49 +1,41 @@
+
+
+"use client";
 import React from "react";
+import { Box, Checkbox, Typography } from "@mui/material";
 
-const AiOutReachRow = ({ name, status, checked, onCheck }: any) => {
+interface AiOutReachRowProps {
+  name: string;
+  status: string;
+  checked: boolean;
+  onCheck: () => void;
+}
+
+const AiOutReachRow: React.FC<AiOutReachRowProps> = ({
+  name,
+  status,
+  checked,
+  onCheck,
+}) => {
   return (
-    <>
-      <div style={styles.row}>
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={onCheck}
-          style={styles.checkbox}
-        />
-        <div style={styles.cellName}>{name || "N/A"}</div>
-        <div style={styles.cell}>{status || "N/A"}</div>
-        {/* <div style={styles.cell}>{actionItem}</div> */}
-      </div>
-    </>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        padding: "12px 16px",
+        borderBottom: "1px solid #E4E4E4",
+        "&:hover": { backgroundColor: "#fafafa" },
+      }}
+    >
+      <Box sx={{ flex: 0.5, display: "flex", alignItems: "center", gap: 1 }}>
+        <Checkbox checked={checked} onChange={onCheck} />
+        <Typography fontWeight={500}>{name}</Typography>
+      </Box>
+      <Box sx={{ flex: 1 }}>
+        <Typography color="text.secondary">{status}</Typography>
+      </Box>
+    </Box>
   );
-};
-
-const styles = {
-  row: {
-    display: "flex",
-    alignItems: "center",
-    padding: "16px",
-    margin: "2px 0",
-    backgroundColor: "#f9f9f9",
-    width: "100%",
-    flex: 1,
-    transition: "background-color 0.2s ease",
-    borderBottom: "1px solid #E4E4E4",
-  },
-  checkbox: {
-    marginRight: "12px",
-  },
-  cell: {
-    flex: 1,
-    padding: "0 8px",
-    fontSize: 14,
-  },
-  cellName: {
-    flex: 0.5,
-    padding: "0 8px",
-    fontWeight: 500,
-    fontSize: 14,
-  },
 };
 
 export default AiOutReachRow;

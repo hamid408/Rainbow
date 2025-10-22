@@ -361,7 +361,7 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
       >
         <div style={{ flex: 1, padding: "0 8px" }}>Name</div>
         <div style={{ flex: 1, padding: "0 8px" }}>Email</div>
-        <div style={{ flex: 1, padding: "0 8px" }}>Status</div>
+        <div style={{ flex: 1, padding: "0 8px" }}>Stage</div>
         <div style={{ flex: 1, padding: "0 8px" }}>Inquiry Type</div>
       </Box>
 
