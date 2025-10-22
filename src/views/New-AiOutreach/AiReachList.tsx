@@ -12,38 +12,35 @@ import {
 } from "@mui/material";
 import AiOutReachRow from "./AiOutReachRow";
 
-const AiReachList = ({ list }: any) => {
+const AiReachList = ({ list, searchQuery, setSearchQuery }: any) => {
   const [search, setSearch] = useState("");
   const [checkedItems, setCheckedItems] = useState<any>({});
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleCheck = (name: string) => {
+  const handleCheck = (id: string) => {
     setCheckedItems((prev: any) => ({
       ...prev,
-      [name]: !prev[name],
+      [id]: !prev[id],
     }));
   };
 
   const selectedCount = Object.values(checkedItems).filter(Boolean).length;
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
-  };
   const handleClose = () => setAnchorEl(null);
+
   const handleAction = (action: string) => {
     alert(`Action selected: ${action}`);
     handleClose();
   };
 
-  // 🔹 Filter search locally
-  // 🔹 Filter search locally (safe for null)
   const filteredList = list.filter((item: any) =>
     (item.lead_name || "").toLowerCase().includes(search.toLowerCase())
   );
-
+  console.log(filteredList);
   return (
-    <Box style={styles.container}>
-      {/* Search + Actions */}
+    <Box sx={styles.container}>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -52,14 +49,14 @@ const AiReachList = ({ list }: any) => {
       >
         <CustomSearchField
           type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          // onChange={(e) => setSearch(e.target.value)}
           style={styles.search}
           startIcon={<Search />}
         />
 
-        {selectedCount > 0 ? (
+        {/* {selectedCount > 0 ? (
           <Box display="flex" alignItems="center" gap={2} mr={2.5}>
             <Typography variant="subtitle2" color="#9b0f0fff">
               {selectedCount} selected
@@ -83,23 +80,21 @@ const AiReachList = ({ list }: any) => {
               </MenuItem>
             </Menu>
           </Box>
-        ) : (
-          <Typography
-            variant="subtitle1"
-            fontWeight={400}
-            fontSize={14}
-            color="#818181"
-            marginRight={2.5}
-          >
-            Showing {filteredList.length} result
-            {filteredList.length !== 1 ? "s" : ""}
-          </Typography>
-        )}
+        ) : ( */}
+        <Typography
+          variant="subtitle1"
+          fontWeight={400}
+          fontSize={14}
+          color="#818181"
+          marginRight={2.5}
+        >
+          Showing {filteredList.length} result
+          {filteredList.length !== 1 ? "s" : ""}
+        </Typography>
       </Box>
 
       <Divider />
 
-      {/* Header */}
       <Box
         sx={{
           display: "flex",
@@ -114,16 +109,21 @@ const AiReachList = ({ list }: any) => {
         <div style={{ flex: 1, padding: "0 8px" }}>Status</div>
       </Box>
 
-      {/* Data Rows */}
-      {filteredList.map((item: any) => (
-        <AiOutReachRow
-          key={item.lead_id}
-          name={item.lead_name || "N/A"}
-          status={item.status || "N/A"}
-          checked={!!checkedItems[item.lead_id]}
-          onCheck={() => handleCheck(item.lead_id)}
-        />
-      ))}
+      {filteredList.length > 0 ? (
+        filteredList.map((item: any, index: number) => (
+          <AiOutReachRow
+            key={`${item.lead_id}-${index}`}
+            name={item.lead_name || "N/A"}
+            status={item.status || "N/A"}
+            checked={!!checkedItems[item.lead_id]}
+            onCheck={() => handleCheck(item.lead_id)}
+          />
+        ))
+      ) : (
+        <Typography textAlign="center" color="text.secondary" py={5}>
+          No leads found for this category.
+        </Typography>
+      )}
     </Box>
   );
 };
