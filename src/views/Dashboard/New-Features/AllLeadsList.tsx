@@ -25,7 +25,7 @@ type AwaitingReplyListProps = {
   leadsData: any;
   isLoading: boolean;
   isFetching: boolean;
-  isError: boolean;
+  isError?: boolean;
   searchQuery: string;
   setSearchQuery: (val: string) => void;
   selectedTags: string[];
@@ -305,7 +305,6 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
         </Box>
       )}
 
-      {/* ✅ Selected STAGES List */}
       {selectedStages.length > 0 && (
         <Box
           display="flex"
@@ -348,7 +347,6 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
         </Box>
       )}
 
-      {/* 🧾 Table Header */}
       <Box
         sx={{
           display: "flex",
@@ -365,7 +363,6 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
         <div style={{ flex: 1, padding: "0 8px" }}>Inquiry Type</div>
       </Box>
 
-      {/* 🧾 Table Data */}
       {isLoading || isFetching ? (
         <Box
           display="flex"

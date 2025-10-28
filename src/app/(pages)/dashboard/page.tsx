@@ -10,9 +10,9 @@
 // }
 // /app/dashboard/page.tsx
 
+import Dashboard from "@/src/views/Dashboard";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import Dashboard from "@/src/views/Dashboard";
 
 export default async function Page() {
   const cookieStore = await cookies(); // ✅ Await because it's returning a Promise

@@ -73,7 +73,6 @@ const NewAiOutreach = () => {
         }))
       : [];
 
-
   return (
     <Box padding={3}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -88,12 +87,6 @@ const NewAiOutreach = () => {
             onSelect={(option) =>
               setSelectedCampaign(String(option?.value || ""))
             }
-            // onSelect={(option) => {
-            //   const camel = option?.value
-            //     ? toCamelCase(option.value as string)
-            //     : "";
-            //   setSelectedCampaign(camel);
-            // }}
           />
         </Box>
       </Box>
