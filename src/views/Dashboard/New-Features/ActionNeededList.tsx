@@ -23,7 +23,7 @@ type ActionNeededListProps = {
   leadsData: any;
   isLoading: boolean;
   isFetching: boolean;
-  isError: boolean;
+  isError?: boolean;
   searchQuery: string;
   setSearchQuery: (val: string) => void;
   selectedTags: string[];
@@ -52,34 +52,29 @@ const ActionNeededList: React.FC<ActionNeededListProps> = ({
   const [tagMenu, setTagMenu] = useState<HTMLElement | null>(null);
   const [sortMenu, setSortMenu] = useState<HTMLElement | null>(null);
   const [stageMenu, setStageMenu] = useState<HTMLElement | null>(null);
-
+  console.log("leadsData", leadsData);
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
 
-  // ✅ Fetch enums
   const { data: enumsData, isLoading: enumsLoading } = useGetLeadsEnumsQuery();
   const tags = enumsData?.tags || [];
   const stages = enumsData?.stages || [];
 
-  // -------------------- Handlers --------------------
   const handleCheck = (id: string) =>
     setCheckedItems((prev) => ({ ...prev, [id]: !prev[id] }));
 
-  // Tags
   const handleTagSelect = (tag: string) =>
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   const clearAllTags = () => setSelectedTags([]);
 
-  // Stages
   const handleStageSelect = (stage: string) =>
     setSelectedStages((prev) =>
       prev.includes(stage) ? prev.filter((s) => s !== stage) : [...prev, stage]
     );
   const clearAllStages = () => setSelectedStages([]);
 
-  // Sorting
   const handleSortSelect = (order: "ASC" | "DESC") => {
     setSortOrder(order);
     setSortMenu(null);
@@ -123,7 +118,6 @@ const ActionNeededList: React.FC<ActionNeededListProps> = ({
         ml={2.3}
         mb={2.3}
       >
-        {/* Sort */}
         <div onClick={(e) => setSortMenu(e.currentTarget)}>
           <IconChip
             label={`Creation Date ${sortOrder ? `(${sortOrder})` : ""}`}
@@ -162,7 +156,6 @@ const ActionNeededList: React.FC<ActionNeededListProps> = ({
           ))}
         </Menu>
 
-        {/* Tag Filter */}
         <div onClick={(e) => setTagMenu(e.currentTarget)}>
           <IconChip label="Tag" icon={<Plus />} color="#656565" />
         </div>
@@ -201,7 +194,6 @@ const ActionNeededList: React.FC<ActionNeededListProps> = ({
           )}
         </Menu>
 
-        {/* Stage Filter */}
         <div onClick={(e) => setStageMenu(e.currentTarget)}>
           <IconChip label="Stage" icon={<Plus />} color="#656565" />
         </div>
@@ -247,7 +239,6 @@ const ActionNeededList: React.FC<ActionNeededListProps> = ({
         </Menu>
       </Box>
 
-      {/* Selected filters chips */}
       {selectedStages.length > 0 && (
         <Box display="flex" alignItems="center" gap={1.5} ml={2.3} mb={2}>
           <Box sx={styles.filterBox}>
@@ -321,21 +312,26 @@ const ActionNeededList: React.FC<ActionNeededListProps> = ({
           No leads found.
         </Typography>
       ) : (
-        filteredData.map((item: any) => (
-          <Link
-            key={item.lead_id}
-            href={`/dashboard/${item.lead_id}?page=${page}`}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <CommunicationRow
-              name={item.lead_name}
-              status={item.action_status || "—"}
-              actionItem={item.action_item}
-              checked={!!checkedItems[item.lead_id]}
-              onCheck={() => handleCheck(item.lead_id)}
-            />
-          </Link>
-        ))
+        filteredData.map(
+          (item: any) => (
+            console.log("item", item),
+            (
+              <Link
+                key={item.lead_id}
+                href={`/dashboard/${item.lead_id}?page=${page}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <CommunicationRow
+                  name={item.lead_name}
+                  status={item.action_status || "—"}
+                  actionItem={item.action_item}
+                  checked={!!checkedItems[item.lead_id]}
+                  onCheck={() => handleCheck(item.lead_id)}
+                />
+              </Link>
+            )
+          )
+        )
       )}
     </Box>
   );

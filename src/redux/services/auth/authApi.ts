@@ -16,7 +16,10 @@ export const authApi = createApi({
   // }),
   baseQuery: customBaseQuery,
   endpoints: (builder) => ({
-    signIn: builder.mutation<any, { email: string; password: string }>({
+    signIn: builder.mutation<
+      any,
+      { email?: string; password?: string; refresh_token?: any }
+    >({
       query: (credentials) => ({
         url: "auth/logIn",
         method: "POST",

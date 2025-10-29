@@ -43,9 +43,9 @@ export const sidebarItems = [
   { label: "Admin Oversight", icon: UserIcon, activeIcon: UserActive },
 ];
 export const sidebarItemsMobile = [
-  { label: "My Inbox", icon: HotLeadsNormal },
-  { label: "AI Outreach", icon: Aireach },
+  { label: "My Inbox", icon: HotLeadsNormal, activeIcon: LeadsIcon },
+  { label: "AI Outreach", icon: Aireach, activeIcon: AIActive },
   { label: "Tasks", icon: Tasks },
   { label: "Analytics", icon: Analytics },
-  { label: "Admin", icon: UserIcon },
+  { label: "Admin", icon: UserIcon, activeIcon: UserActive },
 ];

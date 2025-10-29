@@ -28,6 +28,16 @@ export const organizationApi = createApi({
         body,
       }),
     }),
+    getOrganizationList: builder.query<any, void>({
+      query: () => `/organizations/list`,
+    }),
+    setOrganization: builder.mutation<any, any>({
+      query: (body) => ({
+        url: `/users/super_user_update_custom_attr`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -36,4 +46,6 @@ export const {
   useUpdateOrganizationMutation,
   useGetLexBotStylingQuery,
   useUpdateBotStylingMutation,
+  useGetOrganizationListQuery,
+  useSetOrganizationMutation,
 } = organizationApi;
