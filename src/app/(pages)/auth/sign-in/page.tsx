@@ -43,11 +43,22 @@ export default function SignIn() {
 
     try {
       const response = await signIn({ email, password }).unwrap();
+      console.log("Response", response.role);
       if (response.challenge === "NEW_PASSWORD_REQUIRED") {
         Cookies.set("auth_session", response.session);
         Cookies.set("auth_email", email);
         setRedirecting(true);
         router.push("/auth/login-password");
+      }
+      // new code
+      if (response.id_token) Cookies.set("id_token", response.id_token);
+      if (response.refresh_token)
+        Cookies.set("refresh_token", response.refresh_token);
+      Cookies.set("auth_email", email);
+      if (response.role === "super_user") {
+        Cookies.set("id_token", response.id_token);
+        Cookies.set("auth_email", email);
+        router.push("/organization-list");
       } else if (response.id_token) {
         Cookies.set("id_token", response.id_token);
         Cookies.set("auth_email", email);

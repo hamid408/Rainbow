@@ -386,6 +386,7 @@ const Sidebar = () => {
       await logOut({ token }).unwrap();
 
       Cookies.remove("id_token");
+      Cookies.remove("refresh_token");
       setLoggedOut(true);
       router.replace("/auth/sign-in");
     } catch (error: any) {
