@@ -7,6 +7,7 @@ const publicRoutes = [
   "/auth/forgot-password",
   "/auth/reset-password",
   "/auth/self-change-password",
+  "/organization-list",
 ];
 
 export function middleware(request: NextRequest) {

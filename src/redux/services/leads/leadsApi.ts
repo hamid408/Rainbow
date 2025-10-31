@@ -25,10 +25,22 @@ export const leadsapi = createApi({
 
   endpoints: (builder) => ({
     getLeads: builder.query({
-      query: ({ tag, limit = 5, offset = 0, name, created_at, stage }) => {
-        let url = `leads?limit=${limit}&offset=${offset}`;
+      query: ({
+        tag,
+        limit = 5,
+        cursor,
+        name,
+        created_at,
+        stage,
+        campaign_name,
+      }) => {
+        let url = `leads?limit=${limit}`;
+        if (cursor) url += `&cursor=${cursor}`;
+
         if (name) url += `&name=${name}`;
         if (created_at) url += `&created_at=${created_at}`;
+        if (campaign_name) url += `&campaign_name=${campaign_name}`;
+
         if (stage) {
           const stageValue = Array.isArray(stage) ? stage.join(",") : tag;
           url += `&stage=${stage}`;
@@ -80,10 +92,22 @@ export const leadsapi = createApi({
     }),
 
     getLeadsAction: builder.query({
-      query: ({ tag, limit = 5, offset = 0, name, created_at, stage }) => {
-        let url = `leads/action_needed?limit=${limit}&offset=${offset}`;
+      query: ({
+        tag,
+        limit = 5,
+        cursor,
+        name,
+        created_at,
+        stage,
+        campaign_name,
+      }) => {
+        let url = `leads/action_needed?limit=${limit}`;
+        if (cursor) url += `&cursor=${cursor}`;
+
         if (name) url += `&name=${name}`;
         if (created_at) url += `&created_at=${created_at}`;
+        if (campaign_name) url += `&campaign_name=${campaign_name}`;
+
         if (stage) {
           const stageValue = Array.isArray(stage) ? stage.join(",") : tag;
           url += `&stage=${stage}`;
@@ -100,6 +124,7 @@ export const leadsapi = createApi({
 
 export const {
   useGetLeadsQuery,
+  useLazyGetLeadsQuery,
   useCreateLeadMutation,
   useGetLeadByIdQuery,
   useUpdateLeadMutation,
@@ -107,4 +132,5 @@ export const {
   useResolvedLeadMutation,
   useDeleteLeadMutation,
   useGetLeadsActionQuery,
+  useLazyGetLeadsActionQuery
 } = leadsapi;

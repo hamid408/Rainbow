@@ -43,15 +43,23 @@ export const campaignApi = createApi({
         page_size?: number;
         name?: string;
         campaign_name?: string;
+        next_cursor?: string;
       }
     >({
-      query: ({ page = 1, page_size = 20, name = "", campaign_name = "" }) => ({
+      query: ({
+        page = 1,
+        page_size = 20,
+        name = "",
+        campaign_name = "",
+        next_cursor,
+      }) => ({
         url: `/campaign/outreach`,
         params: {
           page,
           page_size,
           name,
           campaign_name,
+          next_cursor,
         },
       }),
     }),
@@ -62,4 +70,5 @@ export const {
   useGetCampaignQuery,
   useChangeCampaignStatusMutation,
   useGetLeadsReachOutLeadsQuery,
+  useLazyGetLeadsReachOutLeadsQuery,
 } = campaignApi;

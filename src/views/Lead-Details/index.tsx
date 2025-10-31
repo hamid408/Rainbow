@@ -222,6 +222,7 @@ const LeadDetails = ({
       </Box>
     );
   }
+  //
 
   const name = `${lead.first_name || ""} ${lead.last_name || ""}`.trim();
   const status = `${lead.tag || ""}${
@@ -235,7 +236,7 @@ const LeadDetails = ({
         status={status}
         onEditClick={() => setIsDrawerOpen(true)}
         hideBackButton={hideBackButton}
-        onRefreshClick={handleRefreshClick}
+        onRefreshClick={handleRefreshClick} 
       />
       <Box className={styles.indexSecondaryBox}>
         <Box className={styles.indexLastBox}>

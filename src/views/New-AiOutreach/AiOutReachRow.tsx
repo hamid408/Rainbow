@@ -32,7 +32,7 @@ const AiOutReachRow: React.FC<AiOutReachRowProps> = ({
         <Typography fontWeight={500}>{name}</Typography>
       </Box>
       <Box sx={{ flex: 1 }}>
-        <Typography color="text.secondary">{status}</Typography>
+        <Typography color="text.secondary" fontWeight={400} fontSize={15}>{status}</Typography>
       </Box>
     </Box>
   );

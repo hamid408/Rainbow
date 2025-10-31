@@ -48,12 +48,16 @@ const UserManagement = () => {
     error: userError,
   } = useGetCurrentUserQuery();
   const organizationsId = userData?.data?.[0].organizations_id;
+  console.log("users data", userData);
+  console.log("orgainzarion id", organizationsId);
+  
 
   const { data: organizationData, isLoading: isOrgLoading } =
     useGetOrganzationQuery(
       { organization_id: organizationsId },
       { skip: !organizationsId }
     );
+  console.log("data org", organizationData);
 
   const {
     data: users,

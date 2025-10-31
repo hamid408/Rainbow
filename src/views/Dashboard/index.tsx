@@ -1,245 +1,627 @@
 "use client";
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomTabs from "@/src/components/common/CustomTabs";
 import AddLeadModal from "./AddLeadModal";
 import {
-  useGetLeadsActionQuery,
-  useGetLeadsQuery,
+  useLazyGetLeadsQuery,
+  useLazyGetLeadsActionQuery,
+  useGetLeadsEnumsQuery,
 } from "@/src/redux/services/leads/leadsApi";
 import { useDebounce } from "use-debounce";
-import CustomPagination from "@/src/components/common/CustomPagination";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import styles from "./style.module.scss";
 import Cookies from "js-cookie";
 import CustomFilterSelect from "@/src/components/common/CustomFilterSelect";
-import AwaitingReplyList from "./New-Features/AllLeadsList";
-import CommunicationList from "./New-Features/ActionNeededList";
 import CustomButton from "@/src/components/common/CustomButton";
 import AllLeadsList from "./New-Features/AllLeadsList";
 import ActionNeededList from "./New-Features/ActionNeededList";
 
+const ITEMS_PER_PAGE = 10;
+
 const Dashboard = () => {
-  const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState("All");
+  const pathname = usePathname();
+  const [selectedTab, setSelectedTab] = useState<"All Leads" | "Action Needed">(
+    "Action Needed"
+  );
   const [openModal, setOpenModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
-  const router = useRouter();
-  const ITEMS_PER_PAGE = 5;
-  const offset = (page - 1) * ITEMS_PER_PAGE;
-  const isAll = activeTab === "All";
-  const [allTags, setAllTags] = useState<string[]>([]);
-  const [selectedTab, setSelectedTab] = useState("Action Needed");
+
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedStages, setSelectedStages] = useState<string[]>([]);
+  const [selectedActionTags, setSelectedActionTags] = useState<string[]>([]);
   const [selectedActionStages, setSelectedActionStages] = useState<string[]>(
     []
   );
+  const [selectedCampaigns, setSelectedCampaigns] = useState<{
+    [key: string]: string;
+  }>({
+    "All Leads": "",
+    "Action Needed": "",
+  });
 
-  const [selectedActionTags, setSelectedActionTags] = useState<string[]>([]);
   const [sortOrder, setSortOrder] = useState<"ASC" | "DESC">("DESC");
   const [sortActionOrder, setSortActionOrder] = useState<"ASC" | "DESC">(
     "DESC"
   );
-
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearch] = useDebounce(searchQuery, 1000);
-  const pathname = usePathname();
+  const [debouncedSearch] = useDebounce(searchQuery, 800);
 
-  const isAllLeadsTab = selectedTab === "All Leads";
-  const isActionNeededTab = selectedTab === "Action Needed";
-
-  const { data, isLoading, isFetching, refetch, isError, error } =
-    useGetLeadsQuery(
-      {
-        // tag: isAll ? undefined : activeTab,
-        tag: selectedTags.length > 0 ? selectedTags.join(",") : undefined,
-
-        limit: ITEMS_PER_PAGE,
-        offset,
-        name: debouncedSearch?.trim() || undefined,
-        created_at: sortOrder,
-        stage:
-          selectedStages.length > 0 ? selectedStages.join(",") : undefined,
-      },
-      {
-        refetchOnMountOrArgChange: true,
-      }
-    );
-  const {
-    data: actionData,
-    isLoading: isActionLoading,
-    isFetching: isActionFetching,
-    refetch: ActionRefetch,
-    isError: isActionError,
-    error: actionError,
-  } = useGetLeadsActionQuery(
-    {
-      tag:
-        selectedActionTags.length > 0
-          ? selectedActionTags.join(",")
-          : undefined,
-
-      limit: ITEMS_PER_PAGE,
-      offset,
-      name: debouncedSearch?.trim() || undefined,
-      created_at: sortActionOrder,
-      stage:
-        selectedActionStages.length > 0
-          ? selectedActionStages.join(",")
-          : undefined,
-    },
-    {
-      refetchOnMountOrArgChange: true,
-    }
+  const [allPages, setAllPages] = useState<Record<number, any[]>>({});
+  const [allCursors, setAllCursors] = useState<Record<number, string | null>>(
+    {}
   );
+  const [allPage, setAllPage] = useState(1);
+
+  const [actionPages, setActionPages] = useState<Record<number, any[]>>({});
+  const [actionCursors, setActionCursors] = useState<
+    Record<number, string | null>
+  >({});
+  const [actionPage, setActionPage] = useState(1);
+
+  const [currentAllLeads, setCurrentAllLeads] = useState<any[]>([]);
+  const [currentActionLeads, setCurrentActionLeads] = useState<any[]>([]);
+
+  const [
+    triggerGetLeads,
+    { isLoading: isAllLoading, isFetching: isAllFetching },
+  ] = useLazyGetLeadsQuery();
+
+  const [
+    triggerGetLeadsAction,
+    { isLoading: isActionLoading, isFetching: isActionFetching },
+  ] = useLazyGetLeadsActionQuery();
+
+  const { data: enumsData, isLoading: isCampaignsLoading } =
+    useGetLeadsEnumsQuery();
+  const campaigns = enumsData?.campaigns || [];
+
+  const selectedCampaign = selectedCampaigns[selectedTab] || "";
 
   useEffect(() => {
-    if (
-      isError &&
-      error &&
-      "status" in error &&
-      error.status === 401 &&
-      typeof window !== "undefined"
-    ) {
-      Cookies.remove("id_token");
-      if (window.location.pathname !== "/auth/sign-in") {
-        window.location.replace("/auth/sign-in");
-      }
+    const token = Cookies.get("id_token");
+    if (!token && typeof window !== "undefined") {
+      window.location.replace("/auth/sign-in");
     }
-  }, [isError, error]);
+  }, []);
 
-  const leads = data?.data || [];
-  const actionLeads = Array.isArray(actionData)
-    ? actionData
-    : actionData?.data || [];
-  const totalCount = data?.total_records || 0;
+  // const fetchAllLeads = async (page: number, cursor: string | null = null) => {
+  //   const result = await triggerGetLeads({
+  //     tag: selectedTags.length ? selectedTags.join(",") : undefined,
+  //     limit: ITEMS_PER_PAGE,
+  //     cursor,
+  //     name: debouncedSearch?.trim() || undefined,
+  //     created_at: sortOrder,
+  //     stage: selectedStages.length ? selectedStages.join(",") : undefined,
+  //     campaign_name: selectedCampaign || undefined,
+  //   }).unwrap();
 
-  const tags = useMemo(() => {
-    const tagSet = new Set(leads.map((lead: any) => lead.tag || null));
-    return ["All", ...Array.from(tagSet)];
-  }, [leads]);
+  //   const leads = result?.data ?? [];
+  //   const nextCursor = result?.next_cursor ?? null;
 
-  const tabsData = allTags.map((tag) => ({ label: String(tag) }));
+  //   setAllPages((prev) => ({ ...prev, [page]: leads }));
+  //   setAllCursors((prev) => ({ ...prev, [page]: nextCursor }));
+  //   setAllPage(page);
+  //   setCurrentAllLeads(leads);
+  // };
+  const fetchAllLeads = async (page: number, cursor: string | null = null) => {
+    const result = await triggerGetLeads({
+      tag: selectedTags.length ? selectedTags.join(",") : undefined,
+      limit: ITEMS_PER_PAGE,
+      cursor,
+      name: debouncedSearch?.trim() || undefined,
+      created_at: sortOrder,
+      stage: selectedStages.length ? selectedStages.join(",") : undefined,
+      campaign_name: selectedCampaign || undefined,
+    }).unwrap();
 
-  const handleTabChange = (label: string) => {
-    setActiveTab(label);
-    setPage(1);
-    setLoading(true);
-    setTimeout(() => setLoading(false), 400);
+    const leads = result?.data ?? [];
+    const nextCursor = result?.next_cursor ?? null;
+
+    setAllPages((prev) => ({ ...prev, [page]: leads }));
+    setAllCursors((prev) => ({ ...prev, [page]: nextCursor }));
+    setAllPage(page);
+    setCurrentAllLeads(leads);
+
+    return result; // ✅ So handleAllNext can know if more data exists
   };
 
-  if (pathname.match(/^\/dashboard\/[^\/]+$/)) {
-    return null;
-  }
-  const filterItems = [
-    { label: "1 Month" },
-    { label: "2 Month" },
-    { label: "Year" },
-  ];
+  // const fetchActionLeads = async (
+  //   page: number,
+  //   cursor: string | null = null
+  // ) => {
+  //   const result = await triggerGetLeadsAction({
+  //     tag: selectedActionTags.length ? selectedActionTags.join(",") : undefined,
+  //     limit: ITEMS_PER_PAGE,
+  //     cursor,
+  //     name: debouncedSearch?.trim() || undefined,
+  //     created_at: sortActionOrder,
+  //     stage: selectedActionStages.length
+  //       ? selectedActionStages.join(",")
+  //       : undefined,
+  //     campaign_name: selectedCampaign || undefined,
+  //   }).unwrap();
 
-  const filteredData =
-    selectedTags.length === 0
-      ? leads
-      : leads.filter((lead: any) =>
-          selectedTags.every((tag) => lead.tags?.includes(tag))
-        );
+  //   const leads = result?.data ?? [];
+  //   const nextCursor = result?.next_cursor ?? null;
+
+  //   setActionPages((prev) => ({ ...prev, [page]: leads }));
+  //   setActionCursors((prev) => ({ ...prev, [page]: nextCursor }));
+  //   setActionPage(page);
+  //   setCurrentActionLeads(leads);
+  // };
+
+  // ---- Initial Fetch ----
+  const fetchActionLeads = async (
+    page: number,
+    cursor: string | null = null
+  ) => {
+    const result = await triggerGetLeadsAction({
+      tag: selectedActionTags.length ? selectedActionTags.join(",") : undefined,
+      limit: ITEMS_PER_PAGE,
+      cursor,
+      name: debouncedSearch?.trim() || undefined,
+      created_at: sortActionOrder,
+      stage: selectedActionStages.length
+        ? selectedActionStages.join(",")
+        : undefined,
+      campaign_name: selectedCampaign || undefined,
+    }).unwrap();
+
+    const leads = result?.data ?? [];
+    const nextCursor = result?.next_cursor ?? null;
+
+    setActionPages((prev) => ({ ...prev, [page]: leads }));
+    setActionCursors((prev) => ({ ...prev, [page]: nextCursor }));
+    setActionPage(page);
+    setCurrentActionLeads(leads);
+
+    return result; // ✅ Return result for next-page check
+  };
+
+  useEffect(() => {
+    fetchAllLeads(1, null);
+    fetchActionLeads(1, null);
+  }, []);
+
+  // ---- On Filter Change ----
+  useEffect(() => {
+    if (selectedTab === "All Leads") {
+      setAllPages({});
+      fetchAllLeads(1, null);
+    } else {
+      setActionPages({});
+      fetchActionLeads(1, null);
+    }
+  }, [
+    selectedTab,
+    selectedTags.join(","),
+    selectedStages.join(","),
+    selectedActionTags.join(","),
+    selectedActionStages.join(","),
+    selectedCampaign,
+    debouncedSearch,
+    sortOrder,
+    sortActionOrder,
+  ]);
+
+  // ---- Navigation ----
+  // const handleAllNext = async () => {
+  //   const nextPage = allPage + 1;
+  //   const nextCursor = allCursors[allPage];
+  //   if (!nextCursor) return;
+  //   if (allPages[nextPage]) {
+  //     setAllPage(nextPage);
+  //     setCurrentAllLeads(allPages[nextPage]);
+  //   } else {
+  //     await fetchAllLeads(nextPage, nextCursor);
+  //   }
+  // };
+
+  // const handleAllPrev = () => {
+  //   const prevPage = allPage - 1;
+  //   if (prevPage >= 1 && allPages[prevPage]) {
+  //     setAllPage(prevPage);
+  //     setCurrentAllLeads(allPages[prevPage]);
+  //   }
+  // };
+
+  const handleAllNext = async () => {
+    const nextPage = allPage + 1;
+    const nextCursor = allCursors[allPage];
+
+    // ✅ Stop going beyond last page
+    if (!nextCursor) return;
+
+    if (allPages[nextPage]) {
+      setAllPage(nextPage);
+      setCurrentAllLeads(allPages[nextPage]);
+    } else {
+      const result: any = await fetchAllLeads(nextPage, nextCursor);
+      if (!result?.data?.length) {
+        // ✅ If API returns empty, stop at current page
+        console.warn("Reached last page, no more data.");
+      }
+    }
+  };
+
+  const handleAllPrev = () => {
+    const prevPage = allPage - 1;
+    if (prevPage < 1) return; // ✅ Prevent negative pages
+    if (allPages[prevPage]) {
+      setAllPage(prevPage);
+      setCurrentAllLeads(allPages[prevPage]);
+    }
+  };
+
+  // const handleActionNext = async () => {
+  //   const nextPage = actionPage + 1;
+  //   const nextCursor = actionCursors[actionPage];
+  //   if (!nextCursor) return;
+  //   if (actionPages[nextPage]) {
+  //     setActionPage(nextPage);
+  //     setCurrentActionLeads(actionPages[nextPage]);
+  //   } else {
+  //     await fetchActionLeads(nextPage, nextCursor);
+  //   }
+  // };
+
+  // const handleActionPrev = () => {
+  //   const prevPage = actionPage - 1;
+  //   if (prevPage >= 1 && actionPages[prevPage]) {
+  //     setActionPage(prevPage);
+  //     setCurrentActionLeads(actionPages[prevPage]);
+  //   }
+  // };
+
+  // ---- Clickable Pagination ----
+
+  const handleActionNext = async () => {
+    const nextPage = actionPage + 1;
+    const nextCursor = actionCursors[actionPage];
+
+    const currentPageLeads = actionPages[actionPage] || [];
+
+    // ✅ Stop if this page already has fewer than page limit (means end)
+    if (!nextCursor || currentPageLeads.length < ITEMS_PER_PAGE) {
+      console.log(
+        "🚫 No more pages to fetch — already last Action Needed page."
+      );
+      return;
+    }
+
+    if (actionPages[nextPage]) {
+      setActionPage(nextPage);
+      setCurrentActionLeads(actionPages[nextPage]);
+    } else {
+      const result: any = await fetchActionLeads(nextPage, nextCursor);
+      if (!result?.data?.length) {
+        console.warn("Reached last Action Needed page.");
+      }
+    }
+  };
+
+  const handleActionPrev = () => {
+    const prevPage = actionPage - 1;
+    if (prevPage < 1) return;
+    if (actionPages[prevPage]) {
+      setActionPage(prevPage);
+      setCurrentActionLeads(actionPages[prevPage]);
+    }
+  };
+
+  const handleAllPageClick = async (page: number) => {
+    if (page === allPage) return;
+    if (allPages[page]) {
+      setAllPage(page);
+      setCurrentAllLeads(allPages[page]);
+    } else {
+      const cursor = allCursors[page - 1] || null;
+      await fetchAllLeads(page, cursor);
+    }
+  };
+
+  // const handleActionPageClick = async (page: number) => {
+  //   if (page === actionPage) return;
+  //   if (actionPages[page]) {
+  //     setActionPage(page);
+  //     setCurrentActionLeads(actionPages[page]);
+  //   } else {
+  //     const cursor = actionCursors[page - 1] || null;
+  //     await fetchActionLeads(page, cursor);
+  //   }
+  // };
+  const handleActionPageClick = async (page: number) => {
+    if (page === actionPage) return;
+    if (actionPages[page]) {
+      setActionPage(page);
+      setCurrentActionLeads(actionPages[page]);
+    } else {
+      const cursor = actionCursors[page - 1] || null;
+      await fetchActionLeads(page, cursor);
+    }
+  };
+  const campaignOptions =
+    Array.isArray(campaigns) && campaigns.length > 0
+      ? [
+          { label: "No Select", value: "" },
+          ...campaigns.map((c: string) => ({ label: c, value: c })),
+        ]
+      : [{ label: "No Select", value: "" }];
+
+  if (pathname.match(/^\/dashboard\/[^\/]+$/)) return null;
+
+  // ---- Pagination Buttons Generator (with ellipsis) ----
+  // const renderPagination = (
+  //   currentPage: number,
+  //   pages: Record<number, any[]>,
+  //   hasNext: boolean,
+  //   onPageClick: (page: number) => void
+  // ) => {
+  //   const totalPages = Object.keys(pages).length + (hasNext ? 1 : 0);
+  //   if (totalPages <= 1) return null;
+
+  //   const visiblePages: (number | string)[] = [];
+
+  //   if (totalPages <= 5) {
+  //     for (let i = 1; i <= totalPages; i++) visiblePages.push(i);
+  //   } else {
+  //     visiblePages.push(1);
+  //     if (currentPage > 3) visiblePages.push("...");
+
+  //     const start = Math.max(2, currentPage - 1);
+  //     const end = Math.min(totalPages - 1, currentPage + 1);
+  //     for (let i = start; i <= end; i++) visiblePages.push(i);
+
+  //     if (currentPage < totalPages - 2) visiblePages.push("...");
+  //     visiblePages.push(totalPages);
+  //   }
+
+  //   return (
+  //     <Stack direction="row" justifyContent="center" gap={1} mt={1}>
+  //       {visiblePages.map((page, idx) =>
+  //         page === "..." ? (
+  //           <Typography key={idx} variant="body2" alignSelf="center">
+  //             ...
+  //           </Typography>
+  //         ) : (
+  //           <CustomButton
+  //             key={page}
+  //             size="small"
+  //             variant={page === currentPage ? "contained" : "outlined"}
+  //             onClick={() => onPageClick(page as number)}
+  //           >
+  //             {page}
+  //           </CustomButton>
+  //         )
+  //       )}
+  //     </Stack>
+  //   );
+  // };
+  const renderPagination = (
+    currentPage: number,
+    pages: Record<number, any[]>,
+    cursors: Record<number, string | null>,
+    onPageClick: (page: number) => void
+  ) => {
+    // ✅ Calculate totalPages only for pages that have data
+    const pageKeys = Object.keys(pages)
+      .map(Number)
+      .filter((p) => pages[p]?.length > 0);
+    const totalPages = pageKeys.length;
+
+    if (totalPages <= 1) return null;
+
+    const visiblePages: (number | string)[] = [];
+
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) visiblePages.push(i);
+    } else {
+      visiblePages.push(1);
+      if (currentPage > 3) visiblePages.push("...");
+
+      const start = Math.max(2, currentPage - 1);
+      const end = Math.min(totalPages - 1, currentPage + 1);
+      for (let i = start; i <= end; i++) visiblePages.push(i);
+
+      if (currentPage < totalPages - 2) visiblePages.push("...");
+      visiblePages.push(totalPages);
+    }
+
+    return (
+      <Stack direction="row" justifyContent="center" gap={1} mt={1}>
+        {visiblePages.map((page, idx) =>
+          page === "..." ? (
+            <Typography key={idx} variant="body2" alignSelf="center">
+              ...
+            </Typography>
+          ) : (
+            <CustomButton
+              key={page}
+              size="small"
+              variant={page === currentPage ? "contained" : "outlined"}
+              onClick={() => onPageClick(page as number)}
+            >
+              {page}
+            </CustomButton>
+          )
+        )}
+      </Stack>
+    );
+  };
 
   return (
-    <Box>
-      <>
-        <Box padding={3}>
-          <Box display="flex" justifyContent="space-between">
-            <Typography variant="h4" fontSize={23} fontWeight={500}>
-              My Inbox
-            </Typography>
-            {/* <CustomFilterSelect
-              items={filterItems}
-              onSelect={(item: any) => console.log(item)}
-            /> */}
-          </Box>
-          <Box
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-            mt={2}
-          >
-            <CustomTabs
-              tabs={[
-                { label: "Action Needed", count: actionLeads.length },
-                { label: "All Leads", count: filteredData.length },
-              ]}
-              onTabChange={(tab) => setSelectedTab(tab)}
-            />
-            <Box className={styles.shortText}>
-              <CustomButton
-                variant="contained"
-                onClick={() => setOpenModal(true)}
-              >
-                Add Lead
-              </CustomButton>
-            </Box>
-          </Box>
-
-          <Box marginTop={3}>
-            {selectedTab === "All Leads" && (
-              <AllLeadsList
-                leadsData={leads}
-                isLoading={isLoading}
-                isFetching={isFetching}
-                isError={isError}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                selectedTags={selectedTags}
-                setSelectedTags={setSelectedTags}
-                sortOrder={sortOrder}
-                setSortOrder={setSortOrder}
-                selectedStages={selectedStages}
-                setSelectedStages={setSelectedStages}
-              />
-            )}
-            {selectedTab === "Action Needed" && (
-              <ActionNeededList
-                leadsData={actionLeads}
-                isLoading={isActionLoading}
-                isFetching={isActionFetching}
-                isError={isActionError}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                selectedTags={selectedActionTags}
-                setSelectedTags={setSelectedActionTags}
-                sortOrder={sortActionOrder}
-                setSortOrder={setSortActionOrder}
-                selectedStages={selectedActionStages}
-                setSelectedStages={setSelectedActionStages}
-              />
-            )}
-          </Box>
-        </Box>
-      </>
-      <Box className={styles.paginationBox}>
-        <CustomPagination
-          page={page}
-          count={Math.ceil(totalCount / ITEMS_PER_PAGE)}
-          onChange={(val) => {
-            setPage(val);
-            const searchParams = new URLSearchParams(window.location.search);
-
-            if (val === 1) {
-              searchParams.delete("page");
-            } else {
-              searchParams.set("page", String(val));
-            }
-            router.push(`?${searchParams.toString()}`);
-          }}
+    <Box padding={3}>
+      {/* Header */}
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Typography variant="h4" fontSize={23} fontWeight={500}>
+          My Inbox
+        </Typography>
+        <CustomFilterSelect
+          title="Campaigns"
+          options={campaignOptions}
+          loading={isCampaignsLoading}
+          onSelect={(option) =>
+            setSelectedCampaigns((prev) => ({
+              ...prev,
+              [selectedTab]: String(option?.value || ""),
+            }))
+          }
         />
       </Box>
 
+      {/* Tabs */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mt={2}
+      >
+        <CustomTabs
+          tabs={[
+            { label: "Action Needed", count: currentActionLeads.length },
+            { label: "All Leads", count: currentAllLeads.length },
+          ]}
+          onTabChange={(tab) =>
+            setSelectedTab(tab as "All Leads" | "Action Needed")
+          }
+        />
+
+        <Box className={styles.shortText}>
+          <CustomButton variant="contained" onClick={() => setOpenModal(true)}>
+            Add Lead
+          </CustomButton>
+        </Box>
+      </Box>
+
+      {/* Content */}
+      <Box mt={3}>
+        {selectedTab === "All Leads" && (
+          <>
+            <AllLeadsList
+              leadsData={currentAllLeads}
+              isLoading={isAllLoading}
+              isFetching={isAllFetching}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              selectedTags={selectedTags}
+              setSelectedTags={setSelectedTags}
+              sortOrder={sortOrder}
+              setSortOrder={setSortOrder}
+              selectedStages={selectedStages}
+              setSelectedStages={setSelectedStages}
+            />
+
+            {/* Pagination Controls */}
+            <Stack direction="row" justifyContent="space-between" mt={2}>
+              <CustomButton
+                variant="outlined"
+                onClick={handleAllPrev}
+                disabled={allPage === 1 || isAllFetching}
+              >
+                Previous
+              </CustomButton>
+              <Typography alignSelf="center">Page {allPage}</Typography>
+              <CustomButton
+                onClick={handleAllNext}
+                // disabled={!allCursors[allPage] || isAllFetching}
+                variant="contained"
+                disabled={
+                  isAllFetching ||
+                  !allCursors[allPage] || // No next cursor
+                  !allPages[allPage]?.length // No data in this page
+                }
+              >
+                {isAllFetching ? <CircularProgress size={20} /> : "Next"}
+              </CustomButton>
+            </Stack>
+
+            {/* Numbered Pagination */}
+            {/* {renderPagination(
+              allPage,
+              allPages,
+              // !!allCursors[Object.keys(allPages).length],
+              !!allCursors[allPage],
+
+              handleAllPageClick
+            )} */}
+            {renderPagination(
+              allPage,
+              allPages,
+              allCursors,
+              handleAllPageClick
+            )}
+          </>
+        )}
+
+        {selectedTab === "Action Needed" && (
+          <>
+            <ActionNeededList
+              leadsData={currentActionLeads}
+              isLoading={isActionLoading}
+              isFetching={isActionFetching}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              selectedTags={selectedActionTags}
+              setSelectedTags={setSelectedActionTags}
+              sortOrder={sortActionOrder}
+              setSortOrder={setSortActionOrder}
+              selectedStages={selectedActionStages}
+              setSelectedStages={setSelectedActionStages}
+            />
+
+            {/* Pagination Controls */}
+            <Stack direction="row" justifyContent="space-between" mt={2}>
+              <CustomButton
+                variant="outlined"
+                onClick={handleActionPrev}
+                // disabled={actionPage === 1 || isActionFetching}
+                disabled={actionPage === 1 || isActionFetching}
+              >
+                Previous
+              </CustomButton>
+              <Typography alignSelf="center">Page {actionPage}</Typography>
+              <CustomButton
+                onClick={handleActionNext}
+                // disabled={!actionCursors[actionPage] || isActionFetching}
+                disabled={
+                  isActionFetching ||
+                  !actionCursors[actionPage] || // no next page cursor
+                  (actionPages[actionPage]?.length ?? 0) < ITEMS_PER_PAGE // last page reached
+                }
+                variant="contained"
+              >
+                {isActionFetching ? <CircularProgress size={20} /> : "Next"}
+              </CustomButton>
+            </Stack>
+
+            {/* Numbered Pagination */}
+            {/* {renderPagination(
+              actionPage,
+              actionPages,
+              // !!actionCursors[Object.keys(actionPages).length],
+              !!actionCursors[actionPage],
+
+              handleActionPageClick
+            )} */}
+            {renderPagination(
+              actionPage,
+              actionPages,
+              actionCursors,
+              handleActionPageClick
+            )}
+          </>
+        )}
+      </Box>
+
+      {/* Add Lead Modal */}
       <AddLeadModal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        refetchLeads={refetch}
+        refetchLeads={() =>
+          selectedTab === "All Leads"
+            ? fetchAllLeads(allPage)
+            : fetchActionLeads(actionPage)
+        }
       />
     </Box>
   );
