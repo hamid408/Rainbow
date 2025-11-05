@@ -46,32 +46,39 @@ const UserManagement = () => {
     data: userData,
     isLoading: userLoading,
     error: userError,
+    refetch: refetchUser,
   } = useGetCurrentUserQuery();
+
   const organizationsId = userData?.data?.[0].organizations_id;
-  console.log("users data", userData);
-  console.log("orgainzarion id", organizationsId);
-  
 
-  const { data: organizationData, isLoading: isOrgLoading } =
-    useGetOrganzationQuery(
-      { organization_id: organizationsId },
-      { skip: !organizationsId }
-    );
-  console.log("data org", organizationData);
-
+  const {
+    data: organizationData,
+    isLoading: isOrgLoading,
+    refetch: refetchOrg,
+  } = useGetOrganzationQuery(
+    { organization_id: organizationsId },
+    { skip: !organizationsId }
+  );
   const {
     data: users,
     isLoading: isUsersLoading,
     isError,
     refetch,
   } = useGetUsersQuery();
+  useEffect(() => {
+    if (organizationsId) refetchOrg();
+  }, [organizationsId]);
+
+  useEffect(() => {
+    refetchUser(); 
+    refetch();
+  }, []);
 
   const [deactivateUser, { isLoading: isDeactivating }] =
     useDeactivateUserMutation();
-  // console.log("organizationData", organizationData);
 
   const handleDeactivate = async (email: string) => {
-    try {
+    try { 
       await deactivateUser({ email }).unwrap();
       refetch();
       toast.success("User deactivated successfully");
@@ -87,7 +94,7 @@ const UserManagement = () => {
     );
   }
 
-  return (
+  return ( 
     <>
       <Box className={styles.indexRoot}>
         <Box className={styles.indexHeadingBox}>
@@ -99,7 +106,7 @@ const UserManagement = () => {
           <AdminDashboard />
         </Box> */}
 
-        <Box className={styles.indexCustomTabBox}>
+        <Box className={styles.indexCustomTabBox}> 
           <CustomTabs
             tabs={tabItems}
             onTabChange={(label: any) => setActiveTab(label)}

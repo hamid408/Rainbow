@@ -379,7 +379,7 @@ const NewAiOutreach = () => {
           disabled={!hasNext || isFetching}
           variant="contained"
         >
-          {isFetching ? <CircularProgress size={20} /> : "Load More"}
+          {isFetching ? <CircularProgress size={20} /> : "Next"}
         </CustomButton>
       </Stack>
 
