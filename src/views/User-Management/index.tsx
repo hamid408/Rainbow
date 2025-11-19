@@ -70,7 +70,7 @@ const UserManagement = () => {
   }, [organizationsId]);
 
   useEffect(() => {
-    refetchUser(); 
+    refetchUser();
     refetch();
   }, []);
 
@@ -78,7 +78,7 @@ const UserManagement = () => {
     useDeactivateUserMutation();
 
   const handleDeactivate = async (email: string) => {
-    try { 
+    try {
       await deactivateUser({ email }).unwrap();
       refetch();
       toast.success("User deactivated successfully");
@@ -93,8 +93,23 @@ const UserManagement = () => {
       </Box>
     );
   }
+  if (userLoading || isOrgLoading) {
+    return (
+      <Box sx={{ padding: "48px", textAlign: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-  return ( 
+  if (!userData?.data || userData.data.length === 0) {
+    return (
+      <Box sx={{ padding: "48px", textAlign: "center" }}>
+        <Typography variant="h6">No user data available.</Typography>
+      </Box>
+    );
+  }
+
+  return (
     <>
       <Box className={styles.indexRoot}>
         <Box className={styles.indexHeadingBox}>
@@ -106,7 +121,7 @@ const UserManagement = () => {
           <AdminDashboard />
         </Box> */}
 
-        <Box className={styles.indexCustomTabBox}> 
+        <Box className={styles.indexCustomTabBox}>
           <CustomTabs
             tabs={tabItems}
             onTabChange={(label: any) => setActiveTab(label)}

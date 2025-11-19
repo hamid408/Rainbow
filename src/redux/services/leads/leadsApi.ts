@@ -119,6 +119,35 @@ export const leadsapi = createApi({
         return { url, method: "GET" };
       },
     }),
+
+    getPatientRecords: builder.query({
+      query: ({
+        tag,
+        limit = 5,
+        cursor,
+        name,
+        created_at,
+        stage,
+        campaign_name,
+      }) => {
+        let url = `leads/PatientCallRecordings?limit=${limit}`;
+        if (cursor) url += `&cursor=${cursor}`;
+
+        if (name) url += `&name=${name}`;
+        if (created_at) url += `&created_at=${created_at}`;
+        if (campaign_name) url += `&campaign_name=${campaign_name}`;
+
+        if (stage) {
+          const stageValue = Array.isArray(stage) ? stage.join(",") : tag;
+          url += `&stage=${stage}`;
+        }
+        if (tag && tag !== "All") {
+          const tagValue = Array.isArray(tag) ? tag.join(",") : tag;
+          url += `&tag=${tagValue}`;
+        }
+        return { url, method: "GET" };
+      },
+    }),
   }),
 });
 
@@ -132,5 +161,6 @@ export const {
   useResolvedLeadMutation,
   useDeleteLeadMutation,
   useGetLeadsActionQuery,
-  useLazyGetLeadsActionQuery
+  useLazyGetLeadsActionQuery,
+  useGetPatientRecordsQuery,
 } = leadsapi;

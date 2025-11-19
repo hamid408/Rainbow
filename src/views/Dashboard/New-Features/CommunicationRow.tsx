@@ -32,9 +32,11 @@ const CommunicationRow: React.FC<CommunicationRowProps> = ({
       style={{
         ...styles.row,
         backgroundColor: checked ? "#E4E4E4" : "#fff",
+        
       }}
       className="row"
       onClick={handleClick}
+
     >
       {/* <input
         type="checkbox"
