@@ -25,7 +25,8 @@ const Dashboard = () => {
     "Action Needed"
   );
   const [openModal, setOpenModal] = useState(false);
-
+  const [isAnyChecked, setIsAnyChecked] = useState(false);
+  const [addCampaign, setAddCampaign] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedStages, setSelectedStages] = useState<string[]>([]);
   const [selectedActionTags, setSelectedActionTags] = useState<string[]>([]);
@@ -122,35 +123,9 @@ const Dashboard = () => {
     setAllPage(page);
     setCurrentAllLeads(leads);
 
-    return result; // ✅ So handleAllNext can know if more data exists
+    return result;
   };
 
-  // const fetchActionLeads = async (
-  //   page: number,
-  //   cursor: string | null = null
-  // ) => {
-  //   const result = await triggerGetLeadsAction({
-  //     tag: selectedActionTags.length ? selectedActionTags.join(",") : undefined,
-  //     limit: ITEMS_PER_PAGE,
-  //     cursor,
-  //     name: debouncedSearch?.trim() || undefined,
-  //     created_at: sortActionOrder,
-  //     stage: selectedActionStages.length
-  //       ? selectedActionStages.join(",")
-  //       : undefined,
-  //     campaign_name: selectedCampaign || undefined,
-  //   }).unwrap();
-
-  //   const leads = result?.data ?? [];
-  //   const nextCursor = result?.next_cursor ?? null;
-
-  //   setActionPages((prev) => ({ ...prev, [page]: leads }));
-  //   setActionCursors((prev) => ({ ...prev, [page]: nextCursor }));
-  //   setActionPage(page);
-  //   setCurrentActionLeads(leads);
-  // };
-
-  // ---- Initial Fetch ----
   const fetchActionLeads = async (
     page: number,
     cursor: string | null = null
@@ -175,7 +150,7 @@ const Dashboard = () => {
     setActionPage(page);
     setCurrentActionLeads(leads);
 
-    return result; // ✅ Return result for next-page check
+    return result;
   };
 
   useEffect(() => {
@@ -183,7 +158,6 @@ const Dashboard = () => {
     fetchActionLeads(1, null);
   }, []);
 
-  // ---- On Filter Change ----
   useEffect(() => {
     if (selectedTab === "All Leads") {
       setAllPages({});
@@ -203,27 +177,6 @@ const Dashboard = () => {
     sortOrder,
     sortActionOrder,
   ]);
-
-  // ---- Navigation ----
-  // const handleAllNext = async () => {
-  //   const nextPage = allPage + 1;
-  //   const nextCursor = allCursors[allPage];
-  //   if (!nextCursor) return;
-  //   if (allPages[nextPage]) {
-  //     setAllPage(nextPage);
-  //     setCurrentAllLeads(allPages[nextPage]);
-  //   } else {
-  //     await fetchAllLeads(nextPage, nextCursor);
-  //   }
-  // };
-
-  // const handleAllPrev = () => {
-  //   const prevPage = allPage - 1;
-  //   if (prevPage >= 1 && allPages[prevPage]) {
-  //     setAllPage(prevPage);
-  //     setCurrentAllLeads(allPages[prevPage]);
-  //   }
-  // };
 
   const handleAllNext = async () => {
     const nextPage = allPage + 1;
@@ -320,16 +273,6 @@ const Dashboard = () => {
     }
   };
 
-  // const handleActionPageClick = async (page: number) => {
-  //   if (page === actionPage) return;
-  //   if (actionPages[page]) {
-  //     setActionPage(page);
-  //     setCurrentActionLeads(actionPages[page]);
-  //   } else {
-  //     const cursor = actionCursors[page - 1] || null;
-  //     await fetchActionLeads(page, cursor);
-  //   }
-  // };
   const handleActionPageClick = async (page: number) => {
     if (page === actionPage) return;
     if (actionPages[page]) {
@@ -350,60 +293,12 @@ const Dashboard = () => {
 
   if (pathname.match(/^\/dashboard\/[^\/]+$/)) return null;
 
-  // ---- Pagination Buttons Generator (with ellipsis) ----
-  // const renderPagination = (
-  //   currentPage: number,
-  //   pages: Record<number, any[]>,
-  //   hasNext: boolean,
-  //   onPageClick: (page: number) => void
-  // ) => {
-  //   const totalPages = Object.keys(pages).length + (hasNext ? 1 : 0);
-  //   if (totalPages <= 1) return null;
-
-  //   const visiblePages: (number | string)[] = [];
-
-  //   if (totalPages <= 5) {
-  //     for (let i = 1; i <= totalPages; i++) visiblePages.push(i);
-  //   } else {
-  //     visiblePages.push(1);
-  //     if (currentPage > 3) visiblePages.push("...");
-
-  //     const start = Math.max(2, currentPage - 1);
-  //     const end = Math.min(totalPages - 1, currentPage + 1);
-  //     for (let i = start; i <= end; i++) visiblePages.push(i);
-
-  //     if (currentPage < totalPages - 2) visiblePages.push("...");
-  //     visiblePages.push(totalPages);
-  //   }
-
-  //   return (
-  //     <Stack direction="row" justifyContent="center" gap={1} mt={1}>
-  //       {visiblePages.map((page, idx) =>
-  //         page === "..." ? (
-  //           <Typography key={idx} variant="body2" alignSelf="center">
-  //             ...
-  //           </Typography>
-  //         ) : (
-  //           <CustomButton
-  //             key={page}
-  //             size="small"
-  //             variant={page === currentPage ? "contained" : "outlined"}
-  //             onClick={() => onPageClick(page as number)}
-  //           >
-  //             {page}
-  //           </CustomButton>
-  //         )
-  //       )}
-  //     </Stack>
-  //   );
-  // };
   const renderPagination = (
     currentPage: number,
     pages: Record<number, any[]>,
     cursors: Record<number, string | null>,
     onPageClick: (page: number) => void
   ) => {
-    // ✅ Calculate totalPages only for pages that have data
     const pageKeys = Object.keys(pages)
       .map(Number)
       .filter((p) => pages[p]?.length > 0);
@@ -451,7 +346,6 @@ const Dashboard = () => {
 
   return (
     <Box padding={3}>
-      {/* Header */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h4" fontSize={23} fontWeight={500}>
           My Inbox
@@ -487,6 +381,17 @@ const Dashboard = () => {
         />
 
         <Box className={styles.shortText}>
+          {/* {addCampaign && ( */}
+          <CustomButton
+            variant="contained"
+            onClick={() => setAddCampaign(true)}
+            sx={{ mr: 2 }}
+            disabled={!isAnyChecked}
+          >
+            Add Campaign
+
+          </CustomButton>
+          {/* )} */}
           <CustomButton variant="contained" onClick={() => setOpenModal(true)}>
             Add Lead
           </CustomButton>
@@ -509,6 +414,7 @@ const Dashboard = () => {
               setSortOrder={setSortOrder}
               selectedStages={selectedStages}
               setSelectedStages={setSelectedStages}
+              setIsAnyChecked={setIsAnyChecked}
             />
 
             {/* Pagination Controls */}
@@ -594,15 +500,7 @@ const Dashboard = () => {
               </CustomButton>
             </Stack>
 
-            {/* Numbered Pagination */}
-            {/* {renderPagination(
-              actionPage,
-              actionPages,
-              // !!actionCursors[Object.keys(actionPages).length],
-              !!actionCursors[actionPage],
-
-              handleActionPageClick
-            )} */}
+           
             {renderPagination(
               actionPage,
               actionPages,
@@ -623,6 +521,12 @@ const Dashboard = () => {
             : fetchActionLeads(actionPage)
         }
       />
+      {/* Add Campaign Modal */}
+      {/* <AddToCampaignModal
+        open={addCampaign}
+        onClose={() => setAddCampaign(false)}
+        selectedLeads={getSelectedLeads()}
+      /> */}
     </Box>
   );
 };

@@ -29,10 +29,10 @@ export const sidebarItems = [
   { label: "My Inbox", icon: HotLeadsNormal, activeIcon: LeadsIcon }, // use same if no separate active version
   { label: "AI Outreach", icon: Aireach, activeIcon: AIActive },
   {
-    label: "Tasks & Reminder",
+    label: "Pharmacy",
     icon: Tasks,
     activeIcon: TaskActive,
-    disabled: true,
+    // disabled: true,
   },
   {
     label: "Analytics",
