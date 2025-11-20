@@ -88,7 +88,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           display: "block",
         }}
       >
-        <Table sx={{ minWidth: 1000 }}>
+        <Table sx={{ minWidth: 1350 }}>
           <TableHead sx={{ background: "#fafafa" }}>
             <TableRow>
               <TableCell padding="checkbox">
@@ -108,9 +108,13 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
               <TableCell>Phone</TableCell>
 
               <TableCell>Call Duration</TableCell>
-              <TableCell>Call Date</TableCell>
+              <TableCell sx={{ paddingInline: 1 }}>Call Date</TableCell>
               <TableCell>Audio</TableCell>
               <TableCell>Slots</TableCell>
+              <TableCell>Patient Dob</TableCell>
+              <TableCell>Payer Name</TableCell>
+              <TableCell>Memeber Id</TableCell>
+
               {/* <TableCell>Transcript</TableCell> */}
             </TableRow>
           </TableHead>
@@ -131,40 +135,22 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                       onChange={() => toggleSelect(r.id)}
                     />
                   </TableCell>
-                  <TableCell
-                  // onClick={() => setOpenSlot(r)}
-                  // sx={{ cursor: "pointer", fontWeight: 500 }}
-                  >
-                    {r.name}
-                  </TableCell>
-                  {/* <TableCell
-                  // onClick={() => setOpenSlot(r)}
-                  // sx={{ cursor: "pointer" }}
-                  >
-                    {r.email}
-                  </TableCell> */}
+                  <TableCell>{r.name}</TableCell>
+
                   <TableCell>{r.phone}</TableCell>
-                  <TableCell>
-                    {(() => {
-                      if (!r.markers?.length) return "00:00";
-                      const s = r.markers[0].time;
-                      const e = r.markers[r.markers.length - 1].time;
-                      const d = e - s;
-                      return `${Math.floor(d / 60)
-                        .toString()
-                        .padStart(2, "0")}:${Math.floor(d % 60)
-                        .toString()
-                        .padStart(2, "0")}`;
-                    })()}
+                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
+                    {r.callDuration || "-"}
                   </TableCell>
-                  <TableCell>{r.date}</TableCell>
+                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
+                    {r.date}
+                  </TableCell>
                   <TableCell>
                     {/* <PlayArrow /> */}
                     <IconButton
                       onClick={() => {
                         if (r.audioUrl) {
-                          setCurrentAudioUrl(r.audioUrl); // set the audio for the modal
-                          setOpenSlot(r); // open the modal for this record
+                          setCurrentAudioUrl(r.audioUrl);
+                          setOpenSlot(r);
                         }
                       }}
                       disabled={!r.audioUrl}
@@ -238,6 +224,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                           cursor: "pointer",
                           fontWeight: 500,
                           color: "primary.main",
+                          width: "max-content",
                         }}
                       >
                         View Details
@@ -246,6 +233,9 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                       "—"
                     )}
                   </TableCell>
+                  <TableCell  sx={{ width: 140, textAlign: "center", px: 3 }}>{r.patient_dob}</TableCell>
+                  <TableCell  sx={{ width: 140, textAlign: "center", px: 3 }}>{r.payer_name}</TableCell>
+                  <TableCell>{r.member_id}</TableCell>
 
                   {/* <TableCell>Transcript</TableCell> */}
                 </TableRow>

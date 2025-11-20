@@ -119,6 +119,7 @@ const Pharmacy = () => {
     if (!patientData?.data) return [];
 
     return patientData.data.map((item: any) => ({
+      
       id: item.lead_id,
       name: `${item.first_name || ""} ${item.last_name || ""}`.trim(),
       title: "Consultation Call",
@@ -131,14 +132,18 @@ const Pharmacy = () => {
         key,
         value: val.value,
         description: val.description,
+        timestamp: val.timestamp,
       })),
+      patient_dob: item.call_context.patient_dob.value || "",
+      payer_name: item.call_context.payer_name.value || "",
+      member_id: item.call_context.patient_member_id.value || "",
+      callDuration: item?.call_duration || "",
     }));
   }, [patientData]);
 
   const handleDownloadCSV = () => {
     const rows = tableData.filter((r: any) => selectedRows.includes(r.id));
 
-    // 1️⃣ Extract correct slot keys from slot array entries
     const slotKeys = Array.from(
       new Set(
         rows.flatMap((r: any) =>
@@ -147,12 +152,16 @@ const Pharmacy = () => {
       )
     );
 
-    console.log("FINAL SLOT KEYS → ", slotKeys);
+    const header = [
+      "Name",
+      "Phone",
+      "Date",
+      "Patient_Dob",
+      "Payer_Name",
+      "Member_Id",
+      ...slotKeys,
+    ];
 
-    // 2️⃣ CSV Header
-    const header = ["Name", "Phone", "Date", ...slotKeys];
-
-    // 3️⃣ Convert slot array → key:value map
     const csvRows = rows.map((r: any) => {
       const slotMap: any = {};
 
@@ -166,10 +175,17 @@ const Pharmacy = () => {
         (key) => (slotMap[key as string] as any) ?? ""
       );
 
-      return [r.name, `"${r.phone}"`, r.date, ...slotValues];
+      return [
+        r.name,
+        `"${r.phone}"`,
+        r.date,
+        r.patient_dob,
+        r.payer_name,
+        r.member_id,
+        ...slotValues,
+      ];
     });
 
-    // 4️⃣ Build CSV string
     const csvContent = [header, ...csvRows]
       .map((row) => row.join(","))
       .join("\n");
