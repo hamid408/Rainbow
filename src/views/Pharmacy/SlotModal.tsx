@@ -13,7 +13,6 @@ import {
   useTheme,
 } from "@mui/material";
 import AudioWaveform from "./AudioWaveForm";
-
 const SlotModal = ({ open, slot, onClose }: any) => {
   const audioRef = useRef<any>(null);
   const [openTranscript, setOpenTranscript] = useState(false);
@@ -40,6 +39,32 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
   const memoizedAudioUrl = useMemo(() => slot?.audioUrl, [slot?.audioUrl]);
 
+  const convertTimestampToSeconds = (timestamp: string) => {
+    if (!timestamp) return 0;
+    const [minStr, secStr] = timestamp.split(":");
+    const minutes = parseInt(minStr, 10) || 0;
+    const seconds = parseFloat(secStr) || 0;
+    return minutes * 60 + seconds;
+  };
+
+  // Format timestamp for display: "MM:SS" (drop fractional seconds)
+  const formatTimestamp = (timestamp: string | null) => {
+    if (!timestamp) return "—";
+    const [minStr, secStr] = timestamp.split(":");
+    const minutes = parseInt(minStr, 10) || 0;
+    const seconds = Math.floor(parseFloat(secStr)) || 0; // drop fractional part
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  const markers = slot?.slots
+    ? Object.entries(slot.slots).map(([key, s]: any) => ({
+        time: convertTimestampToSeconds(s.timestamp),
+        label: s.key || key,
+      }))
+    : [];
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -62,7 +87,12 @@ const SlotModal = ({ open, slot, onClose }: any) => {
           {slot?.title || "Audio Details"}
         </Typography>
         <Box sx={{ width: "100%", maxWidth: "100%", overflowX: "hidden" }}>
-          <AudioWaveform ref={audioRef} audioUrl={memoizedAudioUrl} />
+          <AudioWaveform
+            ref={audioRef}
+            audioUrl={memoizedAudioUrl}
+            // markers={data.timestamp}
+            markers={markers}
+          />
         </Box>
         <Divider sx={{ my: 2 }} />
         {/* <Box my={2}>
@@ -111,11 +141,26 @@ const SlotModal = ({ open, slot, onClose }: any) => {
           Time Slots
         </Typography>
         {slot?.slots &&
-          slot.slots.map((data: any, index: number) => (
+          Object.entries(slot.slots).map(([key, data]: any, index: number) => (
             <Card key={index} variant="outlined" sx={{ mb: 1.5 }}>
               <CardContent>
-                <ListItemButton
+                {/* <ListItemButton
                   onClick={() => toggleCard(index)}
+                  sx={{ borderRadius: 1, px: 1, py: 0.5, mb: 1 }}
+                >
+                  <Typography
+                    variant="body1"
+                    fontWeight={500}
+                    fontSize={isMobile ? 13 : 15}
+                  >
+                    {data.key}
+                  </Typography> */}
+                <ListItemButton
+                  onClick={() => {
+                    toggleCard(index);
+                    const seconds = convertTimestampToSeconds(data.timestamp);
+                    audioRef.current?.seekTo(seconds); // start audio at timestamp
+                  }}
                   sx={{ borderRadius: 1, px: 1, py: 0.5, mb: 1 }}
                 >
                   <Typography
@@ -133,7 +178,11 @@ const SlotModal = ({ open, slot, onClose }: any) => {
                       <strong>Value:</strong> {data.value || "—"}
                     </Typography>
                     <Typography fontSize={14}>
-                      <strong>Description:</strong> {data.description || "—"}
+                      <strong>Timestamp:</strong>{" "}
+                      {data.timestamp ? formatTimestamp(data.timestamp) : "—"}
+                    </Typography>
+                    <Typography fontSize={14}>
+                      <strong>Description:</strong> {data.description || "—"}{" "}
                     </Typography>
                   </Box>
                 </Collapse>
