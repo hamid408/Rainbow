@@ -41,18 +41,30 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
   const convertTimestampToSeconds = (timestamp: string) => {
     if (!timestamp) return 0;
-    const [minStr, secStr] = timestamp.split(":");
-    const minutes = parseInt(minStr, 10) || 0;
-    const seconds = parseFloat(secStr) || 0;
-    return minutes * 60 + seconds;
+
+    const parts = timestamp.split(":").map(Number);
+
+    if (parts.length === 3) {
+      const [h, m, s] = parts;
+      return h * 3600 + m * 60 + s;
+    }
+
+    if (parts.length === 2) {
+      const [m, s] = parts;
+      return m * 60 + s;
+    }
+
+    return 0;
   };
 
-  // Format timestamp for display: "MM:SS" (drop fractional seconds)
   const formatTimestamp = (timestamp: string | null) => {
     if (!timestamp) return "—";
-    const [minStr, secStr] = timestamp.split(":");
-    const minutes = parseInt(minStr, 10) || 0;
-    const seconds = Math.floor(parseFloat(secStr)) || 0; // drop fractional part
+
+    const totalSeconds = convertTimestampToSeconds(timestamp);
+
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = Math.floor(totalSeconds % 60);
+
     return `${minutes.toString().padStart(2, "0")}:${seconds
       .toString()
       .padStart(2, "0")}`;
