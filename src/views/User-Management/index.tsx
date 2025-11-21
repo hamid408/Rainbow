@@ -46,29 +46,36 @@ const UserManagement = () => {
     data: userData,
     isLoading: userLoading,
     error: userError,
+    refetch: refetchUser,
   } = useGetCurrentUserQuery();
+
   const organizationsId = userData?.data?.[0].organizations_id;
-  console.log("users data", userData);
-  console.log("orgainzarion id", organizationsId);
-  
 
-  const { data: organizationData, isLoading: isOrgLoading } =
-    useGetOrganzationQuery(
-      { organization_id: organizationsId },
-      { skip: !organizationsId }
-    );
-  console.log("data org", organizationData);
-
+  const {
+    data: organizationData,
+    isLoading: isOrgLoading,
+    refetch: refetchOrg,
+  } = useGetOrganzationQuery(
+    { organization_id: organizationsId },
+    { skip: !organizationsId }
+  );
   const {
     data: users,
     isLoading: isUsersLoading,
     isError,
     refetch,
   } = useGetUsersQuery();
+  useEffect(() => {
+    if (organizationsId) refetchOrg();
+  }, [organizationsId]);
+
+  useEffect(() => {
+    refetchUser();
+    refetch();
+  }, []);
 
   const [deactivateUser, { isLoading: isDeactivating }] =
     useDeactivateUserMutation();
-  // console.log("organizationData", organizationData);
 
   const handleDeactivate = async (email: string) => {
     try {
@@ -83,6 +90,21 @@ const UserManagement = () => {
     return (
       <Box sx={{ padding: "48px" }}>
         <CircularProgress />
+      </Box>
+    );
+  }
+  if (userLoading || isOrgLoading) {
+    return (
+      <Box sx={{ padding: "48px", textAlign: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (!userData?.data || userData.data.length === 0) {
+    return (
+      <Box sx={{ padding: "48px", textAlign: "center" }}>
+        <Typography variant="h6">No user data available.</Typography>
       </Box>
     );
   }

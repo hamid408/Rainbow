@@ -34,6 +34,7 @@ type AwaitingReplyListProps = {
   setSortOrder: React.Dispatch<React.SetStateAction<"ASC" | "DESC">>;
   selectedStages: string[];
   setSelectedStages: React.Dispatch<React.SetStateAction<string[]>>;
+  setIsAnyChecked: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
@@ -49,6 +50,7 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
   setSortOrder,
   selectedStages,
   setSelectedStages,
+  setIsAnyChecked,
 }) => {
   const [checkedItems, setCheckedItems] = useState<any>({});
   const [tagAnchorEl, setTagAnchorEl] = useState<null | HTMLElement>(null);
@@ -61,11 +63,19 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
   const tags = enumsData?.tags || [];
   const stages = enumsData?.stages || [];
 
-  const handleCheck = (name: any) => {
-    setCheckedItems((prev: any) => ({
-      ...prev,
-      [name]: !prev[name],
-    }));
+  // const handleCheck = (name: any) => {
+  //   setCheckedItems((prev: any) => ({
+  //     ...prev,
+  //     [name]: !prev[name],
+  //   }));
+  // };
+  const handleCheck = (leadId: string) => {
+    setCheckedItems((prev: any) => {
+      const updated = { ...prev, [leadId]: !prev[leadId] };
+      const anyChecked = Object.values(updated).some(Boolean);
+      setIsAnyChecked?.(anyChecked);
+      return updated;
+    });
   };
 
   // ---------- TAGS ----------
@@ -104,9 +114,16 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
 
   const filteredData = leadsData || [];
 
+  const removeTag = (tag: string) => {
+    setSelectedTags((prev) => prev.filter((t) => t !== tag));
+  };
+
+  const removeStage = (stage: string) => {
+    setSelectedStages((prev) => prev.filter((s) => s !== stage));
+  };
+
   return (
     <Box style={styles.container}>
-      {/* 🔍 Search bar */}
       <Box
         display="flex"
         justifyContent="space-between"
@@ -133,7 +150,6 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
 
       <Divider />
 
-      {/* 🎛️ Filters */}
       <Box
         display="flex"
         gap={1.5}
@@ -143,7 +159,6 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
         marginTop={2.3}
         flexWrap="wrap"
       >
-        {/* Sort */}
         <div onClick={handleSortClick}>
           <IconChip
             label={`Creation Date ${sortOrder ? `(${sortOrder})` : ""}`}
@@ -161,11 +176,11 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
               p: 0,
               "& .MuiMenuItem-root": {
                 fontSize: "14px",
-                py: 0.3, // reduces vertical padding
-                minHeight: "48px", // optional: keeps it compact
+                py: 0.3,
+                minHeight: "48px",
               },
               "& .MuiCheckbox-root": {
-                p: 0.3, // smaller checkbox padding
+                p: 0.3,
               },
               "& .MuiListItemText-primary": {
                 fontSize: "14px",
@@ -193,11 +208,11 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
               p: 0,
               "& .MuiMenuItem-root": {
                 fontSize: "12px",
-                py: 0.3, // reduces vertical padding
-                minHeight: "28px", // optional: keeps it compact
+                py: 0.3,
+                minHeight: "28px",
               },
               "& .MuiCheckbox-root": {
-                p: 0.3, // smaller checkbox padding
+                p: 0.3,
               },
               "& .MuiListItemText-primary": {
                 fontSize: "12px",
@@ -234,11 +249,11 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
               p: 0,
               "& .MuiMenuItem-root": {
                 fontSize: "12px",
-                py: 0.3, // reduces vertical padding
-                minHeight: "28px", // optional: keeps it compact
+                py: 0.3,
+                minHeight: "28px",
               },
               "& .MuiCheckbox-root": {
-                p: 0.3, // smaller checkbox padding
+                p: 0.3,
               },
               "& .MuiListItemText-primary": {
                 fontSize: "12px",
@@ -262,7 +277,6 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
         </Menu>
       </Box>
 
-      {/* ✅ Selected TAGS List */}
       {selectedTags.length > 0 && (
         <Box
           display="flex"
@@ -290,7 +304,13 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
             </Typography>
             <Box display="flex" gap={1} flexWrap="wrap">
               {selectedTags.map((tag) => (
-                <IconChip key={tag} label={tag} color="#7A4DF5" />
+                // <IconChip key={tag} label={tag} color="#7A4DF5" />
+                <IconChip
+                  key={tag}
+                  label={tag}
+                  color="#7A4DF5"
+                  onClick={() => removeTag(tag)}
+                />
               ))}
             </Box>
           </Box>
@@ -332,7 +352,14 @@ const AllLeadsList: React.FC<AwaitingReplyListProps> = ({
             </Typography>
             <Box display="flex" gap={1} flexWrap="wrap">
               {selectedStages.map((stage) => (
-                <IconChip key={stage} label={stage} color="#7A4DF5" />
+                // <IconChip key={stage} label={stage} color="#7A4DF5" />
+                
+                <IconChip
+                  key={stage}
+                  label={stage}
+                  color="#7A4DF5"
+                  onClick={() => removeStage(stage)}
+                />
               ))}
             </Box>
           </Box>

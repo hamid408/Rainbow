@@ -68,7 +68,7 @@ const CustomFilterSelect: React.FC<CustomFilterSelectProps> = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
         PaperProps={{
-          sx: { minWidth: 200, mt: 1, borderRadius: 2 },
+          sx: { minWidth: 200, mt: 1, borderRadius: 2,fontSize:11 },
         }}
       >
         {loading ? (
@@ -81,6 +81,8 @@ const CustomFilterSelect: React.FC<CustomFilterSelectProps> = ({
               key={opt.value}
               onClick={() => handleSelect(opt)}
               selected={selected?.value === opt.value}
+              sx={{ fontSize: 11, paddingY:-1.5, fontWeight:400 }}
+              
             >
               {opt.label}
             </MenuItem>
