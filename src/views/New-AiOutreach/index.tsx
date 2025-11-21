@@ -31,7 +31,6 @@ const NewAiOutreach = () => {
   const [currentLeads, setCurrentLeads] = useState<any[]>([]);
   const [hasNext, setHasNext] = useState(false);
 
-  // ✅ Fetch leads function with “stop when no new data”
   const fetchLeads = async (pageNum: number, cursor: string | null = null) => {
     try {
       const res = await triggerFetch({
@@ -58,7 +57,6 @@ const NewAiOutreach = () => {
     }
   };
 
-  // Initial fetch
   useEffect(() => {
     fetchLeads(1, null);
   }, []);
@@ -71,7 +69,6 @@ const NewAiOutreach = () => {
     fetchLeads(1, null);
   }, [selectedCampaign, searchQuery, activeTab]);
 
-  // Pagination actions
   const handleNext = async () => {
     const nextPage = page + 1;
     const nextCursor = cursors[page];
@@ -104,7 +101,6 @@ const NewAiOutreach = () => {
     }
   };
 
-  // Filter by tab
   const uniqueLeads = useMemo(() => {
     const seen = new Set();
     return (currentLeads || []).filter((lead: any) => {
@@ -131,7 +127,6 @@ const NewAiOutreach = () => {
       ? awaitingLeads
       : uniqueLeads;
 
-  // Pagination UI
   const renderPagination = (
     currentPage: number,
     pages: Record<number, any[]>,
@@ -251,7 +246,6 @@ const NewAiOutreach = () => {
         </CustomButton>
       </Stack>
 
-      {/* Numbered Pagination */}
       {renderPagination(page, pages, hasNext)}
     </Box>
   );

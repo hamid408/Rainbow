@@ -57,6 +57,9 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           <Typography variant="h5" fontWeight={600}>
             Patient Call Records
           </Typography>
+
+          {/* will use in future */}
+
           {/* <CustomSearchField
             endIcon={<Search />}
             searchQuery={searchQuery}
@@ -70,6 +73,8 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
         )}
       </Box>
       <Box display={"flex"} gap={2} mt={3} mb={2} justifyContent={"flex-start"}>
+        {/* will use in future */}
+
         {/* <CustomFilterSelect
           title="Date"
           options={dateOptions}
@@ -191,31 +196,6 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                     </Box>
                   )}
 
-                  {/* <TableCell>
-                    {r.markers?.[0] ? (
-                      <Box
-                        onClick={() =>
-                          setOpenSlot({ ...r, timestamp: r.markers[0].time })
-                        }
-                        sx={{
-                          cursor: "pointer",
-                          fontWeight: 500,
-                          color: "primary.main",
-                        }}
-                      >
-                        {Math.floor(r.markers[0].time / 60)
-                          .toString()
-                          .padStart(2, "0")}
-                        :
-                        {Math.floor(r.markers[0].time % 60)
-                          .toString()
-                          .padStart(2, "0")}{" "}
-                        — {r.markers[0].label}
-                      </Box>
-                    ) : (
-                      "—"
-                    )}
-                  </TableCell> */}
                   <TableCell>
                     {r.transcript || r.audioUrl ? (
                       <Box
@@ -233,8 +213,12 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                       "—"
                     )}
                   </TableCell>
-                  <TableCell  sx={{ width: 140, textAlign: "center", px: 3 }}>{r.patient_dob}</TableCell>
-                  <TableCell  sx={{ width: 140, textAlign: "center", px: 3 }}>{r.payer_name}</TableCell>
+                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
+                    {r.patient_dob}
+                  </TableCell>
+                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
+                    {r.payer_name}
+                  </TableCell>
                   <TableCell>{r.member_id}</TableCell>
 
                   {/* <TableCell>Transcript</TableCell> */}
