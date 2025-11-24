@@ -149,8 +149,8 @@ const SlotModal = ({ open, slot, onClose }: any) => {
           </Collapse>
         </Box>
         <Divider sx={{ my: 2 }} />
-        <Typography fontWeight={700} mb={1} fontSize={isMobile ? 16 : 20}>
-          Time Slots
+        <Typography fontWeight={700} fontSize={isMobile ? 16 : 20}>
+          Slots
         </Typography>
         {slot?.slots &&
           Object.entries(slot.slots).map(([key, data]: any, index: number) => (
