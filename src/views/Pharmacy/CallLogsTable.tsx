@@ -139,18 +139,16 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                     />
                   </TableCell>
                   <TableCell>{r.name}</TableCell>
-                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
+                  <TableCell sx={{ width: 140, px: 3 }}>
                     {r.patient_dob}
                   </TableCell>
                   <TableCell>{r.member_id}</TableCell>
-                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
+                  <TableCell sx={{ width: 140, px: 3 }}>
                     {r.payer_name}
                   </TableCell>
                   <TableCell>{r.phone}</TableCell>
-                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
-                    {r.date}
-                  </TableCell>
-                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
+                  <TableCell sx={{ width: 140, px: 3 }}>{r.date}</TableCell>
+                  <TableCell sx={{ width: 140, px: 3 }}>
                     {r.callDuration || "-"}
                   </TableCell>
                   <TableCell>
