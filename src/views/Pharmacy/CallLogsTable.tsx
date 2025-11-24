@@ -108,17 +108,15 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                   }
                 />
               </TableCell>
-              <TableCell>Name</TableCell>
-              {/* <TableCell>Email</TableCell> */}
-              <TableCell>Phone</TableCell>
-
-              <TableCell>Call Duration</TableCell>
+              <TableCell>Patient Name</TableCell>
+              <TableCell>Patient Dob</TableCell>
+              <TableCell>Memeber Id</TableCell>
+              <TableCell>Payer Name</TableCell>
+              <TableCell>Payer Phone</TableCell>
               <TableCell sx={{ paddingInline: 1 }}>Call Date</TableCell>
+              <TableCell>Call Duration</TableCell>
               <TableCell>Audio</TableCell>
               <TableCell>Slots</TableCell>
-              <TableCell>Patient Dob</TableCell>
-              <TableCell>Payer Name</TableCell>
-              <TableCell>Memeber Id</TableCell>
 
               {/* <TableCell>Transcript</TableCell> */}
             </TableRow>
@@ -141,13 +139,19 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                     />
                   </TableCell>
                   <TableCell>{r.name}</TableCell>
-
+                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
+                    {r.patient_dob}
+                  </TableCell>
+                  <TableCell>{r.member_id}</TableCell>
+                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
+                    {r.payer_name}
+                  </TableCell>
                   <TableCell>{r.phone}</TableCell>
                   <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
-                    {r.callDuration || "-"}
+                    {r.date}
                   </TableCell>
                   <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
-                    {r.date}
+                    {r.callDuration || "-"}
                   </TableCell>
                   <TableCell>
                     {/* <PlayArrow /> */}
@@ -213,13 +217,6 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                       "—"
                     )}
                   </TableCell>
-                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
-                    {r.patient_dob}
-                  </TableCell>
-                  <TableCell sx={{ width: 140, textAlign: "center", px: 3 }}>
-                    {r.payer_name}
-                  </TableCell>
-                  <TableCell>{r.member_id}</TableCell>
 
                   {/* <TableCell>Transcript</TableCell> */}
                 </TableRow>
