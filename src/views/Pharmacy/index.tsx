@@ -18,21 +18,23 @@ const Pharmacy = () => {
       id: item.lead_id,
       name: `${item.first_name || ""} ${item.last_name || ""}`.trim(),
       title: "Consultation Call",
-      // email: "",
-      phone: item.phone || "",
-      date: item.created_at?.split(" ")[0] || "",
-      transcript: item.provider_metadata?.transcript || "",
-      audioUrl: item.provider_metadata?.recording_url || "",
+      phone: item.phone || "-",
+      date: item.created_at?.split(" ")[0] || "-",
+
+      transcript: item.provider_metadata?.transcript || "-",
+      audioUrl: item.provider_metadata?.recording_url || "-",
+      callDuration: item.provider_metadata?.call_duration || "-",
+
       slots: Object.entries(item.slots || {}).map(([key, val]: any) => ({
         key,
         value: val.value,
         description: val.description,
         timestamp: val.timestamp,
       })),
-      patient_dob: item.source_metadata.dob || "",
-      payer_name: item.source_metadata.pbm || "",
-      member_id: item.source_metadata.member_id || "",
-      callDuration: item?.provider_metadata?.call_duration || "",
+
+      patient_dob: item.source_metadata?.dob || "-",
+      payer_name: item.source_metadata?.pbm || "-",
+      member_id: item.source_metadata?.member_id || "-",
     }));
   }, [patientData]);
 
