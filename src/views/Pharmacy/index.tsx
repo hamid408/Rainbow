@@ -32,9 +32,9 @@ const Pharmacy = () => {
         timestamp: val.timestamp,
       })),
 
-      patient_dob: item.source_metadata?.dob || "-",
-      payer_name: item.source_metadata?.pbm || "-",
-      member_id: item.source_metadata?.member_id || "-",
+      patient_dob: item.source_metadata?.patient_dob || "-",
+      payer_name: item.source_metadata?.payer_name || "-",
+      member_id: item.source_metadata?.patient_member_id || "-",
     }));
   }, [patientData]);
 
