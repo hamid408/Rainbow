@@ -110,7 +110,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
               </TableCell>
               <TableCell>Patient Name</TableCell>
               <TableCell>Patient Dob</TableCell>
-              <TableCell>Memeber Id</TableCell>
+              <TableCell>Member Id</TableCell>
               <TableCell>Payer Name</TableCell>
               <TableCell>Payer Phone</TableCell>
               <TableCell sx={{ paddingInline: 1 }}>Call Date</TableCell>
