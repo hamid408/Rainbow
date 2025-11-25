@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { Download, PlayArrow } from "@mui/icons-material";
 import SlotModal from "./SlotModal";
+import ReactDOM from "react-dom";
 
 const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
   const [openSlot, setOpenSlot] = useState<any | null>(null);
@@ -41,34 +42,12 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           <Typography variant="h5" fontWeight={600}>
             Patient Call Records
           </Typography>
-
-          {/* will use in future */}
-
-          {/* <CustomSearchField
-             endIcon={<Search />}
-             searchQuery={searchQuery}
-             setSearchQuery={setSearchQuery}
-           /> */}
         </Box>
         {selected.length > 0 && (
           <Button variant="outlined" onClick={onDownloadCSV}>
             <Download sx={{ mr: 1, fontSize: 18 }} /> Export CSV
           </Button>
         )}
-      </Box>
-      <Box display={"flex"} gap={2} mt={3} mb={2} justifyContent={"flex-start"}>
-        {/* will use in future */}
-
-        {/* <CustomFilterSelect
-           title="Date"
-           options={dateOptions}
-           onSelect={(option) =>
-             setSelectedDateFilter((prev: any) => ({
-               ...prev,
-               [selectedTab]: String(option?.value || ""),
-             }))
-           }
-         /> */}
       </Box>
       <Box sx={{ width: "100%", overflowX: "auto" }}>
         <Table sx={{ minWidth: 1350 }}>
@@ -162,40 +141,52 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           </TableBody>
         </Table>
       </Box>
-
-      {/* SIMPLE AUDIO PLAYER POPUP */}
-      {playingUrl && (
-        <Box
-          sx={{
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            background: "white",
-            p: 3,
-            borderRadius: 2,
-            boxShadow: 4,
-            zIndex: 9999,
-          }}
-        >
-          <audio
-            ref={audioRef}
-            controls
-            autoPlay
-            src={playingUrl}
-            style={{ width: 300 }}
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ mt: 2 }}
-            onClick={() => setPlayingUrl(null)}
-          >
-            Close
-          </Button>
-        </Box>
-      )}
-
+      {playingUrl &&
+        (typeof document !== "undefined"
+          ? ReactDOM.createPortal(
+              <>
+                <Box
+                  sx={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    background: "white",
+                    p: 3,
+                    borderRadius: 2,
+                    boxShadow: 6,
+                    zIndex: 1401,
+                    width: { xs: "90%", sm: 360 },
+                    textAlign: "center",
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <audio
+                    ref={audioRef}
+                    controls
+                    autoPlay
+                    src={playingUrl}
+                    style={{ width: "100%" }}
+                  />
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 2 }}
+                    onClick={() => {
+                      if (audioRef.current) {
+                        audioRef.current.pause();
+                        audioRef.current.currentTime = 0;
+                      }
+                      setPlayingUrl(null);
+                    }}
+                  >
+                    Close
+                  </Button>
+                </Box>
+              </>,
+              document.body
+            )
+          : null)}
       {openSlot && (
         <SlotModal
           open={!!openSlot}
