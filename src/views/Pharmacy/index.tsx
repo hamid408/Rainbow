@@ -18,6 +18,7 @@ const Pharmacy = () => {
       id: item.lead_id,
       name: `${item.first_name || ""} ${item.last_name || ""}`.trim(),
       title: "Consultation Call",
+      call_status: item.call_status || "-",
       phone: item.phone || "-",
       date: item.created_at?.split(" ")[0] || "-",
 
@@ -57,6 +58,8 @@ const Pharmacy = () => {
       "Patient_Dob",
       "Payer_Name",
       "Member_Id",
+      "Call_Type",
+      "Call_status",
       ...slotKeys,
     ];
 
@@ -80,6 +83,8 @@ const Pharmacy = () => {
         r.patient_dob,
         r.payer_name,
         r.member_id,
+        r.call_type,
+        r.call_status,
         ...slotValues,
       ];
     });

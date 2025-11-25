@@ -1,5 +1,3 @@
-
-
 "use client";
 import React, { useRef, useState } from "react";
 import {
@@ -98,6 +96,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
               <TableCell>Call Duration</TableCell>
               <TableCell>Audio</TableCell>
               <TableCell>Slots</TableCell>
+              <TableCell>Call Status</TableCell>
             </TableRow>
           </TableHead>
 
@@ -119,18 +118,17 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                   </TableCell>
 
                   <TableCell sx={{ width: 140 }}>{r.name}</TableCell>
-                  <TableCell sx={{ width: 140 }}>{r.patient_dob}</TableCell>
+                  <TableCell sx={{ minWidth: 140 }}>{r.patient_dob}</TableCell>
                   <TableCell>{r.member_id}</TableCell>
-                  <TableCell sx={{ width: 160 }}>{r.payer_name}</TableCell>
+                  <TableCell sx={{ minWidth: 160 }}>{r.payer_name}</TableCell>
                   <TableCell>{r.phone}</TableCell>
-                  <TableCell>{r.call_type}</TableCell>
+                  <TableCell sx={{width:140}}>{r.call_type}</TableCell>
 
-                  <TableCell sx={{ width: 140 }}>{r.date}</TableCell>
-                  <TableCell sx={{ width: 140, paddingRight: "12px" }}>
+                  <TableCell sx={{ minWidth: 170,margin:"auto",flex:2 }}>{r.date}</TableCell>
+                  <TableCell sx={{ minWidth: 160 }}>
                     {r.callDuration || "-"}
                   </TableCell>
 
-                  {/* AUDIO BUTTON (NO MODAL) */}
                   <TableCell>
                     <IconButton
                       onClick={() => r.audioUrl && handlePlay(r.audioUrl)}
@@ -140,7 +138,6 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                     </IconButton>
                   </TableCell>
 
-                  {/* VIEW DETAILS MODAL */}
                   <TableCell>
                     {r.transcript || r.audioUrl ? (
                       <Box
@@ -158,6 +155,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                       "—"
                     )}
                   </TableCell>
+                  <TableCell sx={{ width: 160 }}>{r.call_status}</TableCell>
                 </TableRow>
               ))
             )}
