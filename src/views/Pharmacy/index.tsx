@@ -35,6 +35,7 @@ const Pharmacy = () => {
       patient_dob: item.source_metadata?.patient_dob || "-",
       payer_name: item.source_metadata?.payer_name || "-",
       member_id: item.source_metadata?.patient_member_id || "-",
+      call_type: item.source_metadata?.call_type || "-",
     }));
   }, [patientData]);
 
