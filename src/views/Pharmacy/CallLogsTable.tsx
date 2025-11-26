@@ -18,7 +18,6 @@ import {
 import { Download, PlayArrow } from "@mui/icons-material";
 import SlotModal from "./SlotModal";
 import ReactDOM from "react-dom";
-import CustomFilterSelect from "@/src/components/common/CustomFilterSelect";
 import IconChip from "@/src/components/common/CustomChip";
 import { Plus } from "@/src/assests/icons";
 
@@ -28,6 +27,8 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [selectedCallTypes, setSelectedCallTypes] = useState<string[]>([]);
   const [callTypeMenu, setCallTypeMenu] = useState<HTMLElement | null>(null);
+  const [selectedPayers, setSelectedPayers] = useState<string[]>([]);
+  const [payerMenu, setPayerMenu] = useState<HTMLElement | null>(null);
 
   const toggleSelect = (id: string) => {
     setSelected((prev: string[]) =>
@@ -47,23 +48,32 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
   const uniqueCallTypes: string[] = Array.from(
     new Set(data.map((r: any) => r.call_type).filter(Boolean))
   );
+  const uniquePayers: string[] = Array.from(
+    new Set(data.map((r: any) => r.payer_name).filter(Boolean))
+  );
 
-  // Filter data based on selected call types
-  const filteredData =
-    selectedCallTypes.length > 0
-      ? data.filter((r: any) => selectedCallTypes.includes(r.call_type))
-      : data;
+  // Filter data based on selected call types and payer names
+  const filteredData = data.filter(
+    (r: any) =>
+      (selectedCallTypes.length === 0 || selectedCallTypes.includes(r.call_type)) &&
+      (selectedPayers.length === 0 || selectedPayers.includes(r.payer_name))
+  );
 
+  // Handlers for Call Type
   const handleCallTypeSelect = (callType: string) =>
     setSelectedCallTypes((prev) =>
       prev.includes(callType)
         ? prev.filter((t) => t !== callType)
         : [...prev, callType]
     );
-
   const clearAllCallTypes = () => setSelectedCallTypes([]);
 
-  console.log("Data ", data[0]?.call_type);
+  // Handlers for Payer Name
+  const handlePayerSelect = (payer: string) =>
+    setSelectedPayers((prev) =>
+      prev.includes(payer) ? prev.filter((p) => p !== payer) : [...prev, payer]
+    );
+  const clearAllPayers = () => setSelectedPayers([]);
 
   return (
     <Box>
@@ -79,6 +89,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           </Button>
         )}
       </Box>
+
       <Box
         display="flex"
         alignItems="center"
@@ -87,6 +98,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
         mb={2}
         flexWrap="wrap"
       >
+        {/* Call Type Filter */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <div onClick={(e) => setCallTypeMenu(e.currentTarget)}>
             <IconChip label="Call Type" icon={<Plus />} color="#656565" />
@@ -99,17 +111,9 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           MenuListProps={{
             sx: {
               p: 0,
-              "& .MuiMenuItem-root": {
-                fontSize: "12px",
-                py: 0.3,
-                minHeight: "28px",
-              },
-              "& .MuiCheckbox-root": {
-                p: 0.3,
-              },
-              "& .MuiListItemText-primary": {
-                fontSize: "12px",
-              },
+              "& .MuiMenuItem-root": { fontSize: "12px", py: 0.3, minHeight: "28px" },
+              "& .MuiCheckbox-root": { p: 0.3 },
+              "& .MuiListItemText-primary": { fontSize: "12px" },
             },
           }}
         >
@@ -131,52 +135,128 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           )}
         </Menu>
 
-        {/* Display selected call types */}
-        {selectedCallTypes.length > 0 && (
+        {/* Payer Name Filter */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <div onClick={(e) => setPayerMenu(e.currentTarget)}>
+            <IconChip label="Payer Name" icon={<Plus />} color="#656565" />
+          </div>
+        </Box>
+        <Menu
+          anchorEl={payerMenu}
+          open={Boolean(payerMenu)}
+          onClose={() => setPayerMenu(null)}
+          MenuListProps={{
+            sx: {
+              p: 0,
+              "& .MuiMenuItem-root": { fontSize: "12px", py: 0.3, minHeight: "28px" },
+              "& .MuiCheckbox-root": { p: 0.3 },
+              "& .MuiListItemText-primary": { fontSize: "12px" },
+            },
+          }}
+        >
+          {uniquePayers.length > 0 ? (
+            uniquePayers.map((payer) => (
+              <MenuItem key={payer} onClick={() => handlePayerSelect(payer)}>
+                <Checkbox checked={selectedPayers.includes(payer)} size="small" />
+                <ListItemText primary={payer} />
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem disabled>No payers found</MenuItem>
+          )}
+        </Menu>
+
+        {/* Display selected filters */}
+        {(selectedCallTypes.length > 0 || selectedPayers.length > 0) && (
           <Box display="flex" alignItems="center" gap={1.5} width="100%">
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                background: "rgba(0,0,0,0.05)",
-                borderRadius: "20px",
-                padding: "6px 10px",
-              }}
-            >
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: 500, fontSize: 13, color: "#555" }}
+            {selectedCallTypes.length > 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  background: "rgba(0,0,0,0.05)",
+                  borderRadius: "20px",
+                  padding: "6px 10px",
+                }}
               >
-                Call Types:
-              </Typography>
-              <Box display="flex" gap={1} flexWrap="wrap">
-                {selectedCallTypes.map((callType) => (
-                  <IconChip
-                    key={callType}
-                    label={callType}
-                    color="#7A4DF5"
-                    onClick={() =>
-                      setSelectedCallTypes((prev) =>
-                        prev.filter((t) => t !== callType)
-                      )
-                    }
-                  />
-                ))}
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 500, fontSize: 13, color: "#555" }}
+                >
+                  Call Types:
+                </Typography>
+                <Box display="flex" gap={1} flexWrap="wrap">
+                  {selectedCallTypes.map((callType) => (
+                    <IconChip
+                      key={callType}
+                      label={callType}
+                      color="#7A4DF5"
+                      onClick={() =>
+                        setSelectedCallTypes((prev) =>
+                          prev.filter((t) => t !== callType)
+                        )
+                      }
+                    />
+                  ))}
+                </Box>
+                <Typography
+                  variant="body2"
+                  color="#7A4DF5"
+                  sx={{ cursor: "pointer" }}
+                  onClick={clearAllCallTypes}
+                >
+                  Clear all
+                </Typography>
               </Box>
-            </Box>
-            <Typography
-              variant="body2"
-              color="#7A4DF5"
-              sx={{ cursor: "pointer" }}
-              onClick={clearAllCallTypes}
-            >
-              Clear all
-            </Typography>
+            )}
+
+            {selectedPayers.length > 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  background: "rgba(0,0,0,0.05)",
+                  borderRadius: "20px",
+                  padding: "6px 10px",
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 500, fontSize: 13, color: "#555" }}
+                >
+                  Payers:
+                </Typography>
+                <Box display="flex" gap={1} flexWrap="wrap">
+                  {selectedPayers.map((payer) => (
+                    <IconChip
+                      key={payer}
+                      label={payer}
+                      color="#7A4DF5"
+                      onClick={() =>
+                        setSelectedPayers((prev) =>
+                          prev.filter((p) => p !== payer)
+                        )
+                      }
+                    />
+                  ))}
+                </Box>
+                <Typography
+                  variant="body2"
+                  color="#7A4DF5"
+                  sx={{ cursor: "pointer" }}
+                  onClick={clearAllPayers}
+                >
+                  Clear all
+                </Typography>
+              </Box>
+            )}
           </Box>
         )}
       </Box>
 
+      {/* Table */}
       <Box sx={{ width: "100%", overflowX: "auto" }}>
         <Table sx={{ minWidth: 1350 }}>
           <TableHead sx={{ background: "#fafafa" }}>
@@ -209,11 +289,10 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
               <TableCell>Call Status</TableCell>
             </TableRow>
           </TableHead>
-
           <TableBody>
             {filteredData.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={10} align="center">
+                <TableCell colSpan={12} align="center">
                   No records found
                 </TableCell>
               </TableRow>
@@ -226,21 +305,14 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                       onChange={() => toggleSelect(r.id)}
                     />
                   </TableCell>
-
                   <TableCell sx={{ width: 140 }}>{r.name}</TableCell>
                   <TableCell sx={{ minWidth: 140 }}>{r.patient_dob}</TableCell>
                   <TableCell>{r.member_id}</TableCell>
                   <TableCell sx={{ minWidth: 160 }}>{r.payer_name}</TableCell>
                   <TableCell>{r.phone}</TableCell>
                   <TableCell sx={{ width: 140 }}>{r.call_type}</TableCell>
-
-                  <TableCell sx={{ minWidth: 170, margin: "auto", flex: 2 }}>
-                    {r.date}
-                  </TableCell>
-                  <TableCell sx={{ minWidth: 160 }}>
-                    {r.callDuration || "-"}
-                  </TableCell>
-
+                  <TableCell sx={{ minWidth: 170 }}>{r.date}</TableCell>
+                  <TableCell sx={{ minWidth: 160 }}>{r.callDuration || "-"}</TableCell>
                   <TableCell>
                     <IconButton
                       onClick={() => r.audioUrl && handlePlay(r.audioUrl)}
@@ -249,7 +321,6 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                       <PlayArrow />
                     </IconButton>
                   </TableCell>
-
                   <TableCell>
                     {r.transcript || r.audioUrl ? (
                       <Box
@@ -274,52 +345,51 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           </TableBody>
         </Table>
       </Box>
+
       {playingUrl &&
-        (typeof document !== "undefined"
-          ? ReactDOM.createPortal(
-              <>
-                <Box
-                  sx={{
-                    position: "fixed",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    background: "white",
-                    p: 3,
-                    borderRadius: 2,
-                    boxShadow: 6,
-                    zIndex: 1401,
-                    width: { xs: "90%", sm: 360 },
-                    textAlign: "center",
-                  }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <audio
-                    ref={audioRef}
-                    controls
-                    autoPlay
-                    src={playingUrl}
-                    style={{ width: "100%" }}
-                  />
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 2 }}
-                    onClick={() => {
-                      if (audioRef.current) {
-                        audioRef.current.pause();
-                        audioRef.current.currentTime = 0;
-                      }
-                      setPlayingUrl(null);
-                    }}
-                  >
-                    Close
-                  </Button>
-                </Box>
-              </>,
-              document.body
-            )
-          : null)}
+        typeof document !== "undefined" &&
+        ReactDOM.createPortal(
+          <Box
+            sx={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              background: "white",
+              p: 3,
+              borderRadius: 2,
+              boxShadow: 6,
+              zIndex: 1401,
+              width: { xs: "90%", sm: 360 },
+              textAlign: "center",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <audio
+              ref={audioRef}
+              controls
+              autoPlay
+              src={playingUrl}
+              style={{ width: "100%" }}
+            />
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 2 }}
+              onClick={() => {
+                if (audioRef.current) {
+                  audioRef.current.pause();
+                  audioRef.current.currentTime = 0;
+                }
+                setPlayingUrl(null);
+              }}
+            >
+              Close
+            </Button>
+          </Box>,
+          document.body
+        )}
+
       {openSlot && (
         <SlotModal
           open={!!openSlot}
