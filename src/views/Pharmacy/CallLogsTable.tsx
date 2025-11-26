@@ -45,12 +45,13 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
   };
 
   // Get unique call types from data
-  const uniqueCallTypes: string[] = Array.from(
-    new Set(data.map((r: any) => r.call_type).filter(Boolean))
-  );
-  const uniquePayers: string[] = Array.from(
-    new Set(data.map((r: any) => r.payer_name).filter(Boolean))
-  );
+  const uniqueCallTypes = Array.from<string>(
+    new Set(data.map((r: any) => r.call_type as string).filter(Boolean))
+  ).sort();
+
+  const uniquePayers = Array.from<string>(
+    new Set(data.map((r: any) => r.payer_name as string).filter(Boolean))
+  ).sort();
 
   // Filter data based on selected call types and payer names
   const filteredData = data.filter(
@@ -111,7 +112,11 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           MenuListProps={{
             sx: {
               p: 0,
-              "& .MuiMenuItem-root": { fontSize: "12px", py: 0.3, minHeight: "28px" },
+              "& .MuiMenuItem-root": {
+                fontSize: "12px",
+                py: 0.3,
+                minHeight: "28px",
+              },
               "& .MuiCheckbox-root": { p: 0.3 },
               "& .MuiListItemText-primary": { fontSize: "12px" },
             },
@@ -148,7 +153,11 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           MenuListProps={{
             sx: {
               p: 0,
-              "& .MuiMenuItem-root": { fontSize: "12px", py: 0.3, minHeight: "28px" },
+              "& .MuiMenuItem-root": {
+                fontSize: "12px",
+                py: 0.3,
+                minHeight: "28px",
+              },
               "& .MuiCheckbox-root": { p: 0.3 },
               "& .MuiListItemText-primary": { fontSize: "12px" },
             },
@@ -157,7 +166,10 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           {uniquePayers.length > 0 ? (
             uniquePayers.map((payer) => (
               <MenuItem key={payer} onClick={() => handlePayerSelect(payer)}>
-                <Checkbox checked={selectedPayers.includes(payer)} size="small" />
+                <Checkbox
+                  checked={selectedPayers.includes(payer)}
+                  size="small"
+                />
                 <ListItemText primary={payer} />
               </MenuItem>
             ))
@@ -312,7 +324,9 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                   <TableCell>{r.phone}</TableCell>
                   <TableCell sx={{ width: 140 }}>{r.call_type}</TableCell>
                   <TableCell sx={{ minWidth: 170 }}>{r.date}</TableCell>
-                  <TableCell sx={{ minWidth: 160 }}>{r.callDuration || "-"}</TableCell>
+                  <TableCell sx={{ minWidth: 160 }}>
+                    {r.callDuration || "-"}
+                  </TableCell>
                   <TableCell>
                     <IconButton
                       onClick={() => r.audioUrl && handlePlay(r.audioUrl)}
