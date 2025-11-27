@@ -64,6 +64,7 @@ const Pharmacy = () => {
       "Call_status",
       ...slotKeys,
     ];
+    const clean = (v: any) => String(v).replace(/,/g, "");
 
     const csvRows = rows.map((r: any) => {
       const slotMap: Record<string, string> = {};
