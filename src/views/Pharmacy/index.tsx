@@ -40,13 +40,16 @@ const Pharmacy = () => {
     }));
   }, [patientData]);
 
+  // Helper function to remove commas
+  const clean = (v: any) => String(v).replace(/,/g, "");
+
   const handleDownloadCSV = () => {
     const rows = tableData.filter((r: any) => selectedRows.includes(r.id));
 
-    const slotKeys = Array.from(
+    const slotKeys: string[] = Array.from(
       new Set(
         rows.flatMap((r: any) =>
-          r.slots ? r.slots.map((s: any) => s.key) : []
+          r.slots ? r.slots.map((s: any) => clean(s.key)) : []
         )
       )
     );
@@ -62,21 +65,17 @@ const Pharmacy = () => {
       "Call_status",
       ...slotKeys,
     ];
-    const clean = (v: any) => String(v).replace(/,/g, "");
 
     const csvRows = rows.map((r: any) => {
-      const slotMap: any = {};
+      const slotMap: Record<string, string> = {};
 
       if (Array.isArray(r.slots)) {
         r.slots.forEach((s: any) => {
-          slotMap[s.key] = s.value ?? "";
+          slotMap[clean(s.key)] = clean(s.value ?? "");
         });
       }
 
-      const slotValues = slotKeys.map((key) =>
-        console.log(clean(slotMap[key as string] ?? ""))
-        
-      );
+      const slotValues = slotKeys.map((key: string) => slotMap[key] ?? "");
 
       return [
         clean(r.name),
