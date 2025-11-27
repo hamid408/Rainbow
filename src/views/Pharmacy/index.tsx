@@ -40,10 +40,11 @@ const Pharmacy = () => {
     }));
   }, [patientData]);
 
+  // Helper function to remove commas
+  const clean = (v: any) => String(v).replace(/,/g, "");
+
   const handleDownloadCSV = () => {
     const rows = tableData.filter((r: any) => selectedRows.includes(r.id));
-
-    const clean = (v: any) => String(v).replace(/,/g, "");
 
     const slotKeys: string[] = Array.from(
       new Set(
@@ -64,7 +65,6 @@ const Pharmacy = () => {
       "Call_status",
       ...slotKeys,
     ];
-    const clean = (v: any) => String(v).replace(/,/g, "");
 
     const csvRows = rows.map((r: any) => {
       const slotMap: Record<string, string> = {};
