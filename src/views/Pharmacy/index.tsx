@@ -62,6 +62,7 @@ const Pharmacy = () => {
       "Call_status",
       ...slotKeys,
     ];
+    const clean = (v: any) => String(v).replace(/,/g, "");
 
     const csvRows = rows.map((r: any) => {
       const slotMap: any = {};
@@ -72,19 +73,20 @@ const Pharmacy = () => {
         });
       }
 
-      const slotValues = slotKeys.map(
-        (key) => (slotMap[key as string] as any) ?? ""
+      const slotValues = slotKeys.map((key) =>
+        console.log(clean(slotMap[key as string] ?? ""))
+        
       );
 
       return [
-        r.name,
-        `"${r.phone}"`,
-        r.date,
-        r.patient_dob,
-        r.payer_name,
-        r.member_id,
-        r.call_type,
-        r.call_status,
+        clean(r.name),
+        `"${clean(r.phone)}"`,
+        clean(r.date),
+        clean(r.patient_dob),
+        clean(r.payer_name),
+        clean(r.member_id),
+        clean(r.call_type),
+        clean(r.call_status),
         ...slotValues,
       ];
     });
