@@ -9,7 +9,6 @@ const Pharmacy = () => {
 
   const { data: patientData, isLoading } = useGetPatientRecordsQuery({
     limit: 50,
-    changing: false,
   });
 
   const tableData = useMemo(() => {

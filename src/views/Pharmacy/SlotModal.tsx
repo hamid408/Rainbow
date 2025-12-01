@@ -20,13 +20,10 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   const [openTranscript, setOpenTranscript] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [selectedCall, setSelectedCall] = useState<number | null>(null);
+  const [pendingSeek, setPendingSeek] = useState<number | null>(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  /** -----------------------------
-   * Utility Functions
-   * ----------------------------- */
   const convertTimestampToSeconds = (timestamp: string = "") => {
     const parts = timestamp.split(":").map(Number);
     if (parts.length === 3) {
@@ -48,9 +45,6 @@ const SlotModal = ({ open, slot, onClose }: any) => {
     return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
   };
 
-  /** -----------------------------
-   * Memoized Values
-   * ----------------------------- */
   const allCalls = useMemo(() => slot?.calls ?? [], [slot?.calls]);
 
   const currentCall = useMemo(() => {
@@ -95,61 +89,43 @@ const SlotModal = ({ open, slot, onClose }: any) => {
     }));
   }, [allCalls, selectedCall]);
 
-  /** -----------------------------
-   * Effects
-   * ----------------------------- */
   useEffect(() => {
     if (open) {
       setSelectedCall(null);
       setOpenIndex(null);
       setOpenTranscript(false);
+      setPendingSeek(null);
     }
   }, [open]);
 
-  useEffect(() => {
-    if (audioRef.current && open) {
-      audioRef.current.seekTo(0);
-    }
-  }, [selectedCall, open]);
-
-  /** -----------------------------
-   * Handlers
-   * ----------------------------- */
   const toggleCard = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   const handleSlotClick = (index: number, data: any) => {
+    const seconds = convertTimestampToSeconds(data.timestamp);
+
     if (selectedCall === null && data.callIndex !== undefined) {
       const latestCallIndex = allCalls.length - 1;
+
       if (data.callIndex !== latestCallIndex) {
         setSelectedCall(data.callIndex);
-        setTimeout(() => {
-          const seconds = convertTimestampToSeconds(data.timestamp);
-          audioRef.current?.seekTo(seconds);
-
-          const newSlots = allCalls[data.callIndex]?.slots ?? {};
-          const newIndex = Object.keys(newSlots).findIndex(
-            (key) => key === data.originalKey
-          );
-          if (newIndex !== -1) setOpenIndex(newIndex);
-        }, 200);
+        setOpenIndex(null); 
+        setPendingSeek(seconds);
         return;
       }
     }
 
     toggleCard(index);
-    audioRef.current?.seekTo(convertTimestampToSeconds(data.timestamp));
+    audioRef.current?.seekTo(seconds);
   };
 
   const handleCallChange = (callIndex: number | null) => {
     setSelectedCall(callIndex);
     setOpenIndex(null);
+    setPendingSeek(null);
   };
 
-  /** -----------------------------
-   * UI
-   * ----------------------------- */
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -184,17 +160,31 @@ const SlotModal = ({ open, slot, onClose }: any) => {
           <Typography variant="h6" mb={2} fontWeight={600} mt={2}>
             {slot?.title || "Audio Details"}
           </Typography>
+
           <AudioWaveform
             key={audioUrl}
             ref={audioRef}
             audioUrl={audioUrl}
             markers={markers}
+            onReady={() => {
+              if (pendingSeek !== null) {
+                audioRef.current?.seekTo(pendingSeek);
+                setPendingSeek(null);
+
+                if (selectedCall !== null) {
+                  const newSlots = allCalls[selectedCall]?.slots ?? {};
+                  const newIndex = Object.keys(newSlots).findIndex(
+                    (key) => key === currentCallSlots[Object.keys(currentCallSlots)[0]]?.originalKey
+                  );
+                  if (newIndex !== -1) setOpenIndex(newIndex);
+                }
+              }
+            }}
           />
         </Box>
 
         <Divider sx={{ my: 2 }} />
 
-        {/* Call Selector */}
         {allCalls.length > 1 && (
           <Box mb={2}>
             <Typography fontWeight={700} fontSize={isMobile ? 16 : 20}>
@@ -247,7 +237,6 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
         <Divider sx={{ my: 2 }} />
 
-        {/* Slots */}
         <Typography fontWeight={700} fontSize={isMobile ? 16 : 20} mb={1}>
           Slots
         </Typography>
