@@ -30,7 +30,7 @@ const Pharmacy = () => {
         key,
         value: val.value,
         description: val.description,
-        timestamp: val.timestamp,
+        timestamp: val.time,
       })),
 
       patient_dob: item.source_metadata?.patient_dob || "-",

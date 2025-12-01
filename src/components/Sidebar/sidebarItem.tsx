@@ -45,7 +45,7 @@ export const sidebarItems = [
 export const sidebarItemsMobile = [
   { label: "My Inbox", icon: HotLeadsNormal, activeIcon: LeadsIcon },
   { label: "AI Outreach", icon: Aireach, activeIcon: AIActive },
-  { label: "Tasks", icon: Tasks },
+  { label: "Pharmacy", icon: Tasks },
   { label: "Analytics", icon: Analytics },
   { label: "Admin", icon: UserIcon, activeIcon: UserActive },
 ];

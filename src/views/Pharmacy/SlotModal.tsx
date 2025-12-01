@@ -80,7 +80,9 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   return (
     <Modal open={open} onClose={onClose}>
       <Box
-        p={isMobile ? 2 : 3}
+        px={isMobile ? 2 : 3}
+        pb={isMobile ? 2 : 3}
+        pt={0}
         sx={{
           position: "absolute",
           top: "50%",
@@ -95,17 +97,28 @@ const SlotModal = ({ open, slot, onClose }: any) => {
           overflowY: "auto",
         }}
       >
-        <Typography variant="h6" mb={2} fontWeight={600}>
-          {slot?.title || "Audio Details"}
-        </Typography>
-        <Box sx={{ width: "100%", maxWidth: "100%", overflowX: "hidden" }}>
+        <Box
+          sx={{
+            width: "100%",
+            maxWidth: "100%",
+            overflowX: "hidden",
+            position: "sticky",
+            top: 0,
+            zIndex: 10,
+            background: "white",
+            pb: 2,
+          }}
+        >
+          <Typography variant="h6" mb={2} fontWeight={600} mt={2}>
+            {slot?.title || "Audio Details"}
+          </Typography>
           <AudioWaveform
             ref={audioRef}
             audioUrl={memoizedAudioUrl}
-            // markers={data.timestamp}
             markers={markers}
           />
         </Box>
+
         <Divider sx={{ my: 2 }} />
         {/* <Box my={2}>
           <Typography fontWeight={600} mb={1}>
