@@ -19,7 +19,6 @@ const Pharmacy = () => {
 
     return dataArray.map((item: any, index: number) => {
       const allCalls = item.conversations?.calls || [];
-      console.log("all calls ", allCalls);
       const latestCall = allCalls[allCalls.length - 1];
 
       // Create array of calls with their slots
