@@ -9,38 +9,76 @@ const Pharmacy = () => {
 
   const { data: patientData, isLoading } = useGetPatientRecordsQuery({
     limit: 50,
+    changing: false,
   });
 
   const tableData = useMemo(() => {
     if (!patientData?.data) return [];
 
-    return patientData.data.map((item: any) => ({
-      id: item.lead_id,
-      name: `${item.first_name || ""} ${item.last_name || ""}`.trim(),
-      title: "Consultation Call",
-      call_status: item.call_status || "-",
-      phone: item.phone || "-",
-      date: item.created_at?.split(" ")[0] || "-",
+    const dataArray = Object.values(patientData.data);
 
-      transcript: item.provider_metadata?.transcript || "-",
-      audioUrl: item.provider_metadata?.recording_url || "-",
-      callDuration: item.provider_metadata?.call_duration || "-",
+    return dataArray.map((item: any, index: number) => {
+      const allCalls = item.conversations?.calls || [];
+      console.log("all calls ", allCalls);
+      const latestCall = allCalls[allCalls.length - 1];
 
-      slots: Object.entries(item.slots || {}).map(([key, val]: any) => ({
-        key,
-        value: val.value,
-        description: val.description,
-        timestamp: val.time,
-      })),
+      // Create array of calls with their slots
+      const calls = allCalls.map((call: any) => ({
+        transcript: call.transcript || "-",
+        recording_url: call.recording_url || "-",
+        call_duration: call.call_duration || "-",
+        slots: call.slots || {},
+      }));
 
-      patient_dob: item.source_metadata?.patient_dob || "-",
-      payer_name: item.source_metadata?.payer_name || "-",
-      member_id: item.source_metadata?.patient_member_id || "-",
-      call_type: item.source_metadata?.call_type || "-",
-    }));
+      return {
+        id: item.patient_member_id,
+        name: `${item.patient_name || ""}`.trim(),
+        title: "Consultation Call",
+        call_status: item.call_status || "-",
+        phone: item.phone || "-",
+        date: item.lead_creation_time?.split(" ")[0] || "-",
+
+        transcript: latestCall?.transcript || "-",
+        audioUrl: latestCall?.recording_url || "-",
+        callDuration: latestCall?.call_duration || "-",
+
+        // Pass all slots from the first call for backward compatibility
+        slots: latestCall?.slots
+          ? Object.entries(latestCall.slots).map(([key, val]: any) => ({
+              key,
+              value: val.value,
+              description: val.description,
+              timestamp: val.time,
+            }))
+          : [],
+
+        // Pass all calls with their slots
+        calls: allCalls.map((call: any) => ({
+          transcript: call.transcript || "-",
+          recording_url: call.recording_url || "-",
+          call_duration: call.call_duration || "-",
+          slots: Object.entries(call.slots || {}).reduce(
+            (acc: any, [key, val]: any) => {
+              acc[key] = {
+                key: val.key || key,
+                value: val.value,
+                description: val.description,
+                timestamp: val.time,
+              };
+              return acc;
+            },
+            {}
+          ),
+        })),
+
+        patient_dob: item.patient_dob || "-",
+        payer_name: item.payer_name || "-",
+        member_id: item.patient_member_id || "-",
+        call_type: item.call_type || "-",
+      };
+    });
   }, [patientData]);
 
-  // Helper function to remove commas
   const clean = (v: any) => String(v).replace(/,/g, "");
 
   const handleDownloadCSV = () => {
