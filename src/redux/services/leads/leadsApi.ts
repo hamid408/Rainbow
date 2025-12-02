@@ -129,6 +129,9 @@ export const leadsapi = createApi({
         created_at,
         stage,
         campaign_name,
+        search,
+        call_type,
+        payer_name,
       }) => {
         let url = `leads/PatientCallRecordings?limit=${limit}`;
         if (cursor) url += `&cursor=${cursor}`;
@@ -136,10 +139,22 @@ export const leadsapi = createApi({
         if (name) url += `&name=${name}`;
         if (created_at) url += `&created_at=${created_at}`;
         if (campaign_name) url += `&campaign_name=${campaign_name}`;
-
+        if (search) url += `&search=${search}`;
+        if (call_type) {
+          const callTypeValue = Array.isArray(call_type)
+            ? call_type.join(",")
+            : call_type;
+          url += `&call_type=${callTypeValue}`;
+        }
+        if (payer_name) {
+          const payerNameValue = Array.isArray(payer_name)
+            ? payer_name.join(",")
+            : payer_name;
+          url += `&payer_name=${payerNameValue}`;
+        }
         if (stage) {
-          const stageValue = Array.isArray(stage) ? stage.join(",") : tag;
-          url += `&stage=${stage}`;
+          const stageValue = Array.isArray(stage) ? stage.join(",") : stage;
+          url += `&stage=${stageValue}`;
         }
         if (tag && tag !== "All") {
           const tagValue = Array.isArray(tag) ? tag.join(",") : tag;
@@ -163,4 +178,5 @@ export const {
   useGetLeadsActionQuery,
   useLazyGetLeadsActionQuery,
   useGetPatientRecordsQuery,
+  useLazyGetPatientRecordsQuery,
 } = leadsapi;

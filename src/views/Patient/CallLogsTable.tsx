@@ -14,27 +14,62 @@ import {
   Menu,
   MenuItem,
   ListItemText,
+  CircularProgress,
 } from "@mui/material";
-import { Download, PlayArrow } from "@mui/icons-material";
-import SlotModal from "./SlotModal";
+import { Download, PlayArrow, Search } from "@mui/icons-material";
 import ReactDOM from "react-dom";
+
+import SlotModal from "./SlotModal";
 import IconChip from "@/src/components/common/CustomChip";
+import CustomSearchField from "@/src/components/common/CustomSearch";
 import { Plus } from "@/src/assests/icons";
 
-const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
+interface CallLogsTableProps {
+  data: any[];
+  selected: string[];
+  setSelected: (ids: string[]) => void;
+  onDownloadCSV: () => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  selectedCallTypes: string[];
+  setSelectedCallTypes: (types: string[]) => void;
+  selectedPayers: string[];
+  setSelectedPayers: (payers: string[]) => void;
+  isFetching: boolean;
+  call_type: string[];
+  payer_name: string[];
+}
+
+const CallLogsTable: React.FC<CallLogsTableProps> = ({
+  data,
+  selected,
+  setSelected,
+  onDownloadCSV,
+  searchQuery,
+  setSearchQuery,
+  selectedCallTypes,
+  setSelectedCallTypes,
+  selectedPayers,
+  setSelectedPayers,
+  isFetching,
+  call_type,
+  payer_name,
+}) => {
   const [openSlot, setOpenSlot] = useState<any | null>(null);
   const [playingUrl, setPlayingUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [selectedCallTypes, setSelectedCallTypes] = useState<string[]>([]);
   const [callTypeMenu, setCallTypeMenu] = useState<HTMLElement | null>(null);
-  const [selectedPayers, setSelectedPayers] = useState<string[]>([]);
   const [payerMenu, setPayerMenu] = useState<HTMLElement | null>(null);
 
-  const toggleSelect = (id: string) => {
-    setSelected((prev: string[]) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+  const uniqueCallTypes = Array.from(new Set(call_type)).sort();
+  const uniquePayers = Array.from(new Set(payer_name)).sort();
+
+  const toggleSelect = (id: string) =>
+    setSelected(
+      selected.includes(id)
+        ? selected.filter((x) => x !== id)
+        : [...selected, id]
     );
-  };
 
   const handlePlay = (url: string) => {
     if (audioRef.current) {
@@ -44,51 +79,64 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
     setPlayingUrl(url);
   };
 
-  // Get unique call types from data
-  const uniqueCallTypes = Array.from<string>(
-    new Set(data.map((r: any) => r.call_type as string).filter(Boolean))
-  ).sort();
-
-  const uniquePayers = Array.from<string>(
-    new Set(data.map((r: any) => r.payer_name as string).filter(Boolean))
-  ).sort();
-
-  // Filter data based on selected call types and payer names
-  const filteredData = data.filter(
-    (r: any) =>
-      (selectedCallTypes.length === 0 || selectedCallTypes.includes(r.call_type)) &&
-      (selectedPayers.length === 0 || selectedPayers.includes(r.payer_name))
-  );
-
-  // Handlers for Call Type
-  const handleCallTypeSelect = (callType: string) =>
-    setSelectedCallTypes((prev) =>
-      prev.includes(callType)
-        ? prev.filter((t) => t !== callType)
-        : [...prev, callType]
+  const handleCallTypeSelect = (type: string) =>
+    setSelectedCallTypes(
+      selectedCallTypes.includes(type)
+        ? selectedCallTypes.filter((t) => t !== type)
+        : [...selectedCallTypes, type]
     );
-  const clearAllCallTypes = () => setSelectedCallTypes([]);
 
-  // Handlers for Payer Name
   const handlePayerSelect = (payer: string) =>
-    setSelectedPayers((prev) =>
-      prev.includes(payer) ? prev.filter((p) => p !== payer) : [...prev, payer]
+    setSelectedPayers(
+      selectedPayers.includes(payer)
+        ? selectedPayers.filter((p) => p !== payer)
+        : [...selectedPayers, payer]
     );
+
+  const clearAllCallTypes = () => setSelectedCallTypes([]);
   const clearAllPayers = () => setSelectedPayers([]);
 
   return (
     <Box>
       <Box display="flex" justifyContent="space-between" mb={1}>
-        <Box display={"flex"} alignItems="center" gap={3}>
-          <Typography variant="h5" fontWeight={600}>
-            Patients Call Records
-          </Typography>
-        </Box>
+        <Typography variant="h5" fontWeight={600}>
+          Patients Call Records
+        </Typography>
         {selected.length > 0 && (
           <Button variant="outlined" onClick={onDownloadCSV}>
             <Download sx={{ mr: 1, fontSize: 18 }} /> Export CSV
           </Button>
         )}
+      </Box>
+
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        gap={1}
+      >
+        <CustomSearchField
+          endIcon={<Search />}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          style={{
+            marginBottom: "12px",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+            backgroundColor: "#f5f5f5",
+            marginTop: "12px",
+            marginLeft: "12px",
+          }}
+        />
+        <Typography
+          variant="subtitle1"
+          fontWeight={400}
+          fontSize={14}
+          color="#818181"
+          marginRight={2.5}
+        >
+          Showing {data.length} result{data.length !== 1 ? "s" : ""}
+        </Typography>
       </Box>
 
       <Box
@@ -99,8 +147,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
         mb={2}
         flexWrap="wrap"
       >
-        {/* Call Type Filter */}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box>
           <div onClick={(e) => setCallTypeMenu(e.currentTarget)}>
             <IconChip label="Call Type" icon={<Plus />} color="#656565" />
           </div>
@@ -112,27 +159,18 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           MenuListProps={{
             sx: {
               p: 0,
-              "& .MuiMenuItem-root": {
-                fontSize: "12px",
-                py: 0.3,
-                minHeight: "28px",
-              },
-              "& .MuiCheckbox-root": { p: 0.3 },
-              "& .MuiListItemText-primary": { fontSize: "12px" },
+              "& .MuiMenuItem-root": { fontSize: 12, py: 0.3, minHeight: 28 },
             },
           }}
         >
           {uniqueCallTypes.length > 0 ? (
-            uniqueCallTypes.map((callType) => (
-              <MenuItem
-                key={callType}
-                onClick={() => handleCallTypeSelect(callType)}
-              >
+            uniqueCallTypes.map((type) => (
+              <MenuItem key={type} onClick={() => handleCallTypeSelect(type)}>
                 <Checkbox
-                  checked={selectedCallTypes.includes(callType)}
+                  checked={selectedCallTypes.includes(type)}
                   size="small"
                 />
-                <ListItemText primary={callType} />
+                <ListItemText primary={type} />
               </MenuItem>
             ))
           ) : (
@@ -140,8 +178,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           )}
         </Menu>
 
-        {/* Payer Name Filter */}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box>
           <div onClick={(e) => setPayerMenu(e.currentTarget)}>
             <IconChip label="Payer Name" icon={<Plus />} color="#656565" />
           </div>
@@ -153,13 +190,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           MenuListProps={{
             sx: {
               p: 0,
-              "& .MuiMenuItem-root": {
-                fontSize: "12px",
-                py: 0.3,
-                minHeight: "28px",
-              },
-              "& .MuiCheckbox-root": { p: 0.3 },
-              "& .MuiListItemText-primary": { fontSize: "12px" },
+              "& .MuiMenuItem-root": { fontSize: 12, py: 0.3, minHeight: 28 },
             },
           }}
         >
@@ -178,7 +209,6 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
           )}
         </Menu>
 
-        {/* Display selected filters */}
         {(selectedCallTypes.length > 0 || selectedPayers.length > 0) && (
           <Box display="flex" alignItems="center" gap={1.5} width="100%">
             {selectedCallTypes.length > 0 && (
@@ -199,14 +229,14 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                   Call Types:
                 </Typography>
                 <Box display="flex" gap={1} flexWrap="wrap">
-                  {selectedCallTypes.map((callType) => (
+                  {selectedCallTypes.map((type) => (
                     <IconChip
-                      key={callType}
-                      label={callType}
+                      key={type}
+                      label={type}
                       color="#7A4DF5"
                       onClick={() =>
-                        setSelectedCallTypes((prev) =>
-                          prev.filter((t) => t !== callType)
+                        setSelectedCallTypes(
+                          selectedCallTypes.filter((t) => t !== type)
                         )
                       }
                     />
@@ -247,8 +277,8 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
                       label={payer}
                       color="#7A4DF5"
                       onClick={() =>
-                        setSelectedPayers((prev) =>
-                          prev.filter((p) => p !== payer)
+                        setSelectedPayers(
+                          selectedPayers.filter((p) => p !== payer)
                         )
                       }
                     />
@@ -268,22 +298,18 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
         )}
       </Box>
 
-      {/* Table */}
-      <Box sx={{ width: "100%", overflowX: "auto" }}>
+      <Box sx={{ width: "100%", overflowX: "auto", position: "relative" }}>
         <Table sx={{ minWidth: 1350 }}>
           <TableHead sx={{ background: "#fafafa" }}>
             <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
-                  checked={
-                    selected.length === filteredData.length &&
-                    filteredData.length > 0
-                  }
+                  checked={selected.length === data.length && data.length > 0}
                   onChange={() =>
                     setSelected(
-                      selected.length === filteredData.length
+                      selected.length === data.length
                         ? []
-                        : filteredData.map((r: any) => r.id)
+                        : data.map((r) => r.id)
                     )
                   }
                 />
@@ -302,14 +328,20 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredData.length === 0 ? (
+            {isFetching ? (
               <TableRow>
-                <TableCell colSpan={12} align="center">
+                <TableCell colSpan={12} align="center" sx={{ py: 8 }}>
+                  <CircularProgress size={40} />
+                </TableCell>
+              </TableRow>
+            ) : data.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={12} align="center" sx={{ py: 8 }}>
                   No records found
                 </TableCell>
               </TableRow>
             ) : (
-              filteredData.map((r: any, index: number) => (
+              data.map((r, index) => (
                 <TableRow key={`${r.id}-${index}`} hover>
                   <TableCell padding="checkbox">
                     <Checkbox
@@ -391,10 +423,8 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
               variant="contained"
               sx={{ mt: 2 }}
               onClick={() => {
-                if (audioRef.current) {
-                  audioRef.current.pause();
-                  audioRef.current.currentTime = 0;
-                }
+                audioRef.current?.pause();
+                if (audioRef.current) audioRef.current.currentTime = 0;
                 setPlayingUrl(null);
               }}
             >

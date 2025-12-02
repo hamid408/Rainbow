@@ -1,32 +1,47 @@
 "use client";
-import React, { useState, useMemo } from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+
+import React, { useState, useMemo, useEffect } from "react";
+import { Box, CircularProgress } from "@mui/material";
 import CallLogsTable from "./CallLogsTable";
-import { useGetPatientRecordsQuery } from "@/src/redux/services/leads/leadsApi";
+import {
+  useGetLeadsEnumsQuery,
+  useLazyGetPatientRecordsQuery,
+} from "@/src/redux/services/leads/leadsApi";
+import { useDebounce } from "use-debounce";
 
 const Patient = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [callType, setCallType] = useState<string[]>([]);
+  const [payerName, setPayerName] = useState<string[]>([]);
+  const [debouncedSearch] = useDebounce(searchQuery, 800);
 
-  const { data: patientData, isLoading } = useGetPatientRecordsQuery({
-    limit: 50,
-  });
+  const {
+    data: enumsData,
+    isLoading: isEnumLoading,
+    isFetching: isEnumFetching,
+  } = useGetLeadsEnumsQuery();
+
+  const [triggerFetch, { data: patientData, isLoading, isFetching }] =
+    useLazyGetPatientRecordsQuery();
+
+  useEffect(() => {
+    triggerFetch({
+      limit: 50,
+      search: debouncedSearch?.trim() || undefined,
+      call_type: callType.length > 0 ? callType.join(",") : undefined,
+      payer_name: payerName.length > 0 ? payerName.join(",") : undefined,
+    });
+  }, [debouncedSearch, callType, payerName]);
 
   const tableData = useMemo(() => {
     if (!patientData?.data) return [];
 
     const dataArray = Object.values(patientData.data);
 
-    return dataArray.map((item: any, index: number) => {
+    return dataArray.map((item: any) => {
       const allCalls = item.conversations?.calls || [];
       const latestCall = allCalls[allCalls.length - 1];
-
-      // Create array of calls with their slots
-      const calls = allCalls.map((call: any) => ({
-        transcript: call.transcript || "-",
-        recording_url: call.recording_url || "-",
-        call_duration: call.call_duration || "-",
-        slots: call.slots || {},
-      }));
 
       return {
         id: item.patient_member_id,
@@ -40,7 +55,6 @@ const Patient = () => {
         audioUrl: latestCall?.recording_url || "-",
         callDuration: latestCall?.call_duration || "-",
 
-        // Pass all slots from the first call for backward compatibility
         slots: latestCall?.slots
           ? Object.entries(latestCall.slots).map(([key, val]: any) => ({
               key,
@@ -50,7 +64,6 @@ const Patient = () => {
             }))
           : [],
 
-        // Pass all calls with their slots
         calls: allCalls.map((call: any) => ({
           transcript: call.transcript || "-",
           recording_url: call.recording_url || "-",
@@ -139,7 +152,7 @@ const Patient = () => {
     URL.revokeObjectURL(url);
   };
 
-  if (isLoading || !patientData?.data) {
+  if (isLoading || isEnumLoading  || !patientData?.data) {
     return (
       <Box p={3} display="flex" justifyContent="center">
         <CircularProgress />
@@ -154,6 +167,15 @@ const Patient = () => {
         selected={selectedRows}
         setSelected={setSelectedRows}
         onDownloadCSV={handleDownloadCSV}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedCallTypes={callType}
+        setSelectedCallTypes={setCallType}
+        selectedPayers={payerName}
+        setSelectedPayers={setPayerName}
+        isFetching={isFetching}
+        call_type={enumsData?.call_type ?? []}
+        payer_name={enumsData?.payer_name ?? []}
       />
     </Box>
   );
