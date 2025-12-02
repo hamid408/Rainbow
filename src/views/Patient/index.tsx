@@ -1,15 +1,38 @@
 "use client";
-import React, { useState, useMemo } from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import React, { useState, useMemo, useEffect } from "react";
+import { Box, CircularProgress } from "@mui/material";
 import CallLogsTable from "./CallLogsTable";
 import { useGetPatientRecordsQuery } from "@/src/redux/services/leads/leadsApi";
+import {
+  useGetLeadsEnumsQuery,
+  useLazyGetPatientRecordsQuery,
+} from "@/src/redux/services/leads/leadsApi";
+import { useDebounce } from "use-debounce";
 
-const Pharmacy = () => {
+const Patient = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-  const { data: patientData, isLoading } = useGetPatientRecordsQuery({
-    limit: 50,
-  });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [callType, setCallType] = useState<string[]>([]);
+  const [payerName, setPayerName] = useState<string[]>([]);
+  const [debouncedSearch] = useDebounce(searchQuery, 800);
+
+  const {
+    data: enumsData,
+    isLoading: isEnumLoading,
+  } = useGetLeadsEnumsQuery();
+
+  const [triggerFetch, { data: patientData, isLoading, isFetching }] =
+    useLazyGetPatientRecordsQuery();
+
+  useEffect(() => {
+    triggerFetch({
+      limit: 50,
+      search: debouncedSearch?.trim() || undefined,
+      call_type: callType.length > 0 ? callType.join(",") : undefined,
+      payer_name: payerName.length > 0 ? payerName.join(",") : undefined,
+    });
+  }, [debouncedSearch, callType, payerName]);
 
   const tableData = useMemo(() => {
     if (!patientData?.data) return [];
@@ -103,7 +126,7 @@ const Pharmacy = () => {
     URL.revokeObjectURL(url);
   };
 
-  if (isLoading || !patientData?.data) {
+  if (isLoading || isEnumLoading || !patientData?.data) {
     return (
       <Box p={3} display="flex" justifyContent="center">
         <CircularProgress />
@@ -118,9 +141,18 @@ const Pharmacy = () => {
         selected={selectedRows}
         setSelected={setSelectedRows}
         onDownloadCSV={handleDownloadCSV}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedCallTypes={callType}
+        setSelectedCallTypes={setCallType}
+        selectedPayers={payerName}
+        setSelectedPayers={setPayerName}
+        isFetching={isFetching}
+        call_type={enumsData?.call_type ?? []}
+        payer_name={enumsData?.payer_name ?? []}
       />
     </Box>
   );
 };
 
-export default Pharmacy;
+export default Patient;
