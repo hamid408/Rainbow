@@ -13,27 +13,24 @@ import {
   useTheme,
 } from "@mui/material";
 import AudioWaveform from "./AudioWaveForm";
+
 const SlotModal = ({ open, slot, onClose }: any) => {
   const audioRef = useRef<any>(null);
   const [openTranscript, setOpenTranscript] = useState(false);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const [activeMarker, setActiveMarker] = useState<number | null>(null);
-  const [openIndex, setOpenIndex] = useState<number | null>(null); // NEW: track open card
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const toggleCard = (index: number) => {
-    if (openIndex === index) {
-      setOpenIndex(null); // close if already open
-    } else {
-      setOpenIndex(index); // open clicked card
-    }
+    if (openIndex === index) setOpenIndex(null);
+    else setOpenIndex(index);
   };
 
   useEffect(() => {
     if (!open) {
-      setActiveMarker(null);
-      setOpenIndex(null); // reset all cards when modal closes
+      setOpenIndex(null);
+      setOpenTranscript(false);
     }
   }, [open]);
 
@@ -41,19 +38,16 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
   const convertTimestampToSeconds = (timestamp: string) => {
     if (!timestamp) return 0;
-
     const parts = timestamp.split(":").map(Number);
 
     if (parts.length === 3) {
       const [h, m, s] = parts;
       return h * 3600 + m * 60 + s;
     }
-
     if (parts.length === 2) {
       const [m, s] = parts;
       return m * 60 + s;
     }
-
     return 0;
   };
 
@@ -61,7 +55,6 @@ const SlotModal = ({ open, slot, onClose }: any) => {
     if (!timestamp) return "—";
 
     const totalSeconds = convertTimestampToSeconds(timestamp);
-
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = Math.floor(totalSeconds % 60);
 
@@ -76,6 +69,8 @@ const SlotModal = ({ open, slot, onClose }: any) => {
         label: s.key || key,
       }))
     : [];
+
+  const hasSlots = slot?.slots && Object.keys(slot.slots).length > 0;
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -98,80 +93,76 @@ const SlotModal = ({ open, slot, onClose }: any) => {
         <Typography variant="h6" mb={2} fontWeight={600}>
           {slot?.title || "Audio Details"}
         </Typography>
-        <Box sx={{ width: "100%", maxWidth: "100%", overflowX: "hidden" }}>
+
+        <Box sx={{ width: "100%", overflowX: "hidden" }}>
           <AudioWaveform
             ref={audioRef}
             audioUrl={memoizedAudioUrl}
-            // markers={data.timestamp}
             markers={markers}
           />
         </Box>
-        <Divider sx={{ my: 2 }} />
-        {/* <Box my={2}>
-          <Typography fontWeight={600} mb={1}>
-            Transcript
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              whiteSpace: "pre-line",
-              fontSize: isMobile ? 13 : 15,
-              lineHeight: 1.5,
-            }}
-          >
-            {slot?.transcript || "No transcript available"}
-          </Typography>
-        </Box> */}
 
-        <Box my={2}>
-          <ListItemButton
-            onClick={() => setOpenTranscript((prev) => !prev)}
-            sx={{ borderRadius: 1, px: 1, py: 0.5 }}
-          >
-            <Typography fontWeight={700} fontSize={isMobile ? 16 : 20}>
-              Transcript
+        <Divider sx={{ my: 2 }} />
+
+        {/* Transcript Heading */}
+        <Typography
+          fontWeight={700}
+          fontSize={isMobile ? 16 : 20}
+          sx={{ mb: 1, px: 1 }}
+        >
+          Transcript
+        </Typography>
+
+        <ListItemButton
+          onClick={() => setOpenTranscript((prev) => !prev)}
+          sx={{ borderRadius: 1, px: 2, py: 0.5 }}
+        >
+          <Typography fontWeight={600} fontSize={isMobile ? 14 : 16}>
+            {openTranscript ? "Hide Transcript" : "Show Transcript"}
+          </Typography>
+        </ListItemButton>
+
+        <Collapse in={openTranscript} timeout={300} unmountOnExit>
+          <Box px={2} mt={1}>
+            <Typography
+              variant="body2"
+              sx={{
+                whiteSpace: "pre-line",
+                fontSize: isMobile ? 13 : 15,
+                lineHeight: 1.5,
+              }}
+            >
+              {slot?.transcript || "No transcript available"}
             </Typography>
-          </ListItemButton>
+          </Box>
+        </Collapse>
 
-          <Collapse in={openTranscript} timeout={300} unmountOnExit>
-            <Box px={1} pl={2} mt={1}>
-              <Typography
-                variant="body2"
-                sx={{
-                  whiteSpace: "pre-line",
-                  fontSize: isMobile ? 13 : 15,
-                  lineHeight: 1.5,
-                }}
-              >
-                {slot?.transcript || "No transcript available"}
-              </Typography>
-            </Box>
-          </Collapse>
-        </Box>
         <Divider sx={{ my: 2 }} />
-        <Typography fontWeight={700} fontSize={isMobile ? 16 : 20}>
+
+        <Typography
+          fontWeight={700}
+          fontSize={isMobile ? 16 : 20}
+          sx={{ mb: 1, px: 1 }}
+        >
           Slots
         </Typography>
-        {slot?.slots &&
+
+        {!hasSlots ? (
+          <Typography
+            fontSize={15}
+            sx={{ px: 2, py: 1, opacity: 0.7 }}
+          >
+            No slots available
+          </Typography>
+        ) : (
           Object.entries(slot.slots).map(([key, data]: any, index: number) => (
             <Card key={index} variant="outlined" sx={{ mb: 1.5 }}>
               <CardContent>
-                {/* <ListItemButton
-                  onClick={() => toggleCard(index)}
-                  sx={{ borderRadius: 1, px: 1, py: 0.5, mb: 1 }}
-                >
-                  <Typography
-                    variant="body1"
-                    fontWeight={500}
-                    fontSize={isMobile ? 13 : 15}
-                  >
-                    {data.key}
-                  </Typography> */}
                 <ListItemButton
                   onClick={() => {
                     toggleCard(index);
                     const seconds = convertTimestampToSeconds(data.timestamp);
-                    audioRef.current?.seekTo(seconds); // start audio at timestamp
+                    audioRef.current?.seekTo(seconds);
                   }}
                   sx={{ borderRadius: 1, px: 1, py: 0.5, mb: 1 }}
                 >
@@ -185,7 +176,7 @@ const SlotModal = ({ open, slot, onClose }: any) => {
                 </ListItemButton>
 
                 <Collapse in={openIndex === index} timeout={300} unmountOnExit>
-                  <Box px={1} pl={2}>
+                  <Box px={2}>
                     <Typography fontSize={14} mb={0.5}>
                       <strong>Value:</strong> {data.value || "—"}
                     </Typography>
@@ -194,13 +185,16 @@ const SlotModal = ({ open, slot, onClose }: any) => {
                       {data.timestamp ? formatTimestamp(data.timestamp) : "—"}
                     </Typography>
                     <Typography fontSize={14}>
-                      <strong>Description:</strong> {data.description || "—"}{" "}
+                      <strong>Description:</strong>{" "}
+                      {data.description || "—"}
                     </Typography>
                   </Box>
                 </Collapse>
               </CardContent>
             </Card>
-          ))}
+          ))
+        )}
+
         <Box display="flex" justifyContent="flex-end" mt={2}>
           <Typography
             onClick={onClose}
