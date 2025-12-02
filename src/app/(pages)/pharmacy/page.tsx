@@ -1,10 +1,10 @@
-import Patient from "@/src/views/Patient";
+import Pharmacy from "@/src/views/Pharmacy";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <Patient />
+      <Pharmacy />
     </div>
   );
 };
