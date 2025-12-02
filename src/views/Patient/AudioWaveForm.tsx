@@ -27,6 +27,7 @@ interface Marker {
 interface AudioWaveformProps {
   audioUrl: string;
   markers?: Marker[];
+   onReady?: () => void;
 }
 
 const AudioWaveform = forwardRef(
