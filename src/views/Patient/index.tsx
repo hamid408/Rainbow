@@ -27,7 +27,7 @@ const Patient = () => {
 
   useEffect(() => {
     triggerFetch({
-      limit: 50,
+      limit: 100,
       search: debouncedSearch?.trim() || undefined,
       call_type: callType.length > 0 ? callType.join(",") : undefined,
       payer_name: payerName.length > 0 ? payerName.join(",") : undefined,
