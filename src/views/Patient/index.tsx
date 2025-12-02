@@ -4,7 +4,7 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 import CallLogsTable from "./CallLogsTable";
 import { useGetPatientRecordsQuery } from "@/src/redux/services/leads/leadsApi";
 
-const Pharmacy = () => {
+const Patient = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
   const { data: patientData, isLoading } = useGetPatientRecordsQuery({
@@ -159,4 +159,4 @@ const Pharmacy = () => {
   );
 };
 
-export default Pharmacy;
+export default Patient;

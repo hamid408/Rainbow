@@ -81,7 +81,7 @@ const CallLogsTable = ({ data, selected, setSelected, onDownloadCSV }: any) => {
       <Box display="flex" justifyContent="space-between" mb={1}>
         <Box display={"flex"} alignItems="center" gap={3}>
           <Typography variant="h5" fontWeight={600}>
-            Patient Call Records
+            Patients Call Records
           </Typography>
         </Box>
         {selected.length > 0 && (
