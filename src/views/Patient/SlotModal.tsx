@@ -139,7 +139,6 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
         <Divider sx={{ my: 2 }} />
 
-        {/* Slots Heading */}
         <Typography
           fontWeight={700}
           fontSize={isMobile ? 16 : 20}
