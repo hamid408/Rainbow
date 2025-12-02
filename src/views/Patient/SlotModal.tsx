@@ -21,10 +21,12 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [selectedCall, setSelectedCall] = useState<number | null>(null);
   const [pendingSeek, setPendingSeek] = useState<number | null>(null);
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const convertTimestampToSeconds = (timestamp: string = "") => {
+    // Add null/undefined check
+    if (!timestamp) return 0;
+
     const parts = timestamp.split(":").map(Number);
     if (parts.length === 3) {
       const [h, m, s] = parts;
@@ -110,7 +112,7 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
       if (data.callIndex !== latestCallIndex) {
         setSelectedCall(data.callIndex);
-        setOpenIndex(null); 
+        setOpenIndex(null);
         setPendingSeek(seconds);
         return;
       }
@@ -151,7 +153,7 @@ const SlotModal = ({ open, slot, onClose }: any) => {
         <Box
           sx={{
             position: "sticky",
-            top: 0,
+            top: 10,
             zIndex: 10,
             background: "white",
             pb: 2,
@@ -174,7 +176,10 @@ const SlotModal = ({ open, slot, onClose }: any) => {
                 if (selectedCall !== null) {
                   const newSlots = allCalls[selectedCall]?.slots ?? {};
                   const newIndex = Object.keys(newSlots).findIndex(
-                    (key) => key === currentCallSlots[Object.keys(currentCallSlots)[0]]?.originalKey
+                    (key) =>
+                      key ===
+                      currentCallSlots[Object.keys(currentCallSlots)[0]]
+                        ?.originalKey
                   );
                   if (newIndex !== -1) setOpenIndex(newIndex);
                 }
