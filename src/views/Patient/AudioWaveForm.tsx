@@ -27,6 +27,7 @@ interface Marker {
 interface AudioWaveformProps {
   audioUrl: string;
   markers?: Marker[];
+  onReady?: () => void;
 }
 
 const AudioWaveform = forwardRef(
@@ -59,13 +60,13 @@ const AudioWaveform = forwardRef(
       const ws = wavesurferRef.current;
 
       if (audioUrl !== lastUrlRef.current) {
-        setIsLoading(true); 
+        setIsLoading(true);
         ws.load(audioUrl);
         lastUrlRef.current = audioUrl;
       }
 
       ws.on("ready", () => {
-        setIsLoading(false); 
+        setIsLoading(false);
         setDuration(ws.getDuration());
         setCurrentTime(0);
 
@@ -105,7 +106,7 @@ const AudioWaveform = forwardRef(
     }));
 
     const handlePlayPause = () => {
-      if (isLoading) return; 
+      if (isLoading) return;
       const ws = wavesurferRef.current;
       ws?.playPause();
       setIsPlaying(ws?.isPlaying() || false);
@@ -117,7 +118,7 @@ const AudioWaveform = forwardRef(
           variant="outlined"
           onClick={handlePlayPause}
           sx={{ borderRadius: "12px" }}
-          disabled={isLoading} 
+          disabled={isLoading}
           startIcon={isLoading ? null : isPlaying ? <Pause /> : <PlayArrow />}
         >
           {isLoading ? "Loading..." : isPlaying ? "Pause" : "Play"}
