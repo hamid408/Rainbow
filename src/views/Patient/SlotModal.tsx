@@ -24,7 +24,6 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const convertTimestampToSeconds = (timestamp: string = "") => {
-    // Add null/undefined check
     if (!timestamp) return 0;
 
     const parts = timestamp.split(":").map(Number);
@@ -55,24 +54,8 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   }, [allCalls, selectedCall]);
 
   const currentCallSlots = useMemo(() => {
-    if (!allCalls.length) return {};
-
-    if (selectedCall !== null) {
-      return allCalls[selectedCall]?.slots ?? {};
-    }
-
-    const merged: any = {};
-    allCalls.forEach((call: any, callIndex: number) => {
-      Object.entries(call.slots ?? {}).forEach(([key, value]: any) => {
-        merged[`${key}_call_${callIndex}`] = {
-          ...value,
-          originalKey: key,
-          callIndex,
-        };
-      });
-    });
-    return merged;
-  }, [allCalls, selectedCall]);
+    return slot?.slots ?? [];
+  }, [slot?.slots]);
 
   const audioUrl = useMemo(
     () => currentCall?.recording_url || slot?.audioUrl || "",
@@ -80,16 +63,13 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   );
 
   const markers = useMemo(() => {
-    const referenceSlots =
-      selectedCall !== null
-        ? allCalls[selectedCall]?.slots
-        : allCalls.at(-1)?.slots;
+    const referenceSlots = slot?.slots ?? [];
     if (!referenceSlots) return [];
     return Object.entries(referenceSlots).map(([key, s]: any) => ({
       time: convertTimestampToSeconds(s.timestamp),
       label: s.key || key,
     }));
-  }, [allCalls, selectedCall]);
+  }, [slot?.slots]);
 
   useEffect(() => {
     if (open) {
@@ -106,18 +86,6 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
   const handleSlotClick = (index: number, data: any) => {
     const seconds = convertTimestampToSeconds(data.timestamp);
-
-    if (selectedCall === null && data.callIndex !== undefined) {
-      const latestCallIndex = allCalls.length - 1;
-
-      if (data.callIndex !== latestCallIndex) {
-        setSelectedCall(data.callIndex);
-        setOpenIndex(null);
-        setPendingSeek(seconds);
-        return;
-      }
-    }
-
     toggleCard(index);
     audioRef.current?.seekTo(seconds);
   };
@@ -153,13 +121,14 @@ const SlotModal = ({ open, slot, onClose }: any) => {
         <Box
           sx={{
             position: "sticky",
-            top: 10,
+            top: 0,
             zIndex: 10,
-            background: "white",
+            bgcolor: "background.paper",
+            pt: 2,
             pb: 2,
           }}
         >
-          <Typography variant="h6" mb={2} fontWeight={600} mt={2}>
+          <Typography variant="h6" mb={2} fontWeight={600}>
             {slot?.title || "Audio Details"}
           </Typography>
 
@@ -172,17 +141,6 @@ const SlotModal = ({ open, slot, onClose }: any) => {
               if (pendingSeek !== null) {
                 audioRef.current?.seekTo(pendingSeek);
                 setPendingSeek(null);
-
-                if (selectedCall !== null) {
-                  const newSlots = allCalls[selectedCall]?.slots ?? {};
-                  const newIndex = Object.keys(newSlots).findIndex(
-                    (key) =>
-                      key ===
-                      currentCallSlots[Object.keys(currentCallSlots)[0]]
-                        ?.originalKey
-                  );
-                  if (newIndex !== -1) setOpenIndex(newIndex);
-                }
               }
             }}
           />
@@ -196,18 +154,23 @@ const SlotModal = ({ open, slot, onClose }: any) => {
               Calls
             </Typography>
             <Box display="flex" gap={1} flexWrap="wrap" mt={1}>
-              {allCalls.map((_: any, index: number) => (
-                <Chip
-                  key={index}
-                  label={`Call ${index + 1}`}
-                  onClick={() =>
-                    handleCallChange(selectedCall === index ? null : index)
-                  }
-                  variant={selectedCall === index ? "filled" : "outlined"}
-                  color={selectedCall === index ? "primary" : "default"}
-                  sx={{ cursor: "pointer", fontWeight: 600 }}
-                />
-              ))}
+              {allCalls.map((_: any, index: number) => {
+                const isLatestCall = index === allCalls.length - 1;
+                const isSelected = selectedCall === index || (selectedCall === null && isLatestCall);
+                
+                return (
+                  <Chip
+                    key={index}
+                    label={`Call ${index + 1}`}
+                    onClick={() =>
+                      handleCallChange(selectedCall === index ? null : index)
+                    }
+                    variant={isSelected ? "filled" : "outlined"}
+                    color={isSelected ? "primary" : "default"}
+                    sx={{ cursor: "pointer", fontWeight: 600 }}
+                  />
+                );
+              })}
             </Box>
             <Divider sx={{ my: 2 }} />
           </Box>
@@ -215,12 +178,16 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
         {/* Transcript */}
         <Box my={2}>
+          <Typography fontWeight={700} fontSize={isMobile ? 16 : 20} mb={1}>
+            Transcript
+          </Typography>
+
           <ListItemButton
-            onClick={() => setOpenTranscript((p) => !p)}
-            sx={{ borderRadius: 1, px: 1, py: 0.5 }}
+            onClick={() => setOpenTranscript((prev) => !prev)}
+            sx={{ borderRadius: 1, px: 2, py: 0.5 }}
           >
-            <Typography fontWeight={700} fontSize={isMobile ? 16 : 20}>
-              Transcript
+            <Typography fontWeight={600} fontSize={isMobile ? 14 : 16}>
+              {openTranscript ? "Hide Transcript" : "Show Transcript"}
             </Typography>
           </ListItemButton>
 

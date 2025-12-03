@@ -50,17 +50,16 @@ const Patient = () => {
         call_status: item.call_status || "-",
         phone: item.phone || "-",
         date: item.lead_creation_time?.split(" ")[0] || "-",
-
         transcript: latestCall?.transcript || "-",
         audioUrl: latestCall?.recording_url || "-",
         callDuration: latestCall?.call_duration || "-",
 
-        slots: latestCall?.slots
-          ? Object.entries(latestCall.slots).map(([key, val]: any) => ({
+        slots: item.slots
+          ? Object.entries(item.slots).map(([key, val]: any) => ({
               key,
-              value: val.value,
-              description: val.description,
-              timestamp: val.time,
+              value: val?.value,
+              description: val?.description,
+              timestamp: val?.time,
             }))
           : [],
 
@@ -68,18 +67,6 @@ const Patient = () => {
           transcript: call.transcript || "-",
           recording_url: call.recording_url || "-",
           call_duration: call.call_duration || "-",
-          slots: Object.entries(call.slots || {}).reduce(
-            (acc: any, [key, val]: any) => {
-              acc[key] = {
-                key: val.key || key,
-                value: val.value,
-                description: val.description,
-                timestamp: val.time,
-              };
-              return acc;
-            },
-            {}
-          ),
         })),
 
         patient_dob: item.patient_dob || "-",
