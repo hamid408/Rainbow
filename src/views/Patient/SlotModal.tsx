@@ -21,6 +21,8 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const convertTimestampToSeconds = (timestamp: string = "") => {
+    if (!timestamp) return 0;
 
   const toggleCard = (index: number) => {
     if (openIndex === index) setOpenIndex(null);
@@ -54,23 +56,56 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   const formatTimestamp = (timestamp: string | null) => {
     if (!timestamp) return "—";
 
-    const totalSeconds = convertTimestampToSeconds(timestamp);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = Math.floor(totalSeconds % 60);
+  const allCalls = useMemo(() => slot?.calls ?? [], [slot?.calls]);
+
+  const currentCall = useMemo(() => {
+    if (!allCalls.length) return null;
+    return selectedCall !== null ? allCalls[selectedCall] : allCalls.at(-1);
+  }, [allCalls, selectedCall]);
+
+  const currentCallSlots = useMemo(() => {
+    return slot?.slots ?? [];
+  }, [slot?.slots]);
+
+  const audioUrl = useMemo(
+    () => currentCall?.recording_url || slot?.audioUrl || "",
+    [currentCall, slot?.audioUrl]
+  );
+
+  const markers = useMemo(() => {
+    const referenceSlots = slot?.slots ?? [];
+    if (!referenceSlots) return [];
+    return Object.entries(referenceSlots).map(([key, s]: any) => ({
+      time: convertTimestampToSeconds(s.timestamp),
+      label: s.key || key,
+    }));
+  }, [slot?.slots]);
+
+  useEffect(() => {
+    if (open) {
+      setSelectedCall(null);
+      setOpenIndex(null);
+      setOpenTranscript(false);
+      setPendingSeek(null);
+    }
+  }, [open]);
 
     return `${minutes.toString().padStart(2, "0")}:${seconds
       .toString()
       .padStart(2, "0")}`;
   };
 
-  const markers = slot?.slots
-    ? Object.entries(slot.slots).map(([key, s]: any) => ({
-        time: convertTimestampToSeconds(s.timestamp),
-        label: s.key || key,
-      }))
-    : [];
+  const handleSlotClick = (index: number, data: any) => {
+    const seconds = convertTimestampToSeconds(data.timestamp);
+    toggleCard(index);
+    audioRef.current?.seekTo(seconds);
+  };
 
-  const hasSlots = slot?.slots && Object.keys(slot.slots).length > 0;
+  const handleCallChange = (callIndex: number | null) => {
+    setSelectedCall(callIndex);
+    setOpenIndex(null);
+    setPendingSeek(null);
+  };
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -90,49 +125,77 @@ const SlotModal = ({ open, slot, onClose }: any) => {
           overflowY: "auto",
         }}
       >
-        <Typography variant="h6" mb={2} fontWeight={600}>
-          {slot?.title || "Audio Details"}
-        </Typography>
+        {/* Sticky Header */}
+        <Box
+          sx={{
+            position: "sticky",
+            top: 0,
+            zIndex: 10,
+            bgcolor: "background.paper",
+            pt: 2,
+            pb: 2,
+          }}
+        >
+          <Typography variant="h6" mb={2} fontWeight={600}>
+            {slot?.title || "Audio Details"}
+          </Typography>
 
         <Box sx={{ width: "100%", overflowX: "hidden" }}>
           <AudioWaveform
             ref={audioRef}
             audioUrl={memoizedAudioUrl}
             markers={markers}
+            onReady={() => {
+              if (pendingSeek !== null) {
+                audioRef.current?.seekTo(pendingSeek);
+                setPendingSeek(null);
+              }
+            }}
           />
         </Box>
 
         <Divider sx={{ my: 2 }} />
 
-        {/* Transcript Heading */}
-        <Typography
-          fontWeight={700}
-          fontSize={isMobile ? 16 : 20}
-          sx={{ mb: 1, px: 1 }}
-        >
-          Transcript
-        </Typography>
+        {allCalls.length > 1 && (
+          <Box mb={2}>
+            <Typography fontWeight={700} fontSize={isMobile ? 16 : 20}>
+              Calls
+            </Typography>
+            <Box display="flex" gap={1} flexWrap="wrap" mt={1}>
+              {allCalls.map((_: any, index: number) => {
+                const isLatestCall = index === allCalls.length - 1;
+                const isSelected = selectedCall === index || (selectedCall === null && isLatestCall);
+                
+                return (
+                  <Chip
+                    key={index}
+                    label={`Call ${index + 1}`}
+                    onClick={() =>
+                      handleCallChange(selectedCall === index ? null : index)
+                    }
+                    variant={isSelected ? "filled" : "outlined"}
+                    color={isSelected ? "primary" : "default"}
+                    sx={{ cursor: "pointer", fontWeight: 600 }}
+                  />
+                );
+              })}
+            </Box>
+            <Divider sx={{ my: 2 }} />
+          </Box>
+        )}
 
-        <ListItemButton
-          onClick={() => setOpenTranscript((prev) => !prev)}
-          sx={{ borderRadius: 1, px: 2, py: 0.5 }}
-        >
-          <Typography fontWeight={600} fontSize={isMobile ? 14 : 16}>
-            {openTranscript ? "Hide Transcript" : "Show Transcript"}
+        {/* Transcript */}
+        <Box my={2}>
+          <Typography fontWeight={700} fontSize={isMobile ? 16 : 20} mb={1}>
+            Transcript
           </Typography>
-        </ListItemButton>
 
-        <Collapse in={openTranscript} timeout={300} unmountOnExit>
-          <Box px={2} mt={1}>
-            <Typography
-              variant="body2"
-              sx={{
-                whiteSpace: "pre-line",
-                fontSize: isMobile ? 13 : 15,
-                lineHeight: 1.5,
-              }}
-            >
-              {slot?.transcript || "No transcript available"}
+          <ListItemButton
+            onClick={() => setOpenTranscript((prev) => !prev)}
+            sx={{ borderRadius: 1, px: 2, py: 0.5 }}
+          >
+            <Typography fontWeight={600} fontSize={isMobile ? 14 : 16}>
+              {openTranscript ? "Hide Transcript" : "Show Transcript"}
             </Typography>
           </Box>
         </Collapse>
