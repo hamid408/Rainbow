@@ -1,8 +1,8 @@
 "use client";
-
 import React, { useState, useMemo, useEffect } from "react";
 import { Box, CircularProgress } from "@mui/material";
 import CallLogsTable from "./CallLogsTable";
+import { useGetPatientRecordsQuery } from "@/src/redux/services/leads/leadsApi";
 import {
   useGetLeadsEnumsQuery,
   useLazyGetPatientRecordsQuery,
@@ -11,6 +11,7 @@ import { useDebounce } from "use-debounce";
 
 const Patient = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [callType, setCallType] = useState<string[]>([]);
   const [payerName, setPayerName] = useState<string[]>([]);
@@ -19,7 +20,6 @@ const Patient = () => {
   const {
     data: enumsData,
     isLoading: isEnumLoading,
-    isFetching: isEnumFetching,
   } = useGetLeadsEnumsQuery();
 
   const [triggerFetch, { data: patientData, isLoading, isFetching }] =
@@ -77,6 +77,7 @@ const Patient = () => {
     });
   }, [patientData]);
 
+  // Helper function to remove commas
   const clean = (v: any) => String(v).replace(/,/g, "");
 
   const handleDownloadCSV = () => {
@@ -139,7 +140,7 @@ const Patient = () => {
     URL.revokeObjectURL(url);
   };
 
-  if (isLoading || isEnumLoading  || !patientData?.data) {
+  if (isLoading || isEnumLoading || !patientData?.data) {
     return (
       <Box p={3} display="flex" justifyContent="center">
         <CircularProgress />

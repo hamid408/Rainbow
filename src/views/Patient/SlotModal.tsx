@@ -11,7 +11,6 @@ import {
   Collapse,
   useMediaQuery,
   useTheme,
-  Chip,
 } from "@mui/material";
 import AudioWaveform from "./AudioWaveForm";
 
@@ -19,14 +18,30 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   const audioRef = useRef<any>(null);
   const [openTranscript, setOpenTranscript] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [selectedCall, setSelectedCall] = useState<number | null>(null);
-  const [pendingSeek, setPendingSeek] = useState<number | null>(null);
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const convertTimestampToSeconds = (timestamp: string = "") => {
     if (!timestamp) return 0;
 
+  const toggleCard = (index: number) => {
+    if (openIndex === index) setOpenIndex(null);
+    else setOpenIndex(index);
+  };
+
+  useEffect(() => {
+    if (!open) {
+      setOpenIndex(null);
+      setOpenTranscript(false);
+    }
+  }, [open]);
+
+  const memoizedAudioUrl = useMemo(() => slot?.audioUrl, [slot?.audioUrl]);
+
+  const convertTimestampToSeconds = (timestamp: string) => {
+    if (!timestamp) return 0;
     const parts = timestamp.split(":").map(Number);
+
     if (parts.length === 3) {
       const [h, m, s] = parts;
       return h * 3600 + m * 60 + s;
@@ -40,11 +55,6 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
   const formatTimestamp = (timestamp: string | null) => {
     if (!timestamp) return "—";
-    const total = convertTimestampToSeconds(timestamp);
-    const m = Math.floor(total / 60);
-    const s = total % 60;
-    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-  };
 
   const allCalls = useMemo(() => slot?.calls ?? [], [slot?.calls]);
 
@@ -80,8 +90,9 @@ const SlotModal = ({ open, slot, onClose }: any) => {
     }
   }, [open]);
 
-  const toggleCard = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   const handleSlotClick = (index: number, data: any) => {
@@ -99,9 +110,7 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   return (
     <Modal open={open} onClose={onClose}>
       <Box
-        px={isMobile ? 2 : 3}
-        pb={isMobile ? 2 : 3}
-        pt={0}
+        p={isMobile ? 2 : 3}
         sx={{
           position: "absolute",
           top: "50%",
@@ -114,7 +123,6 @@ const SlotModal = ({ open, slot, onClose }: any) => {
           boxShadow: 6,
           maxHeight: "90vh",
           overflowY: "auto",
-          outline: "none",
         }}
       >
         {/* Sticky Header */}
@@ -132,10 +140,10 @@ const SlotModal = ({ open, slot, onClose }: any) => {
             {slot?.title || "Audio Details"}
           </Typography>
 
+        <Box sx={{ width: "100%", overflowX: "hidden" }}>
           <AudioWaveform
-            key={audioUrl}
             ref={audioRef}
-            audioUrl={audioUrl}
+            audioUrl={memoizedAudioUrl}
             markers={markers}
             onReady={() => {
               if (pendingSeek !== null) {
@@ -189,67 +197,59 @@ const SlotModal = ({ open, slot, onClose }: any) => {
             <Typography fontWeight={600} fontSize={isMobile ? 14 : 16}>
               {openTranscript ? "Hide Transcript" : "Show Transcript"}
             </Typography>
-          </ListItemButton>
-
-          <Collapse in={openTranscript} timeout={300}>
-            <Box px={1} pl={2} mt={1}>
-              <Typography
-                variant="body2"
-                sx={{
-                  whiteSpace: "pre-line",
-                  fontSize: isMobile ? 13 : 15,
-                  lineHeight: 1.5,
-                }}
-              >
-                {currentCall?.transcript || "No transcript available"}
-              </Typography>
-            </Box>
-          </Collapse>
-        </Box>
+          </Box>
+        </Collapse>
 
         <Divider sx={{ my: 2 }} />
 
-        <Typography fontWeight={700} fontSize={isMobile ? 16 : 20} mb={1}>
+        <Typography
+          fontWeight={700}
+          fontSize={isMobile ? 16 : 20}
+          sx={{ mb: 1, px: 1 }}
+        >
           Slots
         </Typography>
 
-        {Object.entries(currentCallSlots).length === 0 ? (
-          <Typography variant="body2" color="textSecondary">
+        {!hasSlots ? (
+          <Typography
+            fontSize={15}
+            sx={{ px: 2, py: 1, opacity: 0.7 }}
+          >
             No slots available
           </Typography>
         ) : (
-          Object.entries(currentCallSlots).map(([key, data]: any, index) => (
-            <Card key={key} variant="outlined" sx={{ mb: 1.5 }}>
+          Object.entries(slot.slots).map(([key, data]: any, index: number) => (
+            <Card key={index} variant="outlined" sx={{ mb: 1.5 }}>
               <CardContent>
                 <ListItemButton
-                  onClick={() => handleSlotClick(index, data)}
-                  sx={{
-                    borderRadius: 1,
-                    px: 1,
-                    py: 0.5,
-                    mb: openIndex === index ? 1 : 0,
+                  onClick={() => {
+                    toggleCard(index);
+                    const seconds = convertTimestampToSeconds(data.timestamp);
+                    audioRef.current?.seekTo(seconds);
                   }}
+                  sx={{ borderRadius: 1, px: 1, py: 0.5, mb: 1 }}
                 >
                   <Typography
                     variant="body1"
                     fontWeight={500}
                     fontSize={isMobile ? 13 : 15}
                   >
-                    {data.key || data.originalKey || key}
+                    {data.key}
                   </Typography>
                 </ListItemButton>
 
-                <Collapse in={openIndex === index} timeout={300}>
-                  <Box px={1} pl={2}>
+                <Collapse in={openIndex === index} timeout={300} unmountOnExit>
+                  <Box px={2}>
                     <Typography fontSize={14} mb={0.5}>
                       <strong>Value:</strong> {data.value || "—"}
                     </Typography>
-                    <Typography fontSize={14} mb={0.5}>
+                    <Typography fontSize={14}>
                       <strong>Timestamp:</strong>{" "}
-                      {formatTimestamp(data.timestamp)}
+                      {data.timestamp ? formatTimestamp(data.timestamp) : "—"}
                     </Typography>
                     <Typography fontSize={14}>
-                      <strong>Description:</strong> {data.description || "—"}
+                      <strong>Description:</strong>{" "}
+                      {data.description || "—"}
                     </Typography>
                   </Box>
                 </Collapse>
@@ -265,7 +265,7 @@ const SlotModal = ({ open, slot, onClose }: any) => {
               cursor: "pointer",
               color: "primary.main",
               fontWeight: 500,
-              "&:hover": { textDecoration: "underline" },
+              fontSize: isMobile ? 14 : 16,
             }}
           >
             Close
