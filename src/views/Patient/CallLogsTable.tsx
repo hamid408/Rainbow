@@ -161,11 +161,11 @@ const CallLogsTable: React.FC<CallLogsTableProps> = ({
               p: 0,
               "& .MuiMenuItem-root": {
                 fontSize: "12px",
-                py: 0.3, // reduces vertical padding
-                minHeight: "28px", // optional: keeps it compact
+                py: 0.3,
+                minHeight: "28px",
               },
               "& .MuiCheckbox-root": {
-                p: 0.3, // smaller checkbox padding
+                p: 0.3,
               },
               "& .MuiListItemText-primary": {
                 fontSize: "12px",
@@ -202,11 +202,11 @@ const CallLogsTable: React.FC<CallLogsTableProps> = ({
               p: 0,
               "& .MuiMenuItem-root": {
                 fontSize: "12px",
-                py: 0.3, // reduces vertical padding
-                minHeight: "28px", // optional: keeps it compact
+                py: 0.3,
+                minHeight: "28px",
               },
               "& .MuiCheckbox-root": {
-                p: 0.3, // smaller checkbox padding
+                p: 0.3,
               },
               "& .MuiListItemText-primary": {
                 fontSize: "12px",
