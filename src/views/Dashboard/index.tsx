@@ -388,22 +388,11 @@ const Dashboard = () => {
             flexWrap: "wrap",
             justifyContent: "flex-end",
             width: "100%",
-
-            "@media (max-width: 600px)": {
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              "& button": {
-                width: "auto",
-                justifyContent: "center",
-              },
-            },
           }}
         >
           <CustomButton
             variant="contained"
             onClick={() => setAddCampaign(true)}
-            sx={{ mr: 2 }}
             disabled={!isAnyChecked}
           >
             Add Campaign
