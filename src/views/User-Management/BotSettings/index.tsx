@@ -107,6 +107,7 @@ const StyleEditor = () => {
   };
 
   const values = watch();
+  
   if (isFetching) {
     return (
       <Box
@@ -121,28 +122,30 @@ const StyleEditor = () => {
   }
 
   return (
-    <Grid
-      container
-      spacing={4}
+    <Box
       sx={{
-        height: "100vh",
-        p: 4,
+        minHeight: "100vh",
+        p: { xs: 2, sm: 3, md: 4 },
         display: "flex",
-        alignItems: "baseline",
-        justifyContent: "space-between",
-        // maxWidth: "780px",
-        width: "100%",
+        flexDirection: "column",
+        gap: 3,
       }}
     >
-      <Grid>
+      {/* Style Controls and Save Button Row */}
+      <Box 
+        sx={{ 
+          display: "flex", 
+          flexDirection: { xs: "column", lg: "row" },
+          gap: 3,
+          alignItems: { xs: "stretch", lg: "flex-start" }
+        }}
+      >
         <Paper
           elevation={2}
           sx={{
-            p: 3,
+            p: { xs: 2, sm: 3 },
             borderRadius: 3,
-            height: "100%",
-            width: "110%",
-            maxWidth: "160%",
+            flex: 1,
           }}
         >
           <StyleControls
@@ -152,34 +155,49 @@ const StyleEditor = () => {
             control={control}
           />
         </Paper>
-      </Grid>
-      <Box>
-        <CustomButton
-          variant="contained"
-          onClick={handleUpdate}
-          disabled={!isDirty || isLoading}
-        >
-          Save Changes
-        </CustomButton>
-      </Box>
-      <Grid>
-        <Paper
-          elevation={2}
-          sx={{
-            p: 4,
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 4,
-            width: "100%",
+
+        {/* Save Button */}
+        <Box 
+          sx={{ 
+            display: "flex", 
+            alignItems: "flex-start",
+            justifyContent: { xs: "center", lg: "flex-start" },
+            pt: { lg: 2 }
           }}
         >
-          <PreviewBox values={values} />
-        </Paper>
-        <Scripted cloudfrontUrl={data?.cloudfront_url} />
-      </Grid>
-    </Grid>
+          <CustomButton
+            variant="contained"
+            onClick={handleUpdate}
+            disabled={!isDirty || isLoading}
+            sx={{ 
+              minWidth: { xs: "200px", lg: "180px" },
+              height: "fit-content",
+              whiteSpace: "nowrap"
+            }}
+          >
+            Save Changes
+          </CustomButton>
+        </Box>
+      </Box>
+
+      {/* Preview Section */}
+      <Paper
+        elevation={2}
+        sx={{
+          p: { xs: 2, sm: 3, md: 4 },
+          borderRadius: 3,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+        }}
+      >
+        <PreviewBox values={values} />
+      </Paper>
+
+      {/* Script Section */}
+      <Scripted cloudfrontUrl={data?.cloudfront_url} />
+    </Box>
   );
 };
 
