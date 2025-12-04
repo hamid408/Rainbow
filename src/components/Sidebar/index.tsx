@@ -404,15 +404,16 @@ const Sidebar = () => {
     );
     if (activeItem) {
       setActiveSidebarItem(activeItem);
+      setActiveTab(activeItem.toLowerCase().replace(/\s+/g, "-"));
     }
   }, [pathname]);
 
   const pathMap: Record<string, string> = {
     "My Inbox": "/dashboard",
     "AI Outreach": "/outreach",
-    Patient: "/patient",
-    Analytics: "/analytics",
-    "Admin Oversight": "/user-management",
+    "Patient": "/patient",
+    "Analytics": "/analytics",
+    "Admin": "/user-management",
   };
   if (loading || loggedOut) {
     return (
@@ -633,12 +634,12 @@ const Sidebar = () => {
           zIndex: 1300,
         }}
       >
-        {sidebarItemsMobile.map(({ label, icon: Icon }) => (
+        {sidebarItemsMobile.map(({ label, icon: Icon, disable }) => (
           <Box
             key={label}
             onClick={() => {
               setActiveTab(label.toLowerCase().replace(/\s+/g, "-"));
-              if (pathMap[label]) {
+              if (!disable && pathMap[label]) {
                 router.push(pathMap[label]);
               }
             }}
@@ -647,8 +648,8 @@ const Sidebar = () => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              cursor: "pointer",
-
+              cursor: disable ? "not-allowed" : "pointer",
+              opacity: disable ? 0.5 : 1,
               fontWeight:
                 activeTab === label.toLowerCase().replace(/\s+/g, "-")
                   ? 600
@@ -665,30 +666,33 @@ const Sidebar = () => {
               sx={{
                 fontSize: 10,
                 color:
-                  activeTab === label.toLowerCase().replace(/\s+/g, "-")
+                  activeTab === label.toLowerCase().replace(/\s+/g, "-") &&
+                  !disable
                     ? "#7A4DF5"
                     : "#444",
                 fontWeight:
-                  activeTab === label.toLowerCase().replace(/\s+/g, "-")
+                  activeTab === label.toLowerCase().replace(/\s+/g, "-") &&
+                  !disable
                     ? "600"
                     : "400",
               }}
             >
               {label}
             </Typography>
-            {activeTab === label.toLowerCase().replace(/\s+/g, "-") && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  bottom: 0,
-                  height: 3,
-                  width: "60%",
-                  bgcolor: "#7A4DF5",
-                  borderRadius: 2,
-                  mt: 0.5,
-                }}
-              />
-            )}
+            {activeTab === label.toLowerCase().replace(/\s+/g, "-") &&
+              !disable && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    bottom: 0,
+                    height: 3,
+                    width: "60%",
+                    bgcolor: "#7A4DF5",
+                    borderRadius: 2,
+                    mt: 0.5,
+                  }}
+                />
+              )}
           </Box>
         ))}
       </Box>

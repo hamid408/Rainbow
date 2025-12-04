@@ -380,8 +380,26 @@ const Dashboard = () => {
           }
         />
 
-        <Box className={styles.shortText}>
-          {/* {addCampaign && ( */}
+        <Box
+          className={styles.shortText}
+          sx={{
+            display: "flex",
+            gap: 1,
+            flexWrap: "wrap",
+            justifyContent: "flex-end",
+            width: "100%",
+
+            "@media (max-width: 600px)": {
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              "& button": {
+                width: "auto",
+                justifyContent: "center",
+              },
+            },
+          }}
+        >
           <CustomButton
             variant="contained"
             onClick={() => setAddCampaign(true)}
@@ -389,9 +407,8 @@ const Dashboard = () => {
             disabled={!isAnyChecked}
           >
             Add Campaign
-
           </CustomButton>
-          {/* )} */}
+
           <CustomButton variant="contained" onClick={() => setOpenModal(true)}>
             Add Lead
           </CustomButton>
@@ -500,7 +517,6 @@ const Dashboard = () => {
               </CustomButton>
             </Stack>
 
-           
             {renderPagination(
               actionPage,
               actionPages,

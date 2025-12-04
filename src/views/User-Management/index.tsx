@@ -121,7 +121,33 @@ const UserManagement = () => {
           <AdminDashboard />
         </Box> */}
 
-        <Box className={styles.indexCustomTabBox}>
+        <Box
+          className={styles.indexCustomTabBox}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "center",
+            width: "100%",
+            overflowX: "auto",
+            WebkitOverflowScrolling: "touch",
+            scrollbarWidth: "none",
+            "&::-webkit-scrollbar": { display: "none" },
+
+            "& .MuiTabs-scroller": {
+              overflow: "visible",
+            },
+            "& .MuiTabs-flexContainer": {
+              display: "inline-flex",
+              gap: 1,
+              whiteSpace: "nowrap",
+            },
+            "& .MuiTab-root": {
+              minWidth: { xs: 90, sm: 120 },
+              paddingLeft: 1.5,
+              paddingRight: 1.5,
+            },
+          }}
+        >
           <CustomTabs
             tabs={tabItems}
             onTabChange={(label: any) => setActiveTab(label)}
