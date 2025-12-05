@@ -411,7 +411,7 @@ const Sidebar = () => {
   const pathMap: Record<string, string> = {
     "My Inbox": "/dashboard",
     "AI Outreach": "/outreach",
-    "Patient": "/patient",
+    "Patients": "/patients",
     "Analytics": "/analytics",
     "Admin": "/user-management",
   };

@@ -9,7 +9,7 @@ import {
 } from "@/src/redux/services/leads/leadsApi";
 import { useDebounce } from "use-debounce";
 
-const Patient = () => {
+const Patients = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [callType, setCallType] = useState<string[]>([]);
@@ -168,4 +168,4 @@ const Patient = () => {
   );
 };
 
-export default Patient;
+export default Patients;
