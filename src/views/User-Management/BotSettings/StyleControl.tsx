@@ -33,13 +33,13 @@ const StyleControls = ({ register, setValue, watch, control }: any) => {
       {/* Colors Section */}
       <Box
         display="flex"
-        gap={13}
+        gap={3}
         width="100%"
         flexWrap={"wrap"}
-        justifyContent={"space-evenly"}
+        justifyContent={"center"}
       >
         {/* Primary Color */}
-        <Box flex={1}>
+        <Box flex={1} minWidth="200px" display="flex" flexDirection="column" alignItems="center">
           <Typography gutterBottom>Primary Color</Typography>
           <HexColorPicker
             color={primaryColor}
@@ -50,7 +50,7 @@ const StyleControls = ({ register, setValue, watch, control }: any) => {
         </Box>
 
         {/* Background Color */}
-        <Box flex={1}>
+        <Box flex={1} minWidth="200px" display="flex" flexDirection="column" alignItems="center">
           <Typography gutterBottom>Background Color</Typography>
         
           <HexColorPicker
@@ -62,7 +62,7 @@ const StyleControls = ({ register, setValue, watch, control }: any) => {
         </Box>
 
         {/* Border Color */}
-        <Box flex={1}>
+        <Box flex={1} minWidth="200px" display="flex" flexDirection="column" alignItems="center">
           <Typography gutterBottom>Border Color</Typography>
           
           <HexColorPicker

@@ -54,8 +54,24 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   }, [allCalls, selectedCall]);
 
   const currentCallSlots = useMemo(() => {
-    return slot?.slots ?? [];
-  }, [slot?.slots]);
+    if (!allCalls.length) return {};
+
+    if (selectedCall !== null) {
+      return allCalls[selectedCall]?.slots ?? {};
+    }
+
+    const merged: any = {};
+    allCalls.forEach((call: any, callIndex: number) => {
+      Object.entries(call.slots ?? {}).forEach(([key, value]: any) => {
+        merged[`${key}_call_${callIndex}`] = {
+          ...value,
+          originalKey: key,
+          callIndex,
+        };
+      });
+    });
+    return merged;
+  }, [allCalls, selectedCall]);
 
   const audioUrl = useMemo(
     () => currentCall?.recording_url || slot?.audioUrl || "",
@@ -63,13 +79,16 @@ const SlotModal = ({ open, slot, onClose }: any) => {
   );
 
   const markers = useMemo(() => {
-    const referenceSlots = slot?.slots ?? [];
+    const referenceSlots =
+      selectedCall !== null
+        ? allCalls[selectedCall]?.slots
+        : allCalls.at(-1)?.slots;
     if (!referenceSlots) return [];
     return Object.entries(referenceSlots).map(([key, s]: any) => ({
       time: convertTimestampToSeconds(s.timestamp),
       label: s.key || key,
     }));
-  }, [slot?.slots]);
+  }, [allCalls, selectedCall]);
 
   useEffect(() => {
     if (open) {
@@ -86,6 +105,18 @@ const SlotModal = ({ open, slot, onClose }: any) => {
 
   const handleSlotClick = (index: number, data: any) => {
     const seconds = convertTimestampToSeconds(data.timestamp);
+
+    if (selectedCall === null && data.callIndex !== undefined) {
+      const latestCallIndex = allCalls.length - 1;
+
+      if (data.callIndex !== latestCallIndex) {
+        setSelectedCall(data.callIndex);
+        setOpenIndex(null);
+        setPendingSeek(seconds);
+        return;
+      }
+    }
+
     toggleCard(index);
     audioRef.current?.seekTo(seconds);
   };
@@ -141,6 +172,17 @@ const SlotModal = ({ open, slot, onClose }: any) => {
               if (pendingSeek !== null) {
                 audioRef.current?.seekTo(pendingSeek);
                 setPendingSeek(null);
+
+                if (selectedCall !== null) {
+                  const newSlots = allCalls[selectedCall]?.slots ?? {};
+                  const newIndex = Object.keys(newSlots).findIndex(
+                    (key) =>
+                      key ===
+                      currentCallSlots[Object.keys(currentCallSlots)[0]]
+                        ?.originalKey
+                  );
+                  if (newIndex !== -1) setOpenIndex(newIndex);
+                }
               }
             }}
           />
@@ -154,23 +196,18 @@ const SlotModal = ({ open, slot, onClose }: any) => {
               Calls
             </Typography>
             <Box display="flex" gap={1} flexWrap="wrap" mt={1}>
-              {allCalls.map((_: any, index: number) => {
-                const isLatestCall = index === allCalls.length - 1;
-                const isSelected = selectedCall === index || (selectedCall === null && isLatestCall);
-                
-                return (
-                  <Chip
-                    key={index}
-                    label={`Call ${index + 1}`}
-                    onClick={() =>
-                      handleCallChange(selectedCall === index ? null : index)
-                    }
-                    variant={isSelected ? "filled" : "outlined"}
-                    color={isSelected ? "primary" : "default"}
-                    sx={{ cursor: "pointer", fontWeight: 600 }}
-                  />
-                );
-              })}
+              {allCalls.map((_: any, index: number) => (
+                <Chip
+                  key={index}
+                  label={`Call ${index + 1}`}
+                  onClick={() =>
+                    handleCallChange(selectedCall === index ? null : index)
+                  }
+                  variant={selectedCall === index ? "filled" : "outlined"}
+                  color={selectedCall === index ? "primary" : "default"}
+                  sx={{ cursor: "pointer", fontWeight: 600 }}
+                />
+              ))}
             </Box>
             <Divider sx={{ my: 2 }} />
           </Box>

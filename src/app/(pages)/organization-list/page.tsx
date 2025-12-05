@@ -99,7 +99,6 @@ const OrganizationList = () => {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      sx={{ backgroundColor: "#f5f7fa" }}
     >
       <Card
         sx={{
