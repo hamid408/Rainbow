@@ -29,7 +29,7 @@ export const sidebarItems = [
   { label: "My Inbox", icon: HotLeadsNormal, activeIcon: LeadsIcon }, // use same if no separate active version
   { label: "AI Outreach", icon: Aireach, activeIcon: AIActive },
   {
-    label: "Patient",
+    label: "Patients",
     icon: Tasks,
     activeIcon: TaskActive,
     // disabled: true,
@@ -40,12 +40,12 @@ export const sidebarItems = [
     activeIcon: AnalyticsActive,
     disabled: true,
   },
-  { label: "Admin Oversight", icon: UserIcon, activeIcon: UserActive },
+  { label: "Admin", icon: UserIcon, activeIcon: UserActive },
 ];
 export const sidebarItemsMobile = [
   { label: "My Inbox", icon: HotLeadsNormal, activeIcon: LeadsIcon },
   { label: "AI Outreach", icon: Aireach, activeIcon: AIActive },
-  { label: "Patient", icon: Tasks },
-  { label: "Analytics", icon: Analytics },
+  { label: "Patients", icon: Tasks },
+  { label: "Analytics", icon: Analytics,disable:true },
   { label: "Admin", icon: UserIcon, activeIcon: UserActive },
 ];

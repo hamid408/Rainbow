@@ -380,18 +380,24 @@ const Dashboard = () => {
           }
         />
 
-        <Box className={styles.shortText}>
-          {/* {addCampaign && ( */}
+        <Box
+          className={styles.shortText}
+          sx={{
+            display: "flex",
+            gap: 1,
+            flexWrap: "wrap",
+            justifyContent: "flex-end",
+            width: "100%",
+          }}
+        >
           <CustomButton
             variant="contained"
             onClick={() => setAddCampaign(true)}
-            sx={{ mr: 2 }}
             disabled={!isAnyChecked}
           >
             Add Campaign
-
           </CustomButton>
-          {/* )} */}
+
           <CustomButton variant="contained" onClick={() => setOpenModal(true)}>
             Add Lead
           </CustomButton>
@@ -500,7 +506,6 @@ const Dashboard = () => {
               </CustomButton>
             </Stack>
 
-           
             {renderPagination(
               actionPage,
               actionPages,

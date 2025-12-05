@@ -9,7 +9,7 @@ import {
 } from "@/src/redux/services/leads/leadsApi";
 import { useDebounce } from "use-debounce";
 
-const Patient = () => {
+const Patients = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [callType, setCallType] = useState<string[]>([]);
@@ -27,7 +27,7 @@ const Patient = () => {
 
   useEffect(() => {
     triggerFetch({
-      limit: 100,
+      limit: 50,
       search: debouncedSearch?.trim() || undefined,
       call_type: callType.length > 0 ? callType.join(",") : undefined,
       payer_name: payerName.length > 0 ? payerName.join(",") : undefined,
@@ -50,16 +50,17 @@ const Patient = () => {
         call_status: item.call_status || "-",
         phone: item.phone || "-",
         date: item.lead_creation_time?.split(" ")[0] || "-",
+
         transcript: latestCall?.transcript || "-",
         audioUrl: latestCall?.recording_url || "-",
         callDuration: latestCall?.call_duration || "-",
 
-        slots: item.slots
-          ? Object.entries(item.slots).map(([key, val]: any) => ({
+        slots: latestCall?.slots
+          ? Object.entries(latestCall.slots).map(([key, val]: any) => ({
               key,
-              value: val?.value,
-              description: val?.description,
-              timestamp: val?.time,
+              value: val.value,
+              description: val.description,
+              timestamp: val.time,
             }))
           : [],
 
@@ -67,6 +68,18 @@ const Patient = () => {
           transcript: call.transcript || "-",
           recording_url: call.recording_url || "-",
           call_duration: call.call_duration || "-",
+          slots: Object.entries(call.slots || {}).reduce(
+            (acc: any, [key, val]: any) => {
+              acc[key] = {
+                key: val.key || key,
+                value: val.value,
+                description: val.description,
+                timestamp: val.time,
+              };
+              return acc;
+            },
+            {}
+          ),
         })),
 
         patient_dob: item.patient_dob || "-",
@@ -139,7 +152,7 @@ const Patient = () => {
     URL.revokeObjectURL(url);
   };
 
-  if (isLoading || isEnumLoading  || !patientData?.data) {
+  if (isLoading || isEnumLoading || !patientData?.data) {
     return (
       <Box p={3} display="flex" justifyContent="center">
         <CircularProgress />
@@ -168,4 +181,4 @@ const Patient = () => {
   );
 };
 
-export default Patient;
+export default Patients;
